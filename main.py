@@ -4,7 +4,7 @@ from pathlib import Path
 if __name__ == '__main__':
 
     PATHFILE_home_user_deploy_site_deploy_site_py = Path(sys.argv[0])
-    PATHDIR_home_user_deploy_site = PATHFILE_home_user_deploy_site_deploy_site_py
+    PATHDIR_home_user_deploy_site = PATHFILE_home_user_deploy_site_deploy_site_py.parent
     PATHDIR_home_user = PATHDIR_home_user_deploy_site.parent
     USER = PATHDIR_home_user.name
     project = {
