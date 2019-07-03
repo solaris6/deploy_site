@@ -18,12 +18,13 @@ if __name__ == '__main__':
         'ynsight': 'ynsight'
     }[USER]
 
-    site_project = 'site_' + project
-    PATHDIR_site_project = PATHDIR_home_user / site_project
+    site = 'site_' + project
+    PATHDIR_site = PATHDIR_home_user / site
 
-    URL_project_repository = '''https://github.com/solaris6/%project%.git'''\
+    URL_repository = '''https://github.com/solaris6/%project%.git'''\
         .replace('%project%', project)
-    PATHDIR_project_repository = PATHDIR_home_user / project
+    PATHDIR_repository = PATHDIR_home_user / project
+    PATHDIR_repository_site = PATHDIR_repository / '_site' / site
 
     print('test0')
     print(sys.argv)
@@ -33,7 +34,18 @@ if __name__ == '__main__':
     print(PATHDIR_home_user)
     print(USER)
     print(project)
-    print(site_project)
-    print(PATHDIR_site_project)
-    print(URL_project_repository)
-    print(PATHDIR_project_repository)
+    print(site)
+    print(PATHDIR_site)
+    print(URL_repository)
+    print(PATHDIR_repository)
+    print(PATHDIR_repository_site)
+
+
+    # PATHDIR_deploy_site = PATHFILE_deploy_site_py.parent / 'deploy_site'
+    # if PATHDIR_deploy_site.is_dir():
+    #     shutil.rmtree(PATHDIR_deploy_site)
+    #
+    # PATHFILE_deploy_site_main_py = PATHDIR_deploy_site / 'main.py'
+    #
+    # subprocess.run(['git', 'clone', 'https://github.com/solaris6/deploy_site.git'])
+    # subprocess.run(['python3.6', PATHFILE_deploy_site_main_py])
