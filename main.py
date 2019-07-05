@@ -83,7 +83,7 @@ PATHFILE_wsgi_py=%PATHFILE_wsgi_py%'''
 
 
     print('[deploy] Downloading project repository...')
-    subprocess.run(['git', 'clone', URL_projectrepository, str(PATHDIR_repositories)])
+    subprocess.run(['git', 'clone', URL_projectrepository], cwd=str(PATHDIR_repositories))
     print('[deploy] Downloading project repository!')
 
     print('[deploy] Install project site...')
