@@ -52,7 +52,7 @@ PATHDIR_sitepackage=%PATHDIR_sitepackage%
 URL_projectrepository=%URL_projectrepository%
 PATHDIR_repositories=%PATHDIR_repositories%
 PATHDIR_projectrepository=%PATHDIR_projectrepository%
-PATHDIR_projectrepository_sitepackage=%PATHDIR_projectrepository_site%
+PATHDIR_projectrepository_sitepackage=%PATHDIR_projectrepository_sitepackage%
 PATHFILE_wsgi_py=%PATHFILE_wsgi_py%'''
         .replace('%sys.argv%', str(sys.argv))
         .replace('%__file__%', str(__file__))
@@ -64,8 +64,9 @@ PATHFILE_wsgi_py=%PATHFILE_wsgi_py%'''
         .replace('%sitepackage%', str(sitepackage))
         .replace('%URL_site%', str(URL_site))
         .replace('%PATHDIR_sitepackage%', str(PATHDIR_sitepackage))
-        .replace('%PATHDIR_repositories%', str(PATHDIR_repositories))
         .replace('%URL_projectrepository%', str(URL_projectrepository))
+        .replace('%PATHDIR_repositories%', str(PATHDIR_repositories))
+        .replace('%PATHDIR_projectrepository%', str(PATHDIR_projectrepository))
         .replace('%PATHDIR_projectrepository_sitepackage%', str(PATHDIR_projectrepository_sitepackage))
         .replace('%PATHFILE_wsgi_py%', str(PATHFILE_wsgi_py))
     )
@@ -82,7 +83,7 @@ PATHFILE_wsgi_py=%PATHFILE_wsgi_py%'''
 
 
     print('[deploy] Downloading project repository...')
-    subprocess.run(['git', 'clone', URL_projectrepository])
+    subprocess.run(['git', 'clone', URL_projectrepository, str(PATHDIR_repositories)])
     print('[deploy] Downloading project repository!')
 
     print('[deploy] Install project site...')
