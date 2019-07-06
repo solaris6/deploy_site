@@ -2,7 +2,9 @@ import os, shutil, subprocess, sys
 from pathlib import Path
 import logging
 logger = logging.getLogger(__name__)
-logger.setLevel(10)
+logger.setLevel(logging.INFO)
+
+logging.info('deploy.py imported')
 
 if __name__ == '__main__':
     logger.info('[deploy] Deploy site...')
@@ -30,12 +32,15 @@ if __name__ == '__main__':
     URL_site = USER + '.pythonanywhere.com'
     URL_projectrepository = '''https://github.com/solaris6/%project%.git'''\
         .replace('%project%', project)
-
     PATHDIR_root_sitepackage = PATHDIR_home_user_root / sitepackage
+
+    docpackage = 'doc_' + project
+    PATHDIR_root_docpackage = PATHDIR_home_user_root / docpackage
 
     PATHDIR_root_repositories = PATHDIR_home_user_root / 'repositories'
     PATHDIR_root_repositories_projectrepository = PATHDIR_root_repositories / project
     PATHDIR_root_repositories_projectrepository_sitepackage = PATHDIR_root_repositories_projectrepository / '_site' / sitepackage
+    PATHDIR_root_repositories_projectrepository_docpackage = PATHDIR_root_repositories_projectrepository / '_doc' / docpackage
 
     PATHFILE_wsgi_py = Path(
         '/var/www/%USER%_pythonanywhere_com_wsgi.py'
@@ -55,12 +60,15 @@ project=%project%
 sitepackage=%sitepackage%
 URL_site=%URL_site%
 URL_projectrepository=%URL_projectrepository%
-
 PATHDIR_root_sitepackage=%PATHDIR_root_sitepackage%
+
+docpackage=%docpackage%
+PATHDIR_root_docpackage=%PATHDIR_root_docpackage%
 
 PATHDIR_root_repositories=%PATHDIR_root_repositories%
 PATHDIR_root_repositories_projectrepository=%PATHDIR_root_repositories_projectrepository%
 PATHDIR_root_repositories_projectrepository_sitepackage=%PATHDIR_root_repositories_projectrepository_sitepackage%
+PATHDIR_root_repositories_projectrepository_docpackage=%PATHDIR_root_repositories_projectrepository_docpackage%
 
 PATHFILE_wsgi_py=%PATHFILE_wsgi_py%'''
         .replace('%sys.argv%', str(sys.argv))
@@ -75,8 +83,10 @@ PATHFILE_wsgi_py=%PATHFILE_wsgi_py%'''
         .replace('%sitepackage%', str(sitepackage))
         .replace('%URL_site%', str(URL_site))
         .replace('%URL_projectrepository%', str(URL_projectrepository))
-        \
         .replace('%PATHDIR_root_sitepackage%', str(PATHDIR_root_sitepackage))
+        \
+        .replace('%docpackage%', str(docpackage))
+        .replace('%PATHDIR_root_docpackage%', str(PATHDIR_root_docpackage))
         \
         .replace('%PATHDIR_root_repositories%', str(PATHDIR_root_repositories))
         .replace('%PATHDIR_root_repositories_projectrepository%', str(PATHDIR_root_repositories_projectrepository))
@@ -99,12 +109,14 @@ PATHFILE_wsgi_py=%PATHFILE_wsgi_py%'''
     logger.info('[deploy] Downloading project repository!')
 
     logger.info('[deploy] Install project site...')
-    if PATHDIR_root_sitepackage.is_dir():
-        shutil.rmtree(PATHDIR_root_sitepackage)
-
     if PATHDIR_root_repositories_projectrepository.is_dir():
         shutil.copytree(PATHDIR_root_repositories_projectrepository_sitepackage, PATHDIR_root_sitepackage)
     logger.info('[deploy] Install project site!')
+
+    logger.info('[deploy] Install project doc...')
+    if PATHDIR_root_repositories_projectrepository.is_dir():
+        shutil.copytree(PATHDIR_root_repositories_projectrepository_docpackage, PATHDIR_root_docpackage)
+    logger.info('[deploy] Install project doc!')
 
     logger.info('[deploy] Touch wsgi.py...')
     os.system('touch ' + str(PATHFILE_wsgi_py))
