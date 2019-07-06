@@ -2,6 +2,7 @@ import os, shutil, subprocess, sys
 from pathlib import Path
 import logging
 logger = logging.getLogger(__name__)
+logger.setLevel(10)
 
 if __name__ == '__main__':
     logger.info('[deploy] Deploy site...')
