@@ -6,8 +6,8 @@ logger = logging.getLogger(__name__)
 if __name__ == '__main__':
     logger.info('[deploy] Deploy site...')
 
-    PATHFILE_home_user_root_deploysite_deploysitepy = Path(sys.argv[0])
-    PATHDIR_home_user_root_deploysite = PATHFILE_home_user_root_deploysite_deploysitepy.parent
+    PATHFILE_home_user_root_deploysite_deploypy = Path(sys.argv[0])
+    PATHDIR_home_user_root_deploysite = PATHFILE_home_user_root_deploysite_deploypy.parent
     PATHDIR_home_user_root = PATHDIR_home_user_root_deploysite.parent
     PATHDIR_home_user = PATHDIR_home_user_root.parent
 
@@ -27,14 +27,14 @@ if __name__ == '__main__':
 
     sitepackage = 'site_' + project
     URL_site = USER + '.pythonanywhere.com'
-    PATHDIR_root_sitepackage = PATHDIR_home_user_root / sitepackage
-
     URL_projectrepository = '''https://github.com/solaris6/%project%.git'''\
         .replace('%project%', project)
 
+    PATHDIR_root_sitepackage = PATHDIR_home_user_root / sitepackage
+
     PATHDIR_root_repositories = PATHDIR_home_user_root / 'repositories'
     PATHDIR_root_repositories_projectrepository = PATHDIR_root_repositories / project
-    PATHDIR_projectrepository_sitepackage = PATHDIR_projectrepository / '_site' / sitepackage
+    PATHDIR_root_repositories_projectrepository_sitepackage = PATHDIR_root_repositories_projectrepository / '_site' / sitepackage
 
     PATHFILE_wsgi_py = Path(
         '/var/www/%USER%_pythonanywhere_com_wsgi.py'
@@ -44,40 +44,48 @@ if __name__ == '__main__':
     logger.info(
 '''sys.argv=%sys.argv%
 __file__=%__file__%
-PATHFILE_home_user_deploy_site_deploy_site_py=%PATHFILE_home_user_deploy_site_deploy_site_py%
-PATHDIR_home_user_deploy_site=%PATHDIR_home_user_deploy_site%
+PATHFILE_home_user_root_deploysite_deploypy=%PATHFILE_home_user_root_deploysite_deploypy%
+PATHDIR_home_user_root_deploysite=%PATHDIR_home_user_root_deploysite%
+PATHDIR_home_user_root=%PATHDIR_home_user_root%
 PATHDIR_home_user=%PATHDIR_home_user%
+
 USER=%USER%
 project=%project%
 sitepackage=%sitepackage%
 URL_site=%URL_site%
-PATHDIR_sitepackage=%PATHDIR_sitepackage%
 URL_projectrepository=%URL_projectrepository%
-PATHDIR_repositories=%PATHDIR_repositories%
-PATHDIR_projectrepository=%PATHDIR_projectrepository%
-PATHDIR_projectrepository_sitepackage=%PATHDIR_projectrepository_sitepackage%
+
+PATHDIR_root_sitepackage=%PATHDIR_root_sitepackage%
+
+PATHDIR_root_repositories=%PATHDIR_root_repositories%
+PATHDIR_root_repositories_projectrepository=%PATHDIR_root_repositories_projectrepository%
+PATHDIR_root_repositories_projectrepository_sitepackage=%PATHDIR_root_repositories_projectrepository_sitepackage%
+
 PATHFILE_wsgi_py=%PATHFILE_wsgi_py%'''
         .replace('%sys.argv%', str(sys.argv))
         .replace('%__file__%', str(__file__))
-        .replace('%PATHFILE_home_user_deploy_site_deploy_site_py%', str(PATHFILE_home_user_deploy_site_deploy_site_py))
-        .replace('%PATHDIR_home_user_deploy_site%', str(PATHDIR_home_user_deploy_site))
+        .replace('%PATHFILE_home_user_root_deploysite_deploypy%', str(PATHFILE_home_user_root_deploysite_deploypy))
+        .replace('%PATHDIR_home_user_root_deploysite%', str(PATHDIR_home_user_root_deploysite))
+        .replace('%PATHDIR_home_user_root%', str(PATHDIR_home_user_root))
         .replace('%PATHDIR_home_user%', str(PATHDIR_home_user))
+        \
         .replace('%USER%', str(USER))
         .replace('%project%', str(project))
         .replace('%sitepackage%', str(sitepackage))
         .replace('%URL_site%', str(URL_site))
-        .replace('%PATHDIR_sitepackage%', str(PATHDIR_sitepackage))
         .replace('%URL_projectrepository%', str(URL_projectrepository))
-        .replace('%PATHDIR_repositories%', str(PATHDIR_repositories))
-        .replace('%PATHDIR_projectrepository%', str(PATHDIR_projectrepository))
-        .replace('%PATHDIR_projectrepository_sitepackage%', str(PATHDIR_projectrepository_sitepackage))
+        \
+        .replace('%PATHDIR_root_sitepackage%', str(PATHDIR_root_sitepackage))
+        \
+        .replace('%PATHDIR_root_repositories%', str(PATHDIR_root_repositories))
+        .replace('%PATHDIR_root_repositories_projectrepository%', str(PATHDIR_root_repositories_projectrepository))
+        .replace('%PATHDIR_root_repositories_projectrepository_sitepackage%', str(PATHDIR_root_repositories_projectrepository_sitepackage))
+        \
         .replace('%PATHFILE_wsgi_py%', str(PATHFILE_wsgi_py))
     )
 
 
-    if PATHDIR_repositories.is_dir():
-        shutil.rmtree(PATHDIR_repositories)
-    PATHDIR_repositories.mkdir(parents=True)
+    PATHDIR_root_repositories.mkdir(parents=True)
 
 
     logger.info('[deploy] Setup project dependencies...')
@@ -86,15 +94,15 @@ PATHFILE_wsgi_py=%PATHFILE_wsgi_py%'''
 
 
     logger.info('[deploy] Downloading project repository...')
-    subprocess.run(['git', 'clone', URL_projectrepository], cwd=str(PATHDIR_repositories))
+    subprocess.run(['git', 'clone', URL_projectrepository], cwd=str(PATHDIR_root_repositories))
     logger.info('[deploy] Downloading project repository!')
 
     logger.info('[deploy] Install project site...')
-    if PATHDIR_sitepackage.is_dir():
-        shutil.rmtree(PATHDIR_sitepackage)
+    if PATHDIR_root_sitepackage.is_dir():
+        shutil.rmtree(PATHDIR_root_sitepackage)
 
-    if PATHDIR_projectrepository.is_dir():
-        shutil.copytree(PATHDIR_projectrepository_sitepackage, PATHDIR_sitepackage)
+    if PATHDIR_root_repositories_projectrepository.is_dir():
+        shutil.copytree(PATHDIR_root_repositories_projectrepository_sitepackage, PATHDIR_root_sitepackage)
     logger.info('[deploy] Install project site!')
 
     logger.info('[deploy] Touch wsgi.py...')
