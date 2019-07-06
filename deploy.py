@@ -1,15 +1,18 @@
-import os
-import shutil
-import subprocess
-import sys
+import os, shutil, subprocess, sys
 from pathlib import Path
+import logging
+logger = logging.getLogger(__name__)
 
 if __name__ == '__main__':
-    print('[deploy] Deploy site...')
-    PATHFILE_home_user_deploy_site_deploy_site_py = Path(sys.argv[0])
-    PATHDIR_home_user_deploy_site = PATHFILE_home_user_deploy_site_deploy_site_py.parent
-    PATHDIR_home_user = PATHDIR_home_user_deploy_site.parent
+    logger.info('[deploy] Deploy site...')
+
+    PATHFILE_home_user_root_deploysite_deploysitepy = Path(sys.argv[0])
+    PATHDIR_home_user_root_deploysite = PATHFILE_home_user_root_deploysite_deploysitepy.parent
+    PATHDIR_home_user_root = PATHDIR_home_user_root_deploysite.parent
+    PATHDIR_home_user = PATHDIR_home_user_root.parent
+
     USER = PATHDIR_home_user.name
+
     project = {
         'getsola': 'sola',
         'getbase': 'base',
@@ -24,13 +27,13 @@ if __name__ == '__main__':
 
     sitepackage = 'site_' + project
     URL_site = USER + '.pythonanywhere.com'
-    PATHDIR_sitepackage = PATHDIR_home_user / sitepackage
+    PATHDIR_root_sitepackage = PATHDIR_home_user_root / sitepackage
 
     URL_projectrepository = '''https://github.com/solaris6/%project%.git'''\
         .replace('%project%', project)
 
-    PATHDIR_repositories = PATHDIR_home_user / 'repositories'
-    PATHDIR_projectrepository = PATHDIR_repositories / project
+    PATHDIR_root_repositories = PATHDIR_home_user_root / 'repositories'
+    PATHDIR_root_repositories_projectrepository = PATHDIR_root_repositories / project
     PATHDIR_projectrepository_sitepackage = PATHDIR_projectrepository / '_site' / sitepackage
 
     PATHFILE_wsgi_py = Path(
@@ -38,7 +41,7 @@ if __name__ == '__main__':
             .replace('%USER%', USER)
     )
 
-    print(
+    logger.info(
 '''sys.argv=%sys.argv%
 __file__=%__file__%
 PATHFILE_home_user_deploy_site_deploy_site_py=%PATHFILE_home_user_deploy_site_deploy_site_py%
@@ -77,25 +80,25 @@ PATHFILE_wsgi_py=%PATHFILE_wsgi_py%'''
     PATHDIR_repositories.mkdir(parents=True)
 
 
-    print('[deploy] Setup project dependencies...')
+    logger.info('[deploy] Setup project dependencies...')
 
-    print('[deploy] Setup project dependencies!')
+    logger.info('[deploy] Setup project dependencies!')
 
 
-    print('[deploy] Downloading project repository...')
+    logger.info('[deploy] Downloading project repository...')
     subprocess.run(['git', 'clone', URL_projectrepository], cwd=str(PATHDIR_repositories))
-    print('[deploy] Downloading project repository!')
+    logger.info('[deploy] Downloading project repository!')
 
-    print('[deploy] Install project site...')
+    logger.info('[deploy] Install project site...')
     if PATHDIR_sitepackage.is_dir():
         shutil.rmtree(PATHDIR_sitepackage)
 
     if PATHDIR_projectrepository.is_dir():
         shutil.copytree(PATHDIR_projectrepository_sitepackage, PATHDIR_sitepackage)
-    print('[deploy] Install project site!')
+    logger.info('[deploy] Install project site!')
 
-    print('[deploy] Touch wsgi.py...')
+    logger.info('[deploy] Touch wsgi.py...')
     os.system('touch ' + str(PATHFILE_wsgi_py))
-    print('[deploy] Touch wsgi.py!')
+    logger.info('[deploy] Touch wsgi.py!')
 
-    print('[deploy] Deploy site!')
+    logger.info('[deploy] Deploy site!')
