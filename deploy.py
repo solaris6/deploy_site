@@ -38,11 +38,13 @@ if __name__ == '__main__':
     URL_projectrepository = '''https://github.com/solaris6/%project%.git'''\
         .replace('%project%', project)
     PATHDIR_root_site = PATHDIR_home_user_root / '_site'
-    PATHDIR_root_site_sitepackage = PATHDIR_home_user_root / sitepackage
+    PATHDIR_root_site_sitepackage = PATHDIR_root_site / sitepackage
 
     docpackage = 'doc_' + project
     PATHDIR_root_doc = PATHDIR_home_user_root / '_doc'
-    PATHDIR_root_doc_docpackage = PATHDIR_home_user_root / docpackage
+    PATHDIR_root_doc_docpackage = PATHDIR_root_doc / docpackage
+
+    PATHDIR_root_third = PATHDIR_home_user_root / 'third'
 
     PATHDIR_root_repositories = PATHDIR_home_user_root / 'repositories'
     PATHDIR_root_repositories_projectrepository = PATHDIR_root_repositories / project
@@ -80,6 +82,8 @@ docpackage=%docpackage%
 PATHDIR_root_doc=%PATHDIR_root_doc%
 PATHDIR_root_doc_docpackage=%PATHDIR_root_doc_docpackage%
 
+PATHDIR_root_third=%PATHDIR_root_third%
+
 PATHDIR_root_repositories=%PATHDIR_root_repositories%
 PATHDIR_root_repositories_projectrepository=%PATHDIR_root_repositories_projectrepository%
 
@@ -111,6 +115,8 @@ PATHFILE_wsgipy=%PATHFILE_wsgipy%'''
         .replace('%PATHDIR_root_doc%', str(PATHDIR_root_doc))
         .replace('%PATHDIR_root_doc_docpackage%', str(PATHDIR_root_doc_docpackage))
         \
+        .replace('%PATHDIR_root_third%', str(PATHDIR_root_third))
+        \
         .replace('%PATHDIR_root_repositories%', str(PATHDIR_root_repositories))
         .replace('%PATHDIR_root_repositories_projectrepository%', str(PATHDIR_root_repositories_projectrepository))
         \
@@ -128,7 +134,7 @@ PATHFILE_wsgipy=%PATHFILE_wsgipy%'''
 
 
     logger.info('[deployer] Setup project dependencies...')
-
+    PATHDIR_root_third.mkdir()
     logger.info('[deployer] Setup project dependencies!')
 
 
