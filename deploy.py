@@ -37,27 +37,27 @@ class Sitedeployer:
             'getprojekt': 'project'
         }[USER]
 
+        PATHDIR_root_third = PATHDIR_home_user_root / 'third'
+        PATHDIR_root_repositories = PATHDIR_home_user_root / 'repositories'
+        PATHDIR_root_repositories_projectrepository = PATHDIR_root_repositories / project
+
+
         sitepackage = 'site_' + project
         URL_site = USER + '.pythonanywhere.com'
         URL_projectrepository = '''https://github.com/solaris6/%project%.git'''\
             .replace('%project%', project)
-        PATHDIR_root_site = PATHDIR_home_user_root / '_site'
-        PATHDIR_root_site_sitepackage = PATHDIR_root_site / sitepackage
+        PATHDIR_root_site = PATHDIR_home_user_root / 'site'
+        PATHDIR_root_site_lib = PATHDIR_root_site / 'lib'
+        PATHDIR_root_site_lib_sitepackage = PATHDIR_root_site_lib / sitepackage
+        PATHDIR_root_repositories_projectrepository_site = PATHDIR_root_repositories_projectrepository / 'src/site'
+
 
         docpackage = 'doc_' + project
-        PATHDIR_root_doc = PATHDIR_home_user_root / '_doc'
-        PATHDIR_root_doc_docpackage = PATHDIR_root_doc / docpackage
+        PATHDIR_root_doc = PATHDIR_home_user_root / 'doc'
+        PATHDIR_root_doc_lib = PATHDIR_root_doc / 'lib'
+        PATHDIR_root_doc_lib_docpackage = PATHDIR_root_doc_lib / docpackage
+        PATHDIR_root_repositories_projectrepository_doc = PATHDIR_root_repositories_projectrepository / 'src/doc'
 
-        PATHDIR_root_third = PATHDIR_home_user_root / 'third'
-
-        PATHDIR_root_repositories = PATHDIR_home_user_root / 'repositories'
-        PATHDIR_root_repositories_projectrepository = PATHDIR_root_repositories / project
-
-        PATHDIR_root_repositories_projectrepository_site = PATHDIR_root_repositories_projectrepository / '_site'
-        PATHDIR_root_repositories_projectrepository_site_sitepackage = PATHDIR_root_repositories_projectrepository_site / sitepackage
-
-        PATHDIR_root_repositories_projectrepository_doc = PATHDIR_root_repositories_projectrepository / '_doc'
-        PATHDIR_root_repositories_projectrepository_doc_docpackage = PATHDIR_root_repositories_projectrepository_doc / docpackage
 
         PATHFILE_wsgipy = Path(
             '/var/www/%USER%_pythonanywhere_com_wsgi.py'
@@ -80,11 +80,13 @@ sitepackage=%sitepackage%
 URL_site=%URL_site%
 URL_projectrepository=%URL_projectrepository%
 PATHDIR_root_site=%PATHDIR_root_site%
-PATHDIR_root_site_sitepackage=%PATHDIR_root_site_sitepackage%
+PATHDIR_root_site_lib=%PATHDIR_root_site_lib%
+PATHDIR_root_site_lib_sitepackage=%PATHDIR_root_site_lib_sitepackage%
 
 docpackage=%docpackage%
 PATHDIR_root_doc=%PATHDIR_root_doc%
-PATHDIR_root_doc_docpackage=%PATHDIR_root_doc_docpackage%
+PATHDIR_root_doc_lib=%PATHDIR_root_doc_lib%
+PATHDIR_root_doc_lib_docpackage=%PATHDIR_root_doc_lib_docpackage%
 
 PATHDIR_root_third=%PATHDIR_root_third%
 
@@ -92,10 +94,8 @@ PATHDIR_root_repositories=%PATHDIR_root_repositories%
 PATHDIR_root_repositories_projectrepository=%PATHDIR_root_repositories_projectrepository%
 
 PATHDIR_root_repositories_projectrepository_site=%PATHDIR_root_repositories_projectrepository_site%
-PATHDIR_root_repositories_projectrepository_site_sitepackage=%PATHFILE_root_repositories_projectrepository_site_sitepackage_updatepy%
 
 PATHDIR_root_repositories_projectrepository_doc=%PATHDIR_root_repositories_projectrepository_doc%
-PATHDIR_root_repositories_projectrepository_doc_docpackage=%PATHDIR_root_repositories_projectrepository_doc_docpackage%
 
 PATHFILE_wsgipy=%PATHFILE_wsgipy%'''
             .replace('%PATHFILE_home_user_root_sitedeployer_sitedeployerpackage_deploypy%', str(PATHFILE_home_user_root_sitedeployer_sitedeployerpackage_deploypy))
@@ -113,11 +113,13 @@ PATHFILE_wsgipy=%PATHFILE_wsgipy%'''
             .replace('%URL_site%', str(URL_site))
             .replace('%URL_projectrepository%', str(URL_projectrepository))
             .replace('%PATHDIR_root_site%', str(PATHDIR_root_site))
-            .replace('%PATHDIR_root_site_sitepackage%', str(PATHDIR_root_site_sitepackage))
+            .replace('%PATHDIR_root_site_lib%', str(PATHDIR_root_site_lib))
+            .replace('%PATHDIR_root_site_lib_sitepackage%', str(PATHDIR_root_site_lib_sitepackage))
             \
             .replace('%docpackage%', str(docpackage))
             .replace('%PATHDIR_root_doc%', str(PATHDIR_root_doc))
-            .replace('%PATHDIR_root_doc_docpackage%', str(PATHDIR_root_doc_docpackage))
+            .replace('%PATHDIR_root_doc_lib%', str(PATHDIR_root_doc_lib))
+            .replace('%PATHDIR_root_doc_lib_docpackage%', str(PATHDIR_root_doc_lib_docpackage))
             \
             .replace('%PATHDIR_root_third%', str(PATHDIR_root_third))
             \
@@ -125,10 +127,8 @@ PATHFILE_wsgipy=%PATHFILE_wsgipy%'''
             .replace('%PATHDIR_root_repositories_projectrepository%', str(PATHDIR_root_repositories_projectrepository))
             \
             .replace('%PATHDIR_root_repositories_projectrepository_site%', str(PATHDIR_root_repositories_projectrepository_site))
-            .replace('%PATHDIR_root_repositories_projectrepository_site_sitepackage%', str(PATHDIR_root_repositories_projectrepository_site_sitepackage))
             \
             .replace('%PATHDIR_root_repositories_projectrepository_doc%', str(PATHDIR_root_repositories_projectrepository_doc))
-            .replace('%PATHDIR_root_repositories_projectrepository_doc_docpackage%', str(PATHDIR_root_repositories_projectrepository_doc_docpackage))
             \
             .replace('%PATHFILE_wsgipy%', str(PATHFILE_wsgipy))
         )
@@ -195,12 +195,11 @@ PATHFILE_wsgipy=%PATHFILE_wsgipy%'''
         wsgipy_template = \
 '''import sys
 
-project_home = u'/home/%USER%/root/_site'
+project_home = u'/home/%USER%/root/site/lib'
 if project_home not in sys.path:
     sys.path = [project_home] + sys.path
 
-sys.path = [/home/%USER%/root/_site] + sys.path
-sys.path = [/home/%USER%/root/_doc] + sys.path
+sys.path = [/home/%USER%/root/doc/lib] + sys.path
 sys.path = [/home/%USER%/root/third] + sys.path
 
 from %sitepackage%.main import app as application
