@@ -104,7 +104,7 @@ PATHDIR_home_user_root_sitedeployer=%PATHDIR_home_user_root_sitedeployer%'''
 
     # third:
     def URL_baserepository(self) -> str:
-        return '''https://github.com/ynsight/base.git'''
+        return '''git@github.com:ynsight/base.git'''
 
     def PATHDIR_root_repositories_baserepository(self) -> Path:
         return self.PATHDIR_root_repositories() / 'base'
@@ -154,7 +154,7 @@ PATHDIR_root_third_basepackage=%PATHDIR_root_third_basepackage%'''
         return self.PATHDIR_root_repositories() / self.project_NAME()
 
     def URL_projectrepository(self) -> str:
-        return '''https://github.com/ynsight/%project_NAME%.git'''\
+        return '''git@github.com:ynsight/%project_NAME%.git'''\
             .replace('%project_NAME%', self.project_NAME())
 
     def process_project(self) -> None:
