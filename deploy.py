@@ -369,8 +369,8 @@ project_home = u'/home/%pythonanywhere_username%/root/site/lib'
 if project_home not in sys.path:
     sys.path = [project_home] + sys.path
 
-sys.path = [/home/%pythonanywhere_username%/root/doc/lib] + sys.path
-sys.path = [/home/%pythonanywhere_username%/root/third] + sys.path
+sys.path = ['/home/%pythonanywhere_username%/root/doc/lib'] + sys.path
+sys.path = ['/home/%pythonanywhere_username%/root/third'] + sys.path
 
 from %site_flask_package%.main import app as application
 '''
