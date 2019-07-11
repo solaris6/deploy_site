@@ -259,6 +259,7 @@ PATHDIR_root_repositories_projectrepository_doc=%PATHDIR_root_repositories_proje
             .replace('%PATHDIR_root_doc%', str(self.PATHDIR_root_doc()))
             .replace('%PATHDIR_root_doc_lib%', str(self.PATHDIR_root_doc_lib()))
             .replace('%PATHDIR_root_doc_lib_docpackage%', str(self.PATHDIR_root_doc_lib_docpackage()))
+            .replace('%PATHDIR_root_repositories_projectrepository_doc%', str(self.PATHDIR_root_repositories_projectrepository_doc()))
         )
 
         logger.info('[deployer] Install project doc...')
