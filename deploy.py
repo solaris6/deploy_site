@@ -117,6 +117,8 @@ ynsdep__PATHDIR_root_third_ynsdeppackage=%ynsdep__PATHDIR_root_third_ynsdeppacka
             .replace('%ynsdep__URL_github_project_repository%', ynsdep__URL_github_project_repository)
             .replace('%ynsdep__PATHDIR_root_repositories_ynsdeprepository%', str(ynsdep__PATHDIR_root_repositories_ynsdeprepository))
 
+            .replace('%ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage%', str(ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage))
+            .replace('%ynsdep__PATHDIR_root_third_ynsdeppackage%', str(ynsdep__PATHDIR_root_third_ynsdeppackage))
         )
         logger.info('[deployer] Resolve ynsight dependency!')
 
