@@ -46,7 +46,7 @@ class Sitedeployer:
 
     # common:
     def PATHDIR_home_pythonanywhereusername_root(self) -> Path:
-        return self._PATHFILE_deploypy.parent.parent
+        return self._PATHFILE_deploypy.parent.parent.parent
 
     def PATHDIR_home_pythonanywhereusername(self) -> Path:
         return self.PATHDIR_home_pythonanywhereusername_root().parent
