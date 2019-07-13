@@ -374,7 +374,7 @@ if project_home not in sys.path:
 sys.path = ['/home/%pythonanywhere_username%/root/doc/lib'] + sys.path
 sys.path = ['/home/%pythonanywhere_username%/root/third'] + sys.path
 
-from %site_flask_package%.main import app as application
+from %site_flask_package%.flask_app import app as application
 '''
 
         self.PATHFILE_wsgipy().write_text(
