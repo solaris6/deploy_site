@@ -739,6 +739,45 @@ class Ln_Sitedeployer(
 
 
 
+# cgbase:
+class cgbase_Sitedeployer(
+    Sitedeployer
+):
+    def __init__(self,
+        PATHFILE_deploypy:Path=None
+    ):
+        Sitedeployer.__init__(self,
+            PATHFILE_deploypy=PATHFILE_deploypy
+        )
+
+    @staticmethod
+    def project_NAME() -> str:
+        return 'cgbase'
+
+    @staticmethod
+    def pythonanywhere_username() -> str:
+        return 'getcgbase'
+
+    @staticmethod
+    def github_url_type() -> str:
+        return 'ssh'
+
+    @staticmethod
+    def ynsight_dependencies() -> List[Type[Sitedeployer]]:
+        return [
+            base_Sitedeployer,
+            project_Sitedeployer,
+            myrta_Sitedeployer,
+            una_Sitedeployer,
+            # rs_Sitedeployer,
+            fw_Sitedeployer,
+            # sola_Sitedeployer,
+            # Ln_Sitedeployer,
+            # ynsight_Sitedeployer
+        ]
+
+
+
 # ynsight:
 class ynsight_Sitedeployer(
     Sitedeployer
@@ -793,6 +832,7 @@ def Sitedeployer__from__PATHFILE_deploypy(
         'getfw': fw_Sitedeployer,
         'getsola': sola_Sitedeployer,
         'getln': Ln_Sitedeployer,
+        'getcgbase': cgbase_Sitedeployer,
         'ynsight': ynsight_Sitedeployer
     }[pythonanywhere_username](
         PATHFILE_deploypy=PATHFILE_deploypy
