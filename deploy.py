@@ -8,6 +8,7 @@ logger.setLevel(logging.INFO)
 
 logging.info('deploy.py imported')
 
+
 class Sitedeployer:
     def __init__(self,
         PATHFILE_deploypy:Path=None
@@ -24,7 +25,7 @@ class Sitedeployer:
 
     @classmethod
     def site_flask_package(cls) -> str:
-        return 'site_' + cls.project_NAME()
+        return 'sitepub_' + cls.project_NAME()
 
     @classmethod
     def URL_site(cls) -> str:
@@ -64,6 +65,8 @@ class Sitedeployer:
         logger.info(
 '''pythonanywhere_username=%pythonanywhere_username%
 project_NAME=%project_NAME%
+site_flask_package=%site_flask_package%
+URL_site=%URL_site%
 
 PATHDIR_home_pythonanywhereusername_root=%PATHDIR_home_pythonanywhereusername_root%
 PATHDIR_home_pythonanywhereusername=%PATHDIR_home_pythonanywhereusername%
@@ -72,6 +75,8 @@ PATHDIR_root_third=%PATHDIR_root_third%
 PATHDIR_root_repositories=%PATHDIR_root_repositories%'''
             .replace('%pythonanywhere_username%', str(self.pythonanywhere_username()))
             .replace('%project_NAME%', str(self.project_NAME()))
+            .replace('%site_flask_package%', str(self.site_flask_package()))
+            .replace('%URL_site%', str(self.URL_site()))
             \
             .replace('%PATHDIR_home_pythonanywhereusername_root%', str(self.PATHDIR_home_pythonanywhereusername_root()))
             .replace('%PATHDIR_home_pythonanywhereusername%', str(self.PATHDIR_home_pythonanywhereusername()))
@@ -100,7 +105,7 @@ PATHDIR_root_repositories=%PATHDIR_root_repositories%'''
 
         logger.info('[deployer] Resolve ynsight dependency...')
         ynsdep__project_NAME = ynsight_dependency.project_NAME()
-        ynsdep__URL_github_project_repository = ynsight_dependency.URL_github_project_repository()
+        ynsdep__URL_github_projekt_repository = ynsight_dependency.URL_github_projekt_repository()
         ynsdep__PATHDIR_root_repositories_ynsdeprepository = self.PATHDIR_root_repositories() / ynsdep__project_NAME
 
         ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage = ynsdep__PATHDIR_root_repositories_ynsdeprepository / ('src/ins/lib/' + ynsdep__project_NAME)
@@ -108,13 +113,13 @@ PATHDIR_root_repositories=%PATHDIR_root_repositories%'''
 
         logger.info(
 '''ynsdep__project_NAME=%ynsdep__project_NAME%
-ynsdep__URL_github_project_repository=%ynsdep__URL_github_project_repository%
+ynsdep__URL_github_projekt_repository=%ynsdep__URL_github_projekt_repository%
 ynsdep__PATHDIR_root_repositories_ynsdeprepository=%ynsdep__PATHDIR_root_repositories_ynsdeprepository%
 
 ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage=%ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage%
 ynsdep__PATHDIR_root_third_ynsdeppackage=%ynsdep__PATHDIR_root_third_ynsdeppackage%'''
             .replace('%ynsdep__project_NAME%', ynsdep__project_NAME)
-            .replace('%ynsdep__URL_github_project_repository%', ynsdep__URL_github_project_repository)
+            .replace('%ynsdep__URL_github_projekt_repository%', ynsdep__URL_github_projekt_repository)
             .replace('%ynsdep__PATHDIR_root_repositories_ynsdeprepository%', str(ynsdep__PATHDIR_root_repositories_ynsdeprepository))
 
             .replace('%ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage%', str(ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage))
@@ -124,7 +129,7 @@ ynsdep__PATHDIR_root_third_ynsdeppackage=%ynsdep__PATHDIR_root_third_ynsdeppacka
 
         logger.info('[deployer] Install ynsight dependency...')
         subprocess.run(
-            ['git', 'clone', ynsdep__URL_github_project_repository],
+            ['git', 'clone', ynsdep__URL_github_projekt_repository],
             cwd=str(self.PATHDIR_root_repositories())
         )
 
@@ -216,7 +221,6 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
 
     def process_project(self) -> None:
         logger.info('[deployer] Process project...')
-
         logger.info(
 '''project paths:
 project_NAME=%project_NAME%
@@ -250,100 +254,54 @@ PATHDIR_root_repositories_projectrepository=%PATHDIR_root_repositories_projectre
             cwd=str(self.PATHDIR_root_repositories())
         )
         logger.info('[deployer] Downloading project repository!')
-
         logger.info('[deployer] Process project!')
 
 
 
-    # site:
-    def PATHDIR_root_site(self) -> Path:
-        return self.PATHDIR_home_pythonanywhereusername_root() / 'site'
 
-    def PATHDIR_root_site_lib(self) -> Path:
-        return self.PATHDIR_root_site() / 'lib'
+    # projekt:
+    def PATHDIR_root_repositories_projectrepository_projekt(self) -> Path:
+        return self.PATHDIR_root_repositories_projectrepository() / '_projekt'
 
-    def PATHDIR_root_site_lib_siteflaskpackage(self) -> Path:
-        return self.PATHDIR_root_site_lib() / self.site_flask_package()
 
-    def PATHDIR_root_repositories_projectrepository_site(self) -> Path:
-        return self.PATHDIR_root_repositories_projectrepository() / 'src/site'
+    def PATHDIR_root_projekt(self) -> Path:
+        return self.PATHDIR_home_pythonanywhereusername_root() / '_projekt'
 
-    def process_site(self) -> None:
-        logger.info('[deployer] Process site...')
+    def PATHDIR_root_projekt_projektpackage(self) -> Path:
+        return self.PATHDIR_root_projekt() / ('projekt_' + self.project_NAME())
+    
+    def PATHDIR_root_projekt_sitepubflaskpackage(self) -> Path:
+        return self.PATHDIR_root_projekt() / ('sitepub_' + self.project_NAME())
+
+
+    def process_projekt(self) -> None:
+        logger.info('[deployer] Process projekt...')
 
         logger.info(
-'''site paths:
-site_flask_package=%site_flask_package%
-URL_site=%URL_site%
-PATHDIR_root_site=%PATHDIR_root_site%
-PATHDIR_root_site_lib=%PATHDIR_root_site_lib%
-PATHDIR_root_site_lib_siteflaskpackage=%PATHDIR_root_site_lib_siteflaskpackage%
+'''# projekt paths:
+PATHDIR_root_repositories_projectrepository_projekt=%PATHDIR_root_repositories_projectrepository_projekt%
 
-PATHDIR_root_repositories_projectrepository_site=%PATHDIR_root_repositories_projectrepository_site%'''
-            .replace('%site_flask_package%', str(self.site_flask_package()))
-            .replace('%URL_site%', str(self.URL_site()))
-            .replace('%URLSSH_github_project_repository%', str(self.URLSSH_github_project_repository()))
-\
-            .replace('%PATHDIR_root_site%', str(self.PATHDIR_root_site()))
-            .replace('%PATHDIR_root_site_lib%', str(self.PATHDIR_root_site_lib()))
-            .replace('%PATHDIR_root_site_lib_siteflaskpackage%', str(self.PATHDIR_root_site_lib_siteflaskpackage()))
-            .replace('%PATHDIR_root_repositories_projectrepository_site%', str(self.PATHDIR_root_repositories_projectrepository_site()))
+PATHDIR_root_projekt=%PATHDIR_root_projekt%
+PATHDIR_root_projekt_projektpackage=%PATHDIR_root_projekt_projektpackage%
+PATHDIR_root_projekt_sitepubflaskpackage=%PATHDIR_root_projekt_sitepubflaskpackage%'''
+
+            .replace('%PATHDIR_root_repositories_projectrepository_projekt%', str(self.PATHDIR_root_repositories_projectrepository_projekt()))
+            .replace('%PATHDIR_root_projekt%', str(self.PATHDIR_root_projekt()))
+            .replace('%PATHDIR_root_projekt_projektpackage%', str(self.PATHDIR_root_projekt_projektpackage()))
+            .replace('%PATHDIR_root_projekt_sitepubflaskpackage%', str(self.PATHDIR_root_projekt_sitepubflaskpackage()))
         )
 
-        logger.info('[deployer] Install project site...')
+        logger.info('[deployer] Install projekt...')
         if self.PATHDIR_root_repositories_projectrepository().is_dir():
             shutil.copytree(
-                self.PATHDIR_root_repositories_projectrepository_site(),
-                self.PATHDIR_root_site()
+                self.PATHDIR_root_repositories_projectrepository_projekt(),
+                self.PATHDIR_root_projekt()
             )
-        logger.info('[deployer] Install project site!')
+        logger.info('[deployer] Install projekt!')
 
         logger.info('[deployer] Process site!')
 
 
-
-    # doc:
-    def docpackage(self) -> str:
-        return 'doc_' + self.project_NAME()
-
-    def PATHDIR_root_doc(self) -> Path:
-        return self.PATHDIR_home_pythonanywhereusername_root() / 'doc'
-
-    def PATHDIR_root_doc_lib(self) -> Path:
-        return self.PATHDIR_root_doc() / 'lib'
-
-    def PATHDIR_root_doc_lib_docpackage(self) -> Path:
-        return self.PATHDIR_root_doc_lib() / self.docpackage()
-
-    def PATHDIR_root_repositories_projectrepository_doc(self) -> Path:
-        return self.PATHDIR_root_repositories_projectrepository() / 'src/doc'
-
-    def process_doc(self) -> None:
-        logger.info('[deployer] Process doc...')
-
-        logger.info(
-'''doc paths:
-docpackage=%docpackage%
-PATHDIR_root_doc=%PATHDIR_root_doc%
-PATHDIR_root_doc_lib=%PATHDIR_root_doc_lib%
-PATHDIR_root_doc_lib_docpackage=%PATHDIR_root_doc_lib_docpackage%
-PATHDIR_root_repositories_projectrepository_doc=%PATHDIR_root_repositories_projectrepository_doc%'''
-            .replace('%docpackage%', str(self.docpackage()))
-            .replace('%PATHDIR_root_doc%', str(self.PATHDIR_root_doc()))
-            .replace('%PATHDIR_root_doc_lib%', str(self.PATHDIR_root_doc_lib()))
-            .replace('%PATHDIR_root_doc_lib_docpackage%', str(self.PATHDIR_root_doc_lib_docpackage()))
-            .replace('%PATHDIR_root_repositories_projectrepository_doc%', str(self.PATHDIR_root_repositories_projectrepository_doc()))
-        )
-
-        logger.info('[deployer] Install project doc...')
-        if self.PATHDIR_root_repositories_projectrepository().is_dir():
-            shutil.copytree(
-                self.PATHDIR_root_repositories_projectrepository_doc(),
-                self.PATHDIR_root_doc()
-            )
-        logger.info('[deployer] Install project doc!')
-
-        logger.info('[deployer] Process doc!')
 
 
 
@@ -367,11 +325,10 @@ PATHFILE_wsgipy=%PATHFILE_wsgipy%'''
         wsgipy_template = \
 '''import sys
 
-project_home = u'/home/%pythonanywhere_username%/root/site/lib'
-if project_home not in sys.path:
-    sys.path = [project_home] + sys.path
+projekt_home = u'/home/%pythonanywhere_username%/root/_projekt'
+if not projekt_home in sys.path:
+    sys.path = [projekt_home] + sys.path
 
-sys.path = ['/home/%pythonanywhere_username%/root/doc/lib'] + sys.path
 sys.path = ['/home/%pythonanywhere_username%/root/third'] + sys.path
 
 from %site_flask_package%.flask_app import app as application
@@ -420,8 +377,7 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
         self.process_sitedeployer()
         self.process_ynsight_dependencies()
         self.process_project()
-        self.process_site()
-        self.process_doc()
+        self.process_projekt()
         self.process_wsgipy()
         self.process_updatepy()
 
@@ -454,7 +410,7 @@ class base_Sitedeployer(
     def ynsight_dependencies() -> List[Type[Sitedeployer]]:
         return [
             base_Sitedeployer,
-            project_Sitedeployer,
+            projekt_Sitedeployer,
             myrta_Sitedeployer,
             # una_Sitedeployer,
             # rs_Sitedeployer,
@@ -466,8 +422,8 @@ class base_Sitedeployer(
 
 
 
-# project:
-class project_Sitedeployer(
+# projekt:
+class projekt_Sitedeployer(
     Sitedeployer
 ):
     def __init__(self,
@@ -479,7 +435,7 @@ class project_Sitedeployer(
 
     @staticmethod
     def project_NAME() -> str:
-        return 'project'
+        return 'projekt'
 
     @staticmethod
     def pythonanywhere_username() -> str:
@@ -493,7 +449,7 @@ class project_Sitedeployer(
     def ynsight_dependencies() -> List[Type[Sitedeployer]]:
         return [
             base_Sitedeployer,
-            project_Sitedeployer,
+            projekt_Sitedeployer,
             myrta_Sitedeployer,
             # una_Sitedeployer,
             # rs_Sitedeployer,
@@ -532,7 +488,7 @@ class myrta_Sitedeployer(
     def ynsight_dependencies() -> List[Type[Sitedeployer]]:
         return [
             base_Sitedeployer,
-            project_Sitedeployer,
+            projekt_Sitedeployer,
             myrta_Sitedeployer,
             # una_Sitedeployer,
             # rs_Sitedeployer,
@@ -571,7 +527,7 @@ class una_Sitedeployer(
     def ynsight_dependencies() -> List[Type[Sitedeployer]]:
         return [
             base_Sitedeployer,
-            project_Sitedeployer,
+            projekt_Sitedeployer,
             myrta_Sitedeployer,
             # una_Sitedeployer,
             # rs_Sitedeployer,
@@ -610,7 +566,7 @@ class rs_Sitedeployer(
     def ynsight_dependencies() -> List[Type[Sitedeployer]]:
         return [
             base_Sitedeployer,
-            project_Sitedeployer,
+            projekt_Sitedeployer,
             myrta_Sitedeployer,
             una_Sitedeployer,
             # rs_Sitedeployer,
@@ -649,7 +605,7 @@ class fw_Sitedeployer(
     def ynsight_dependencies() -> List[Type[Sitedeployer]]:
         return [
             base_Sitedeployer,
-            project_Sitedeployer,
+            projekt_Sitedeployer,
             myrta_Sitedeployer,
             una_Sitedeployer,
             # rs_Sitedeployer,
@@ -688,7 +644,7 @@ class sola_Sitedeployer(
     def ynsight_dependencies() -> List[Type[Sitedeployer]]:
         return [
             base_Sitedeployer,
-            project_Sitedeployer,
+            projekt_Sitedeployer,
             myrta_Sitedeployer,
             una_Sitedeployer,
             # rs_Sitedeployer,
@@ -727,7 +683,7 @@ class Ln_Sitedeployer(
     def ynsight_dependencies() -> List[Type[Sitedeployer]]:
         return [
             base_Sitedeployer,
-            project_Sitedeployer,
+            projekt_Sitedeployer,
             myrta_Sitedeployer,
             una_Sitedeployer,
             # rs_Sitedeployer,
@@ -766,7 +722,7 @@ class cgbase_Sitedeployer(
     def ynsight_dependencies() -> List[Type[Sitedeployer]]:
         return [
             base_Sitedeployer,
-            project_Sitedeployer,
+            projekt_Sitedeployer,
             myrta_Sitedeployer,
             una_Sitedeployer,
             # rs_Sitedeployer,
@@ -805,7 +761,7 @@ class ynsight_Sitedeployer(
     def ynsight_dependencies() -> List[Type[Sitedeployer]]:
         return [
             base_Sitedeployer,
-            project_Sitedeployer,
+            projekt_Sitedeployer,
             myrta_Sitedeployer,
             una_Sitedeployer,
             rs_Sitedeployer,
@@ -815,9 +771,6 @@ class ynsight_Sitedeployer(
             # ynsight_Sitedeployer
         ]
 
-    def process_doc(self) -> None:
-        pass
-
 
 def Sitedeployer__from__PATHFILE_deploypy(
     PATHFILE_deploypy:Path=None
@@ -825,7 +778,7 @@ def Sitedeployer__from__PATHFILE_deploypy(
     pythonanywhere_username = PATHFILE_deploypy.parent.parent.parent.parent.name
     return {
         'getbase': base_Sitedeployer,
-        'getprojekt': project_Sitedeployer,
+        'getprojekt': projekt_Sitedeployer,
         'getmyrta': myrta_Sitedeployer,
         'getuna': una_Sitedeployer,
         'getrs': rs_Sitedeployer,
