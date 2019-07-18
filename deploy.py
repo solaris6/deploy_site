@@ -105,7 +105,7 @@ PATHDIR_root_repositories=%PATHDIR_root_repositories%'''
 
         logger.info('[deployer] Resolve ynsight dependency...')
         ynsdep__project_NAME = ynsight_dependency.project_NAME()
-        ynsdep__URL_github_projekt_repository = ynsight_dependency.URL_github_projekt_repository()
+        ynsdep__URL_github_project_repository = ynsight_dependency.URL_github_project_repository()
         ynsdep__PATHDIR_root_repositories_ynsdeprepository = self.PATHDIR_root_repositories() / ynsdep__project_NAME
 
         ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage = ynsdep__PATHDIR_root_repositories_ynsdeprepository / ('src/ins/lib/' + ynsdep__project_NAME)
@@ -113,13 +113,13 @@ PATHDIR_root_repositories=%PATHDIR_root_repositories%'''
 
         logger.info(
 '''ynsdep__project_NAME=%ynsdep__project_NAME%
-ynsdep__URL_github_projekt_repository=%ynsdep__URL_github_projekt_repository%
+ynsdep__URL_github_project_repository=%ynsdep__URL_github_project_repository%
 ynsdep__PATHDIR_root_repositories_ynsdeprepository=%ynsdep__PATHDIR_root_repositories_ynsdeprepository%
 
 ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage=%ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage%
 ynsdep__PATHDIR_root_third_ynsdeppackage=%ynsdep__PATHDIR_root_third_ynsdeppackage%'''
             .replace('%ynsdep__project_NAME%', ynsdep__project_NAME)
-            .replace('%ynsdep__URL_github_projekt_repository%', ynsdep__URL_github_projekt_repository)
+            .replace('%ynsdep__URL_github_project_repository%', ynsdep__URL_github_project_repository)
             .replace('%ynsdep__PATHDIR_root_repositories_ynsdeprepository%', str(ynsdep__PATHDIR_root_repositories_ynsdeprepository))
 
             .replace('%ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage%', str(ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage))
@@ -129,7 +129,7 @@ ynsdep__PATHDIR_root_third_ynsdeppackage=%ynsdep__PATHDIR_root_third_ynsdeppacka
 
         logger.info('[deployer] Install ynsight dependency...')
         subprocess.run(
-            ['git', 'clone', ynsdep__URL_github_projekt_repository],
+            ['git', 'clone', ynsdep__URL_github_project_repository],
             cwd=str(self.PATHDIR_root_repositories())
         )
 
