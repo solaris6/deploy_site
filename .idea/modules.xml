@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../deploy_site/.idea/deploy_site.iml" filepath="$PROJECT_DIR$/../deploy_site/.idea/deploy_site.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/sitedeployer.iml" filepath="$PROJECT_DIR$/.idea/sitedeployer.iml" />
+    </modules>
+  </component>
+</project>
