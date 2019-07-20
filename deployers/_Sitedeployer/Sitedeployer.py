@@ -3,6 +3,8 @@ from pathlib import Path
 import logging
 from typing import Type, List
 
+from deployers.Projekt._Projekt_Sitedeployer import Projekt_Sitedeployer
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -14,158 +16,69 @@ class Sitedeployer:
         self._PATHFILE_deploypy = PATHFILE_deploypy
 
     @staticmethod
-    def target_Type() -> str:
-        raise NotImplementedError("")
-
-    @staticmethod
-    def target_NAME() -> str:
-        raise NotImplementedError("")
-
-
-    @staticmethod
     def pythonanywhere_username() -> str:
         raise NotImplementedError("")
-
-
-    @classmethod
-    def sitepub_flask_package(cls) -> str:
-        return cls.target_Type() + 'sitepub_' + cls.target_NAME()
-
-    @classmethod
-    def target_package(cls) -> str:
-        return cls.target_Type() + '_' + cls.target_NAME()
-
 
     @classmethod
     def URL_site(cls) -> str:
         return cls.pythonanywhere_username() + '.pythonanywhere.com'
 
-    @staticmethod
-    def github_username() -> str:
-        return 'ynsight'
-
-    @staticmethod
-    def github_url_type() -> str:
-        raise NotImplementedError("")
-
-    @staticmethod
-    def ynsight_dependencies() -> List[Type['Sitedeployer']]:
-        raise NotImplementedError("")
-
-
-
-
-
-
-
-
-
-    # common:
     def PATHDIR_home_pythonanywhereusername_root(self) -> Path:
         return self._PATHFILE_deploypy.parent.parent.parent
 
     def PATHDIR_home_pythonanywhereusername(self) -> Path:
         return self.PATHDIR_home_pythonanywhereusername_root().parent
 
-    def PATHDIR_root_third(self) -> Path:
-        return self.PATHDIR_home_pythonanywhereusername_root() / 'third'
-
     def PATHDIR_root_repositories(self) -> Path:
         return self.PATHDIR_home_pythonanywhereusername_root() / 'repositories'
 
-    def process_common(self) -> None:
-        logger.info('[deployer] Process common...')
+    def PATHDIR_root_build(self) -> Path:
+        return self.PATHDIR_home_pythonanywhereusername_root() / 'build'
 
-        logger.info('[deployer] Resolve common paths...')
+    def PATHDIR_root_buildtemp(self) -> Path:
+        return self.PATHDIR_home_pythonanywhereusername_root() / 'buildtemp'
+
+    def PATHDIR_root_ins(self) -> Path:
+        return self.PATHDIR_home_pythonanywhereusername_root() / 'ins'
+
+    def PATHDIR_root_instemp(self) -> Path:
+        return self.PATHDIR_home_pythonanywhereusername_root() / 'instemp'
+
+    def process_common(self) -> None:
+        logger.info('Process common...')
+
+        logger.info('Resolve common paths...')
         logger.info(
 '''pythonanywhere_username=%pythonanywhere_username%
-target_NAME=%target_NAME%
-sitepub_flask_package=%sitepub_flask_package%
+project_NAME=%project_NAME%
+projektorworkshop_projektorworkshopsitepubflaskpackage=%projektorworkshop_projektorworkshopsitepubflaskpackage%
 URL_site=%URL_site%
 
 PATHDIR_home_pythonanywhereusername_root=%PATHDIR_home_pythonanywhereusername_root%
 PATHDIR_home_pythonanywhereusername=%PATHDIR_home_pythonanywhereusername%
 
-PATHDIR_root_third=%PATHDIR_root_third%
 PATHDIR_root_repositories=%PATHDIR_root_repositories%'''
             .replace('%pythonanywhere_username%', str(self.pythonanywhere_username()))
-            .replace('%target_NAME%', str(self.target_NAME()))
-            .replace('%sitepub_flask_package%', str(self.sitepub_flask_package()))
+            .replace('%project_NAME%', str(self.project_NAME()))
+            .replace('%projektorworkshop_projektorworkshopsitepubflaskpackage%', str(self.projektorworkshop_projektorworkshopsitepubflaskpackage()))
             .replace('%URL_site%', str(self.URL_site()))
             \
             .replace('%PATHDIR_home_pythonanywhereusername_root%', str(self.PATHDIR_home_pythonanywhereusername_root()))
             .replace('%PATHDIR_home_pythonanywhereusername%', str(self.PATHDIR_home_pythonanywhereusername()))
-            .replace('%PATHDIR_root_third%', str(self.PATHDIR_root_third()))
             .replace('%PATHDIR_root_repositories%', str(self.PATHDIR_root_repositories()))
         )
-        logger.info('[deployer] Resolve common paths!')
+        logger.info('Resolve common paths!')
 
-        logger.info('[deployer] Make common dirs...')
+        logger.info('Make common dirs...')
         self.PATHDIR_root_repositories().mkdir(parents=True)
-        self.PATHDIR_root_third().mkdir(parents=True)
-        logger.info('[deployer] Make common dirs!')
+        self.PATHDIR_root_build().mkdir(parents=True)
+        self.PATHDIR_root_buildtemp().mkdir(parents=True)
+        self.PATHDIR_root_ins().mkdir(parents=True)
+        self.PATHDIR_root_instemp().mkdir(parents=True)
+        logger.info('Make common dirs!')
 
-        logger.info('[deployer] Process common!')
+        logger.info('Process common!')
 
-
-
-
-
-
-    # ynsight dependencies:
-    def process_ynsight_dependency(self,
-        ynsight_dependency:'Type[Sitedeployer]'=None
-    ) -> None:
-        logger.info('[deployer] Process ynsight dependency: "%ynsight_dependency%"...'.replace('%ynsight_dependency%', ynsight_dependency.target_NAME()))
-
-        logger.info('[deployer] Resolve ynsight dependency...')
-        ynsdep__target_NAME = ynsight_dependency.target_NAME()
-        ynsdep__URL_github_target_repository = ynsight_dependency.URL_github_target_repository()
-        ynsdep__PATHDIR_root_repositories_ynsdeprepository = self.PATHDIR_root_repositories() / ynsdep__target_NAME
-
-        ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage = ynsdep__PATHDIR_root_repositories_ynsdeprepository / ('src/ins/lib/' + ynsdep__target_NAME)
-        ynsdep__PATHDIR_root_third_ynsdeppackage = self.PATHDIR_root_third() / ynsdep__target_NAME
-
-        logger.info(
-'''ynsdep__target_NAME=%ynsdep__target_NAME%
-ynsdep__URL_github_target_repository=%ynsdep__URL_github_target_repository%
-ynsdep__PATHDIR_root_repositories_ynsdeprepository=%ynsdep__PATHDIR_root_repositories_ynsdeprepository%
-
-ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage=%ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage%
-ynsdep__PATHDIR_root_third_ynsdeppackage=%ynsdep__PATHDIR_root_third_ynsdeppackage%'''
-            .replace('%ynsdep__target_NAME%', ynsdep__target_NAME)
-            .replace('%ynsdep__URL_github_target_repository%', ynsdep__URL_github_target_repository)
-            .replace('%ynsdep__PATHDIR_root_repositories_ynsdeprepository%', str(ynsdep__PATHDIR_root_repositories_ynsdeprepository))
-
-            .replace('%ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage%', str(ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage))
-            .replace('%ynsdep__PATHDIR_root_third_ynsdeppackage%', str(ynsdep__PATHDIR_root_third_ynsdeppackage))
-        )
-        logger.info('[deployer] Resolve ynsight dependency!')
-
-        logger.info('[deployer] Install ynsight dependency...')
-        subprocess.run(
-            ['git', 'clone', ynsdep__URL_github_target_repository],
-            cwd=str(self.PATHDIR_root_repositories())
-        )
-
-        if ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage.is_dir():
-            shutil.copytree(
-                ynsdep__PATHDIR_root_repositories_ynsdeprepository_ynsdeppackage,
-                ynsdep__PATHDIR_root_third_ynsdeppackage
-            )
-        logger.info('[deployer] Install ynsight dependency!')
-
-        logger.info('[deployer] Process ynsight dependency: "%ynsight_dependency%"!'.replace('%ynsight_dependency%', ynsight_dependency.target_NAME()))
-
-    def process_ynsight_dependencies(self) -> None:
-        logger.info('[deployer] Process ynsight dependencies...')
-
-        for ynsight_dependency in self.ynsight_dependencies():
-            self.process_ynsight_dependency(
-                ynsight_dependency=ynsight_dependency
-            )
-
-        logger.info('[deployer] Process ynsight dependencies!')
 
 
     # sitedeployer:
@@ -179,9 +92,8 @@ ynsdep__PATHDIR_root_third_ynsdeppackage=%ynsdep__PATHDIR_root_third_ynsdeppacka
         return self.PATHDIR_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage().parent
 
     def process_sitedeployer(self) -> None:
-        logger.info('[deployer] Process sitedeployer...')
-
-        logger.info('[deployer] Resolve sitedeployer paths...')
+        logger.info('Process sitedeployer...')
+        logger.info('Resolve sitedeployer paths...')
 
         logger.info(
 '''PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_deploypy=%PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_deploypy%
@@ -194,124 +106,225 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
                 .replace('%PATHDIR_home_pythonanywhereusername_root_sitedeployer%', str(self.PATHDIR_home_pythonanywhereusername_root_sitedeployer()))
         )
 
-        logger.info('[deployer] Resolve sitedeployer paths!')
-
-        logger.info('[deployer] Process sitedeployer!')
-
+        logger.info('Resolve sitedeployer paths!')
+        logger.info('Process sitedeployer!')
 
 
-    # target:
-    def PATHDIR_root_repositories_targetrepository(self) -> Path:
-        return self.PATHDIR_root_repositories() / self.target_NAME()
+
+    # temp ynsight dependencies:
+    @staticmethod
+    def temp_ynsight_dependencies() -> List[Type[Projekt_Sitedeployer]]:
+        from deployers.Projekt.base_ProjektSitedeployer import base_ProjektSitedeployer
+        from deployers.Projekt.projekt_ProjektSitedeployer import projekt_ProjektSitedeployer
+        from deployers.Projekt.myrta_ProjektSitedeployer import myrta_ProjektSitedeployer
+        return [
+            base_ProjektSitedeployer,
+            projekt_ProjektSitedeployer,
+            myrta_ProjektSitedeployer
+        ]
+
+
+    def process_temp_ynsight_dependency(self,
+        temp_ynsight_project:Projekt_Sitedeployer=None
+    ) -> None:
+        logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"...'.replace('%temp_ynsight_project%', temp_ynsight_project.project_NAME()))
+        temp_ynsight_project.clone_project()
+        temp_ynsight_project.buildandinstalltemp_project()
+        logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"!'.replace('%temp_ynsight_project%', temp_ynsight_project.project_NAME()))
+
+
+    def process_temp_ynsight_dependencies(self) -> None:
+        logger.info('Process temp ynsight dependencies...')
+        for temp_ynsight_dependency in self.temp_ynsight_dependencies():
+            self.process_temp_ynsight_dependency(
+                temp_ynsight_project=temp_ynsight_dependency(
+                    PATHFILE_deploypy=self._PATHFILE_deploypy
+                )
+            )
+        logger.info('Process temp ynsight dependencies!')
+
+
+
+    # ynsight dependencies:
+    def process_ynsight_dependency(self,
+        ynsight_project:Projekt_Sitedeployer=None
+    ) -> None:
+        logger.info('Process ynsight project: "%ynsight_project%"...'.replace('%ynsight_project%', ynsight_project.project_NAME()))
+        ynsight_project.clone_project()
+        ynsight_project.buildandinstall_project()
+        logger.info('Process ynsight project: "%ynsight_project%"!'.replace('%ynsight_project%', ynsight_project.project_NAME()))
+
+    def process_ynsight_dependencies(self) -> None:
+        logger.info('Process ynsight dependencies...')
+        for ynsight_project in self.ynsight_dependencies():
+            self.process_ynsight_dependency(
+                ynsight_project=ynsight_project(
+                    PATHFILE_deploypy=self._PATHFILE_deploypy
+                )
+            )
+        logger.info('Process ynsight dependencies!')
+
+
+
+    # process project:
+    @staticmethod
+    def project_NAME() -> str:
+        raise NotImplementedError("")
+
+    @staticmethod
+    def github_username() -> str:
+        return 'ynsight'
+
+    @staticmethod
+    def github_url_type() -> str:
+        raise NotImplementedError("")
+
+
+    def PATHDIR_root_repositories_projectrepository(self) -> Path:
+        return self.PATHDIR_root_repositories() / self.project_NAME()
+
+
+    def PATHDIR_root_build_project(self) -> Path:
+        return self.PATHDIR_root_build() / self.project_NAME()
+
+    def PATHDIR_root_buildtemp_project(self) -> Path:
+        return self.PATHDIR_root_buildtemp() / self.project_NAME()
+
+    def PATHDIR_root_ins_project(self) -> Path:
+        return self.PATHDIR_root_ins() / self.project_NAME()
+
+    def PATHDIR_root_instemp_project(self) -> Path:
+        return self.PATHDIR_root_instemp() / self.project_NAME()
+
 
     @classmethod
-    def URLSSH_github_target_repository(cls) -> str:
-        return '''git@github.com:%github_username%/%target_NAME%.git'''\
-            .replace('%target_NAME%', cls.target_NAME())\
+    def URLSSH_github_project_repository(cls) -> str:
+        return '''git@github.com:%github_username%/%project_NAME%.git''' \
+            .replace('%project_NAME%', cls.project_NAME()) \
             .replace('%github_username%', cls.github_username())
 
     @classmethod
-    def URLHTTP_github_target_repository(cls) -> str:
-        return '''http://github.com/%github_username%/%target_NAME%.git'''\
-            .replace('%target_NAME%', cls.target_NAME())\
+    def URLHTTP_github_project_repository(cls) -> str:
+        return '''http://github.com/%github_username%/%project_NAME%.git''' \
+            .replace('%project_NAME%', cls.project_NAME()) \
             .replace('%github_username%', cls.github_username())
 
     @classmethod
-    def URLHTTPS_github_target_repository(cls) -> str:
-        return '''https://github.com/%github_username%/%target_NAME%.git'''\
-            .replace('%target_NAME%', cls.target_NAME())\
+    def URLHTTPS_github_project_repository(cls) -> str:
+        return '''https://github.com/%github_username%/%project_NAME%.git''' \
+            .replace('%project_NAME%', cls.project_NAME()) \
             .replace('%github_username%', cls.github_username())
 
     @classmethod
-    def URL_github_target_repository(cls) -> str:
+    def URL_github_project_repository(cls) -> str:
         result = None
-        if   cls.github_url_type() == 'ssh':
-            result = cls.URLSSH_github_target_repository()
+        if cls.github_url_type() == 'ssh':
+            result = cls.URLSSH_github_project_repository()
         elif cls.github_url_type() == 'http':
-            result = cls.URLHTTP_github_target_repository()
+            result = cls.URLHTTP_github_project_repository()
         elif cls.github_url_type() == 'https':
-            result = cls.URLHTTPS_github_target_repository()
+            result = cls.URLHTTPS_github_project_repository()
         return result
 
-
-    def process_target_repository(self) -> None:
-        logger.info('[deployer] Process target repository...')
-        logger.info(
-'''project paths:
-target_NAME=%target_NAME%
-
-github_url_type=%github_url_type%
-
-URLSSH_github_target_repository=%URLSSH_github_target_repository%
-URLHTTP_github_target_repository=%URLHTTP_github_target_repository%
-URLHTTPS_github_target_repository=%URLHTTPS_github_target_repository%
-
-URL_github_target_repository=%URLSSH_github_target_repository%
-
-PATHDIR_root_repositories_targetrepository=%PATHDIR_root_repositories_targetrepository%'''
-            .replace('%target_NAME%', str(self.target_NAME()))
-
-            .replace('%github_url_type%', str(self.github_url_type()))
-
-            .replace('%URLSSH_github_target_repository%', str(self.URLSSH_github_target_repository()))
-            .replace('%URLHTTP_github_target_repository%', str(self.URLHTTP_github_target_repository()))
-            .replace('%URLHTTPS_github_target_repository%', str(self.URLHTTPS_github_target_repository()))
-
-            .replace('%URLSSH_github_target_repository%', str(self.URLSSH_github_target_repository()))
-
-            .replace('%PATHDIR_root_repositories_targetrepository%', str(self.PATHDIR_root_repositories_targetrepository()))
-        )
-
-        logger.info('[deployer] Cloning target repository...')
-        subprocess.run(
-            ['git', 'clone', self.URLSSH_github_target_repository()],
-            cwd=str(self.PATHDIR_root_repositories())
-        )
-        logger.info('[deployer] Cloning target repository!')
-        logger.info('[deployer] Process target repository!')
+    @staticmethod
+    def ynsight_dependencies() -> List[Type['Sitedeployer']]:
+        raise NotImplementedError("")
 
 
-
-    # target:
-    def PATHDIR_root_repositories_targetrepository_target(self) -> Path:
-        return self.PATHDIR_root_repositories_targetrepository() / ('_' + self.target_Type())
-
-
-    def PATHDIR_root_target(self) -> Path:
-        return self.PATHDIR_home_pythonanywhereusername_root() / ('_' + self.target_Type())
-
-    def PATHDIR_root_target_targetpackage(self) -> Path:
-        return self.PATHDIR_root_target() / self.target_package()
-
-    def PATHDIR_root_target_sitepubflaskpackage(self) -> Path:
-        return self.PATHDIR_root_target() / self.sitepub_flask_package()
-
-
-    def process_target(self) -> None:
-        logger.info('[deployer] Process target...')
-        logger.info(
-'''# target paths:
-PATHDIR_root_repositories_targetrepository_target=%PATHDIR_root_repositories_targetrepository_target%
-
-PATHDIR_root_target=%PATHDIR_root_target%
-PATHDIR_root_target_targetpackage=%PATHDIR_root_target_targetpackage%
-PATHDIR_root_target_sitepubflaskpackage=%PATHDIR_root_target_sitepubflaskpackage%'''
-
-            .replace('%PATHDIR_root_repositories_targetrepository_target%', str(self.PATHDIR_root_repositories_targetrepository_target()))
-            .replace('%PATHDIR_root_target%', str(self.PATHDIR_root_target()))
-            .replace('%PATHDIR_root_target_targetpackage%', str(self.PATHDIR_root_target_targetpackage()))
-            .replace('%PATHDIR_root_target_sitepubflaskpackage%', str(self.PATHDIR_root_target_sitepubflaskpackage()))
-        )
-
-
-        logger.info('[deployer] Install target...')
-        if self.PATHDIR_root_repositories_targetrepository().is_dir():
-            shutil.copytree(
-                self.PATHDIR_root_repositories_targetrepository_target(),
-                self.PATHDIR_root_target()
+    def clone_project(self) -> None:
+        logger.info('Cloning project repository...')
+        if not self.PATHDIR_root_repositories_projectrepository().is_dir():
+            subprocess.run(
+                ['git', 'clone', self.URL_github_project_repository()],
+                cwd=str(self.PATHDIR_root_repositories())
             )
-        logger.info('[deployer] Install target!')
-        logger.info('[deployer] Process target!')
+            logger.info('Cloning project repository!')
+
+
+    def buildandinstall_project(self) -> None:
+        logger.info('Build and Install project...')
+        PATHDIR_root_repositories_projectrepository_ins = self.PATHDIR_root_repositories_projectrepository() / 'src/ins'
+
+        if PATHDIR_root_repositories_projectrepository_ins.is_dir():
+            shutil.copytree(
+                PATHDIR_root_repositories_projectrepository_ins,
+                self.PATHDIR_root_ins_project()
+            )
+        logger.info('Build and Install project!')
+
+
+    def buildandinstalltemp_project(self) -> None:
+        logger.info('Build and Install temp project...')
+        PATHDIR_root_repositories_projectrepository_ins = self.PATHDIR_root_repositories_projectrepository() / 'src/ins'
+
+        if PATHDIR_root_repositories_projectrepository_ins.is_dir():
+            shutil.copytree(
+                PATHDIR_root_repositories_projectrepository_ins,
+                self.PATHDIR_root_instemp_project()
+            )
+        logger.info('Build and Install temp project!')
+
+
+    def process_project(self) -> None:
+        logger.info('Process project...')
+        self.clone_project()
+        self.buildandinstall_project()
+        logger.info('Process project!')
+
+
+
+    # projektorworkshop:
+    @staticmethod
+    def projektorworkshop_Type() -> str:
+        raise NotImplementedError("")
+
+    @classmethod
+    def projektorworkshop_projektorworkshopsitepubflaskpackage(cls) -> str:
+        return cls.projektorworkshop_Type() + 'sitepub_' + cls.project_NAME()
+
+    @classmethod
+    def projektorworkshop_package(cls) -> str:
+        return cls.projektorworkshop_Type() + '_' + cls.project_NAME()
+    
+    def PATHDIR_root_repositories_projectrepository_projektorworkshop(self) -> Path:
+        return self.PATHDIR_root_repositories_projectrepository() / ('_' + self.projektorworkshop_Type())
+
+
+    def PATHDIR_root_projektorworkshop(self) -> Path:
+        return self.PATHDIR_home_pythonanywhereusername_root() / ('_' + self.projektorworkshop_Type())
+
+    def PATHDIR_root_projektorworkshop_projektorworkshoppackage(self) -> Path:
+        return self.PATHDIR_root_projektorworkshop() / self.projektorworkshop_package()
+
+    def PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage(self) -> Path:
+        return self.PATHDIR_root_projektorworkshop() / self.projektorworkshop_projektorworkshopsitepubflaskpackage()
+
+
+    def process_projektorworkshop(self) -> None:
+        logger.info('Process projektorworkshop...')
+        logger.info(
+'''# projektorworkshop paths:
+PATHDIR_root_repositories_projectrepository_projektorworkshop=%PATHDIR_root_repositories_projectrepository_projektorworkshop%
+
+PATHDIR_root_projektorworkshop=%PATHDIR_root_projektorworkshop%
+PATHDIR_root_projektorworkshop_projektorworkshoppackage=%PATHDIR_root_projektorworkshop_projektorworkshoppackage%
+PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage=%PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage%'''
+
+            .replace('%PATHDIR_root_repositories_projectrepository_projektorworkshop%', str(self.PATHDIR_root_repositories_projectrepository_projektorworkshop()))
+            .replace('%PATHDIR_root_projektorworkshop%', str(self.PATHDIR_root_projektorworkshop()))
+            .replace('%PATHDIR_root_projektorworkshop_projektorworkshoppackage%', str(self.PATHDIR_root_projektorworkshop_projektorworkshoppackage()))
+            .replace('%PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage%', str(self.PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage()))
+        )
+
+        logger.info('Install projektorworkshop...')
+        if self.PATHDIR_root_repositories_projectrepository().is_dir():
+            shutil.copytree(
+                self.PATHDIR_root_repositories_projectrepository_projektorworkshop(),
+                self.PATHDIR_root_projektorworkshop()
+            )
+        logger.info('Install projektorworkshop!')
+        logger.info('Process projektorworkshop!')
+
 
 
 
@@ -323,7 +336,7 @@ PATHDIR_root_target_sitepubflaskpackage=%PATHDIR_root_target_sitepubflaskpackage
             )
 
     def process_wsgipy(self) -> None:
-        logger.info('[deployer] Process wsgi.py...')
+        logger.info('Process wsgi.py...')
 
         logger.info(
 '''wsgi.py paths:
@@ -331,28 +344,44 @@ PATHFILE_wsgipy=%PATHFILE_wsgipy%'''
             .replace('%PATHFILE_wsgipy%', str(self.PATHFILE_wsgipy()))
         )
 
-        logger.info('[deployer] Write wsgi.py file...')
+        logger.info('Write wsgi.py file...')
         wsgipy_template = \
 '''import sys
 
-target_home = u'/home/%pythonanywhere_username%/root/_%target%'
-if not target_home in sys.path:
-    sys.path = [target_home] + sys.path
+projektorworkshop_home = u'/home/%pythonanywhere_username%/root/_%projektorworkshop%'
+if not projektorworkshop in sys.path:
+    sys.path = [projektorworkshop] + sys.path
 
-sys.path = ['/home/%pythonanywhere_username%/root/third'] + sys.path
+# Append ynsight packages to sys.paths:
+%ynsight_dependencies_syspaths_appends%
 
-from %sitepub_flask_package%.flask_app import app as application
+# Append ynsight executables to PATH envvar:
+%ynsight_dependencies_PATH_appends%
+
+from %projektorworkshop_projektorworkshopsitepubflaskpackage%.flask_app import app as application
 '''
+
+        ynsight_dependencies_syspaths_appends = ''
+        for i,ynsight_dependency in enumerate(self.ynsight_dependencies()):
+            ynsight_dependencies_syspaths_appends += ('' if i==0 else '\n') +\
+"sys.path = ['/home/%pythonanywhere_username%/root/ins/%project_NAME%/lib'] + sys.path"
+
+        ynsight_dependencies_PATH_appends = ''
+        for i,ynsight_dependency in enumerate(self.ynsight_dependencies()):
+            ynsight_dependencies_PATH_appends += ('' if i==0 else '\n') +\
+"os.environ['PATH'] += os.pathsep + '/home/%pythonanywhere_username%/root/ins/%project_NAME%/bin'"
 
         self.PATHFILE_wsgipy().write_text(
             wsgipy_template
                 .replace('%pythonanywhere_username%', self.pythonanywhere_username())
-                .replace('%sitepub_flask_package%', self.sitepub_flask_package())
-                .replace('%target%', self.target_Type())
+                .replace('%projektorworkshop_projektorworkshopsitepubflaskpackage%', self.projektorworkshop_projektorworkshopsitepubflaskpackage())
+                .replace('%projektorworkshop%', self.projektorworkshop_Type())
+                .replace('%ynsight_dependencies_syspaths_appends%', ynsight_dependencies_syspaths_appends)
+                .replace('%ynsight_dependencies_PATH_appends%', ynsight_dependencies_PATH_appends)
         )
-        logger.info('[deployer] Write wsgi.py file!')
+        logger.info('Write wsgi.py file!')
 
-        logger.info('[deployer] Process wsgi.py!')
+        logger.info('Process wsgi.py!')
 
 
 
@@ -364,7 +393,7 @@ from %sitepub_flask_package%.flask_app import app as application
         return self.PATHDIR_home_pythonanywhereusername() / 'update.py'
 
     def process_updatepy(self) -> None:
-        logger.info('[deployer] Process update.py...')
+        logger.info('Process update.py...')
 
         logger.info(
 '''update.py paths:
@@ -374,21 +403,22 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
             .replace('%PATHFILE_home_pythonanywhereusername_updatepy%', str(self.PATHFILE_home_pythonanywhereusername_updatepy()))
         )
 
-        logger.info('[deployer] Write update.py file...')
+        logger.info('Write update.py file...')
         shutil.copyfile(
             self.PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_updatepy(),
             self.PATHFILE_home_pythonanywhereusername_updatepy()
         )
-        logger.info('[deployer] Write update.py file!')
+        logger.info('Write update.py file!')
 
-        logger.info('[deployer] Process update.py!')
+        logger.info('Process update.py!')
 
 
     def Execute(self) -> None:
         self.process_common()
         self.process_sitedeployer()
+        self.process_temp_ynsight_dependencies()
         self.process_ynsight_dependencies()
-        self.process_target_repository()
-        self.process_target()
+        self.process_project()
+        self.process_projektorworkshop()
         self.process_wsgipy()
         self.process_updatepy()

@@ -20,7 +20,7 @@ class projekt_ProjektSitedeployer(
         )
 
     @staticmethod
-    def target_NAME() -> str:
+    def project_NAME() -> str:
         return 'projekt'
 
     @staticmethod
@@ -33,8 +33,13 @@ class projekt_ProjektSitedeployer(
 
     @staticmethod
     def ynsight_dependencies() -> List[Type[Projekt_Sitedeployer]]:
-        from deployers.Projekt.myrta_ProjektSitedeployer import myrta_ProjektSitedeployer
         from deployers.Projekt.base_ProjektSitedeployer import base_ProjektSitedeployer
+        from deployers.Projekt.myrta_ProjektSitedeployer import myrta_ProjektSitedeployer
+        from deployers.Projekt.una_ProjektSitedeployer import una_ProjektSitedeployer
+        from deployers.Projekt.rs_ProjektSitedeployer import rs_ProjektSitedeployer
+        from deployers.Projekt.fw_ProjektSitedeployer import fw_ProjektSitedeployer
+        from deployers.Projekt.sola_ProjektSitedeployer import sola_ProjektSitedeployer
+        from deployers.Projekt.Ln_ProjektSitedeployer import Ln_ProjektSitedeployer
         return [
             base_ProjektSitedeployer,
             projekt_ProjektSitedeployer,

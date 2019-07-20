@@ -18,7 +18,7 @@ from deployers.Projekt.una_ProjektSitedeployer import una_ProjektSitedeployer
 from deployers.Workshop.ynsight_WorkshopSitedeployer import ynsight_WorkshopSitedeployer
 
 if __name__ == '__main__':
-    logger.info('[deployer] Deploy site...')
+    logger.info('Deploy site...')
     PATHFILE_deploypy = Path(sys.argv[0])
     pythonanywhere_username = PATHFILE_deploypy.parent.parent.parent.parent.name
     {
@@ -37,4 +37,4 @@ if __name__ == '__main__':
         PATHFILE_deploypy=PATHFILE_deploypy
     ).Execute()
 
-    logger.info('[deployer] Deploy site!')
+    logger.info('Deploy site!')

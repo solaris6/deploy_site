@@ -22,7 +22,7 @@ class ynsight_WorkshopSitedeployer(
         )
 
     @staticmethod
-    def target_NAME() -> str:
+    def project_NAME() -> str:
         return 'ynsight'
 
     @staticmethod
@@ -62,6 +62,8 @@ class ynsight_WorkshopSitedeployer(
         from deployers.Projekt.una_ProjektSitedeployer import una_ProjektSitedeployer
         from deployers.Projekt.rs_ProjektSitedeployer import rs_ProjektSitedeployer
         from deployers.Projekt.fw_ProjektSitedeployer import fw_ProjektSitedeployer
+        from deployers.Projekt.sola_ProjektSitedeployer import sola_ProjektSitedeployer
+        from deployers.Projekt.Ln_ProjektSitedeployer import Ln_ProjektSitedeployer
         return [
             base_ProjektSitedeployer,
             projekt_ProjektSitedeployer,

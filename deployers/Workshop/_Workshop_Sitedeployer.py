@@ -23,7 +23,7 @@ class Workshop_Sitedeployer(
 
 
     @staticmethod
-    def target_Type() -> str:
+    def projektorworkshop_Type() -> str:
         return 'workshop'
 
     @staticmethod
