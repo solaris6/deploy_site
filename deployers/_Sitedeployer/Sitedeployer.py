@@ -243,7 +243,7 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
         logger.info('Build and Install project...')
         PATHDIR_root_repositories_projectrepository_ins = self.PATHDIR_root_repositories_projectrepository() / 'src/ins'
 
-        if PATHDIR_root_repositories_projectrepository_ins.is_dir():
+        if PATHDIR_root_repositories_projectrepository_ins.is_dir() and not self.PATHDIR_root_ins_project().is_dir():
             shutil.copytree(
                 PATHDIR_root_repositories_projectrepository_ins,
                 self.PATHDIR_root_ins_project()
@@ -255,7 +255,7 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
         logger.info('Build and Install temp project...')
         PATHDIR_root_repositories_projectrepository_ins = self.PATHDIR_root_repositories_projectrepository() / 'src/ins'
 
-        if PATHDIR_root_repositories_projectrepository_ins.is_dir():
+        if PATHDIR_root_repositories_projectrepository_ins.is_dir() and not self.PATHDIR_root_instemp_project().is_dir():
             shutil.copytree(
                 PATHDIR_root_repositories_projectrepository_ins,
                 self.PATHDIR_root_instemp_project()
