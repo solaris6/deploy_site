@@ -345,10 +345,12 @@ PATHFILE_wsgipy=%PATHFILE_wsgipy%'''
         logger.info('Write wsgi.py file...')
         wsgipy_template = \
 '''import sys
+from pathlib import path
 
-projektorworkshop_home = u'/home/%pythonanywhere_username%/root/_%projektorworkshop%'
-if not projektorworkshop in sys.path:
-    sys.path = [projektorworkshop] + sys.path
+PATHDIR_projektorworkshop = Path('/home/%pythonanywhere_username%/root/_%projektorworkshop%')
+if not str(PATHDIR_projektorworkshop) in sys.path:
+    sys.path = [str(PATHDIR_projektorworkshop)] + sys.path
+
 
 # Append ynsight packages to sys.paths:
 %ynsight_dependencies_syspaths_appends%
