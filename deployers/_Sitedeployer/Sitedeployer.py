@@ -3,8 +3,6 @@ from pathlib import Path
 import logging
 from typing import Type, List
 
-from deployers.Projekt._Projekt_Sitedeployer import Projekt_Sitedeployer
-
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -113,7 +111,7 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
 
     # temp ynsight dependencies:
     @staticmethod
-    def temp_ynsight_dependencies() -> List[Type[Projekt_Sitedeployer]]:
+    def temp_ynsight_dependencies() -> List[Type['Projekt_Sitedeployer']]:
         from deployers.Projekt.base_ProjektSitedeployer import base_ProjektSitedeployer
         from deployers.Projekt.projekt_ProjektSitedeployer import projekt_ProjektSitedeployer
         from deployers.Projekt.myrta_ProjektSitedeployer import myrta_ProjektSitedeployer
@@ -125,7 +123,7 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
 
 
     def process_temp_ynsight_dependency(self,
-        temp_ynsight_project:Projekt_Sitedeployer=None
+        temp_ynsight_project:'Projekt_Sitedeployer'=None
     ) -> None:
         logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"...'.replace('%temp_ynsight_project%', temp_ynsight_project.project_NAME()))
         temp_ynsight_project.clone_project()
@@ -147,7 +145,7 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
 
     # ynsight dependencies:
     def process_ynsight_dependency(self,
-        ynsight_project:Projekt_Sitedeployer=None
+        ynsight_project:'Projekt_Sitedeployer'=None
     ) -> None:
         logger.info('Process ynsight project: "%ynsight_project%"...'.replace('%ynsight_project%', ynsight_project.project_NAME()))
         ynsight_project.clone_project()
