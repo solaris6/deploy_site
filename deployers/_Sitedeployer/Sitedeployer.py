@@ -299,8 +299,8 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
 
 
     def process_projektorworkshop(self) -> None:
-        logger.info('Process projektorworkshop...')
-        logger.info(
+        print('Process projektorworkshop...')
+        print(
 '''# projektorworkshop paths:
 PATHDIR_root_repositories_projectrepository_projektorworkshop=%PATHDIR_root_repositories_projectrepository_projektorworkshop%
 
@@ -314,14 +314,14 @@ PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage=%PATHDIR_roo
             .replace('%PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage%', str(self.PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage()))
         )
 
-        logger.info('Install projektorworkshop...')
+        print('Install projektorworkshop...')
         if self.PATHDIR_root_repositories_projectrepository().is_dir():
             shutil.copytree(
                 self.PATHDIR_root_repositories_projectrepository_projektorworkshop(),
                 self.PATHDIR_root_projektorworkshop()
             )
-        logger.info('Install projektorworkshop!')
-        logger.info('Process projektorworkshop!')
+        print('Install projektorworkshop!')
+        print('Process projektorworkshop!')
 
 
 
@@ -362,20 +362,22 @@ from %projektorworkshop_projektorworkshopsitepubflaskpackage%.flask_app import a
         ynsight_dependencies_syspaths_appends = ''
         for i,ynsight_dependency in enumerate(self.ynsight_dependencies()):
             ynsight_dependencies_syspaths_appends += ('' if i==0 else '\n') +\
-"sys.path = ['/home/%pythonanywhere_username%/root/ins/%project_NAME%/lib'] + sys.path"
+"sys.path = ['/home/%pythonanywhere_username%/root/ins/%dependency_NAME%/lib'] + sys.path"\
+    .replace('%dependency_NAME%', ynsight_dependency.project_NAME())
 
         ynsight_dependencies_PATH_appends = ''
         for i,ynsight_dependency in enumerate(self.ynsight_dependencies()):
             ynsight_dependencies_PATH_appends += ('' if i==0 else '\n') +\
-"os.environ['PATH'] += os.pathsep + '/home/%pythonanywhere_username%/root/ins/%project_NAME%/bin'"
+"os.environ['PATH'] += os.pathsep + '/home/%pythonanywhere_username%/root/ins/%dependency_NAME%/bin'"\
+    .replace('%dependency_NAME%', ynsight_dependency.project_NAME())
 
         self.PATHFILE_wsgipy().write_text(
             wsgipy_template
+                .replace('%ynsight_dependencies_syspaths_appends%', ynsight_dependencies_syspaths_appends)
+                .replace('%ynsight_dependencies_PATH_appends%', ynsight_dependencies_PATH_appends)
                 .replace('%pythonanywhere_username%', self.pythonanywhere_username())
                 .replace('%projektorworkshop_projektorworkshopsitepubflaskpackage%', self.projektorworkshop_projektorworkshopsitepubflaskpackage())
                 .replace('%projektorworkshop%', self.projektorworkshop_Type())
-                .replace('%ynsight_dependencies_syspaths_appends%', ynsight_dependencies_syspaths_appends)
-                .replace('%ynsight_dependencies_PATH_appends%', ynsight_dependencies_PATH_appends)
         )
         logger.info('Write wsgi.py file!')
 
