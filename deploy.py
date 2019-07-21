@@ -1,9 +1,14 @@
 import sys
 from pathlib import Path
-import logging
 
+import logging
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+handler = logging.StreamHandler()
+formatter = logging.Formatter("[deploy] - %(asctime)s - %(levelname)s - %(message)s")
+handler.setFormatter(formatter)
+handler.setLevel(logging.DEBUG)
+logger.setLevel(logging.DEBUG)
+logger.addHandler(handler)
 
 from deployers.Projekt.Ln_ProjektSitedeployer import Ln_ProjektSitedeployer
 from deployers.Projekt.base_ProjektSitedeployer import base_ProjektSitedeployer

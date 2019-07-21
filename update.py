@@ -1,11 +1,19 @@
 import shutil, subprocess, sys
 from pathlib import Path
+
 import logging
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+handler = logging.StreamHandler()
+formatter = logging.Formatter("[update] - %(asctime)s - %(levelname)s - %(message)s")
+handler.setFormatter(formatter)
+handler.setLevel(logging.DEBUG)
+logger.setLevel(logging.DEBUG)
+logger.addHandler(handler)
+
+
 
 if __name__ == '__main__':
-    logger.info('[updater] Update sitedeployer package, then use them to update site...')
+    logger.info('Update sitedeployer package, then use them to update site...')
 
     PATHFILE_updatepy = Path(sys.argv[0])
     PATHDIR_root = PATHFILE_updatepy.parent / 'root'
@@ -26,24 +34,26 @@ PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy=%PATHFILE_root_sitedeplo
           .replace('%PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy%', str(PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy))
     )
 
-    logger.info('[updater] Create root dir...')
+    logger.info('Create root dir...')
     if PATHDIR_root.is_dir():
         shutil.rmtree(PATHDIR_root)
     PATHDIR_root.mkdir()
-    logger.info('[updater] Create root dir!')
+    logger.info('Create root dir!')
 
-    logger.info('[updater] Update sitedeployerpackage...')
+    logger.info('Update sitedeployerpackage...')
     PATHDIR_root_sitedeployer.mkdir()
     subprocess.run(
         ['git', 'clone', 'https://github.com/solaris6/sitedeployer.git'],
-        cwd=str(PATHDIR_root_sitedeployer)
+        cwd=str(PATHDIR_root_sitedeployer),
+        shell=True
     )
-    logger.info('[updater] Update sitedeployerpackage!')
+    logger.info('Update sitedeployerpackage!')
 
-    logger.info('[updater] Use sitedeployerpackage...')
+    logger.info('Use sitedeployerpackage...')
     subprocess.run(
-        ['python3.6', PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy]
+        ['python3.6', PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy],
+        shell=True
     )
-    logger.info('[updater] Use sitedeployerpackage!')
+    logger.info('Use sitedeployerpackage!')
 
-    logger.info('[updater] Update sitedeployer package then use them to update site!')
+    logger.info('Update sitedeployer package then use them to update site!')

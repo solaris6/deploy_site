@@ -1,13 +1,8 @@
-import os, shutil, subprocess, sys
 from pathlib import Path
-import logging
 from typing import Type, List
 
 from deployers.Projekt._Projekt_Sitedeployer import Projekt_Sitedeployer
-from deployers.Workshop._Workshop_Sitedeployer import Workshop_Sitedeployer
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+from deployers.Workshop._Workshop_Sitedeployer import Workshop_Sitedeployer, logger
 
 
 # ynsight:
