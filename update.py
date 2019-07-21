@@ -44,15 +44,13 @@ PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy=%PATHFILE_root_sitedeplo
     PATHDIR_root_sitedeployer.mkdir()
     subprocess.run(
         ['git', 'clone', 'https://github.com/solaris6/sitedeployer.git'],
-        cwd=str(PATHDIR_root_sitedeployer),
-        shell=True
+        cwd=str(PATHDIR_root_sitedeployer)
     )
     logger.info('Update sitedeployerpackage!')
 
     logger.info('Use sitedeployerpackage...')
     subprocess.run(
-        ['python3.6', PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy],
-        shell=True
+        ['python3.6', PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy]
     )
     logger.info('Use sitedeployerpackage!')
 
