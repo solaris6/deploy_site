@@ -131,6 +131,11 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
         temp_ynsight_project:'Projekt_Sitedeployer'=None
     ) -> None:
         logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"...'.replace('%temp_ynsight_project%', temp_ynsight_project.project_NAME()))
+
+        import os
+        logger.info(os.environ['PATH'], os.getcwd())
+        subprocess.run(['projekt'])
+
         temp_ynsight_project.clone_project()
         temp_ynsight_project.buildandinstalltemp_project()
         logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"!'.replace('%temp_ynsight_project%', temp_ynsight_project.project_NAME()))
