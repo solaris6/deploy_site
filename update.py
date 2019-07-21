@@ -4,8 +4,6 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-logging.info('update.py imported')
-
 if __name__ == '__main__':
     logger.info('[updater] Update sitedeployer package, then use them to update site...')
 
