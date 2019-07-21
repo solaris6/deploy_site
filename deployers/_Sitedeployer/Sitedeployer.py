@@ -344,7 +344,7 @@ PATHFILE_wsgipy=%PATHFILE_wsgipy%'''
 
         logger.info('Write wsgi.py file...')
         wsgipy_template = \
-'''import sys
+'''import sys, os
 from pathlib import Path
 
 PATHDIR_projektorworkshop = Path('/home/%pythonanywhere_username%/root/_%projektorworkshop%')
