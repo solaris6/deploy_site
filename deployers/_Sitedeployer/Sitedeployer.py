@@ -299,8 +299,8 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
 
 
     def process_projektorworkshop(self) -> None:
-        print('Process projektorworkshop...')
-        print(
+        logger.info('Process projektorworkshop...')
+        logger.info(
 '''# projektorworkshop paths:
 PATHDIR_root_repositories_projectrepository_projektorworkshop=%PATHDIR_root_repositories_projectrepository_projektorworkshop%
 
@@ -314,14 +314,14 @@ PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage=%PATHDIR_roo
             .replace('%PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage%', str(self.PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage()))
         )
 
-        print('Install projektorworkshop...')
+        logger.info('Install projektorworkshop...')
         if self.PATHDIR_root_repositories_projectrepository().is_dir():
             shutil.copytree(
                 self.PATHDIR_root_repositories_projectrepository_projektorworkshop(),
                 self.PATHDIR_root_projektorworkshop()
             )
-        print('Install projektorworkshop!')
-        print('Process projektorworkshop!')
+        logger.info('Install projektorworkshop!')
+        logger.info('Process projektorworkshop!')
 
 
 
@@ -345,7 +345,7 @@ PATHFILE_wsgipy=%PATHFILE_wsgipy%'''
         logger.info('Write wsgi.py file...')
         wsgipy_template = \
 '''import sys
-from pathlib import path
+from pathlib import Path
 
 PATHDIR_projektorworkshop = Path('/home/%pythonanywhere_username%/root/_%projektorworkshop%')
 if not str(PATHDIR_projektorworkshop) in sys.path:
