@@ -3,6 +3,7 @@ import os
 import platform
 import shutil, subprocess
 import sys
+from copy import copy
 from pathlib import Path
 from typing import Type, List, Dict, Any
 
@@ -21,34 +22,6 @@ class Sitedeployer:
     ):
         self._PATHFILE_deploypy = PATHFILE_deploypy
 
-    @staticmethod
-    def platform_report() -> Dict[str,Any]:
-        import platform
-        result = {}
-        result['architecture'] = platform.architecture()
-        result['uname'] = platform.uname()
-        result['system'] = platform.system()
-        result['node'] = platform.node()
-        result['release'] = platform.release()
-        result['version'] = platform.version()
-        result['machine'] = platform.machine()
-        result['processor'] = platform.processor()
-        result['python_implementation'] = platform.python_implementation()
-        result['python_version'] = platform.python_version()
-        result['python_version_tuple'] = platform.python_version_tuple()
-        result['python_branch'] = platform.python_branch()
-        result['python_revision'] = platform.python_revision()
-        result['python_build'] = platform.python_build()
-        result['python_compiler'] = platform.python_compiler()
-        return result
-
-    def log_platform(self) -> None:
-        logger.info(
-            json.dumps({
-                'platform_report': self.platform_report()
-            }, indent=2)
-        )
-
 
     @staticmethod
     def environment_report() -> Dict[str,Any]:
@@ -66,6 +39,12 @@ class Sitedeployer:
                 }, indent=2
             )
         )
+
+    def cleanup_env_vars_temp(self) -> None:
+        pass
+
+    def cleanup_syspath_temp(self) -> None:
+        pass
 
 
     @staticmethod
@@ -480,9 +459,12 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
         logger.info('Process update.py!')
 
 
+
     def Execute(self) -> None:
-        self.log_platform()
         self.log_environment()
+
+        sys_path_old = copy(sys.path)
+        PATH_old = copy(os.environ['PATH'])
 
         self.process_common()
         self.process_sitedeployer()
@@ -495,4 +477,7 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
 
         self.log_environment()
 
+        sys.path = sys_path_old
+        os.environ['PATH'] = PATH_old
 
+        self.log_environment()
