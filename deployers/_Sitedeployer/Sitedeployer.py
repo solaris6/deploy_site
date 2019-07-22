@@ -56,6 +56,7 @@ class Sitedeployer:
         result['cwd'] = os.getcwd()
         result['env_vars'] = dict(os.environ)
         result['PATH'] = os.environ['PATH'].split(os.pathsep)
+        result['sys.path'] = sys.path
         return result
 
     def log_environment(self) -> None:
