@@ -1,6 +1,9 @@
+import json
+import os
+import platform
 import shutil, subprocess
 from pathlib import Path
-from typing import Type, List
+from typing import Type, List, Dict, Any
 
 import logging
 logger = logging.getLogger(__name__)
@@ -11,12 +14,58 @@ handler.setLevel(logging.DEBUG)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
+print(platform.platform())
 
 class Sitedeployer:
     def __init__(self,
         PATHFILE_deploypy:Path=None
     ):
         self._PATHFILE_deploypy = PATHFILE_deploypy
+
+    @staticmethod
+    def platform_report() -> Dict[str,Any]:
+        import platform
+        result = {}
+        result['architecture'] = platform.architecture()
+        result['uname'] = platform.uname()
+        result['system'] = platform.system()
+        result['node'] = platform.node()
+        result['release'] = platform.release()
+        result['version'] = platform.version()
+        result['machine'] = platform.machine()
+        result['processor'] = platform.processor()
+        result['python_implementation'] = platform.python_implementation()
+        result['python_version'] = platform.python_version()
+        result['python_version_tuple'] = platform.python_version_tuple()
+        result['python_branch'] = platform.python_branch()
+        result['python_revision'] = platform.python_revision()
+        result['python_build'] = platform.python_build()
+        result['python_compiler'] = platform.python_compiler()
+        return result
+
+    def log_platform(self) -> None:
+        logger.info(
+            json.dumps({
+                'platform_report': self.platform_report()
+            }, indent=2)
+        )
+
+
+    @staticmethod
+    def environment_report() -> Dict[str,Any]:
+        result = {}
+        result['cwd'] = os.getcwd()
+        result['env_vars'] = os.environ
+        return result
+
+    def log_environment(self) -> None:
+        logger.info(
+            json.dumps({
+                'environment_report': self.environment_report()
+                }, indent=2
+            )
+        )
+
 
     @staticmethod
     def pythonanywhere_username() -> str:
@@ -132,12 +181,15 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
     ) -> None:
         logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"...'.replace('%temp_ynsight_project%', temp_ynsight_project.project_NAME()))
 
-        import os
-        logger.info(os.environ['PATH'], os.getcwd())
-        subprocess.run(['projekt'])
+        self.log_environment()
+
+        # subprocess.run(['projekt'])
 
         temp_ynsight_project.clone_project()
         temp_ynsight_project.buildandinstalltemp_project()
+
+        self.log_environment()
+
         logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"!'.replace('%temp_ynsight_project%', temp_ynsight_project.project_NAME()))
 
 
@@ -426,6 +478,9 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
 
 
     def Execute(self) -> None:
+        self.log_platform()
+        self.log_environment()
+
         self.process_common()
         self.process_sitedeployer()
         self.process_temp_ynsight_dependencies()
@@ -434,3 +489,7 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
         self.process_projektorworkshop()
         self.process_wsgipy()
         self.process_updatepy()
+
+        self.log_environment()
+
+
