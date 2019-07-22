@@ -40,12 +40,6 @@ class Sitedeployer:
             )
         )
 
-    def cleanup_env_vars_temp(self) -> None:
-        pass
-
-    def cleanup_syspath_temp(self) -> None:
-        pass
-
 
     @staticmethod
     def pythonanywhere_username() -> str:
@@ -169,7 +163,6 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
         self.log_environment()
 
         logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"!'.replace('%temp_ynsight_project%', temp_ynsight_project.project_NAME()))
-
 
     def process_temp_ynsight_dependencies(self) -> None:
         logger.info('Process temp ynsight dependencies...')
