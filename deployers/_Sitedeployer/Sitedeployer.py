@@ -2,6 +2,7 @@ import json
 import os
 import platform
 import shutil, subprocess
+import sys
 from pathlib import Path
 from typing import Type, List, Dict, Any
 
@@ -13,8 +14,6 @@ handler.setFormatter(formatter)
 handler.setLevel(logging.DEBUG)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
-
-print(platform.platform())
 
 class Sitedeployer:
     def __init__(self,
@@ -323,6 +322,7 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
             )
 
         os.environ['PATH'] += os.pathsep + str(self.PATHDIR_root_instemp_project() / 'bin')
+        sys.path.append(str(self.PATHDIR_root_instemp_project() / 'lib'))
 
         logger.info('Build and Install temp project!')
 
