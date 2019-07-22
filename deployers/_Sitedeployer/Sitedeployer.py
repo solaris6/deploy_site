@@ -184,8 +184,6 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
 
         self.log_environment()
 
-        # subprocess.run(['projekt'])
-
         temp_ynsight_project.clone_project()
         temp_ynsight_project.buildandinstalltemp_project()
 
@@ -323,6 +321,9 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
                 PATHDIR_root_repositories_projectrepository_ins,
                 self.PATHDIR_root_instemp_project()
             )
+
+        os.environ['PATH'] += os.pathsep + str(self.PATHDIR_root_instemp_project() / 'bin')
+
         logger.info('Build and Install temp project!')
 
 
