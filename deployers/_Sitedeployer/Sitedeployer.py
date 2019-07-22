@@ -55,7 +55,7 @@ class Sitedeployer:
     def environment_report() -> Dict[str,Any]:
         result = {}
         result['cwd'] = os.getcwd()
-        result['env_vars'] = os.environ
+        result['env_vars'] = dict(os.environ)
         return result
 
     def log_environment(self) -> None:
