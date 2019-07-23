@@ -318,7 +318,7 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
                 self.PATHDIR_root_ins_project()
             )
 
-        os.environ['PATH'] = str(self.PATHDIR_root_ins_project() / 'bin') + os.pathsep + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
+        os.environ['PATH'] = str(self.PATHDIR_root_ins_project() / 'bin') + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
         os.environ['PYTHONPATH'] = str(self.PATHDIR_root_ins_project() / 'lib') + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
 
         if self.PATHDIR_root_instemp_project().is_dir():
