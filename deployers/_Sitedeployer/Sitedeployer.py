@@ -8,6 +8,8 @@ from pathlib import Path
 from typing import Type, List, Dict, Any
 
 import logging
+
+
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
 formatter = logging.Formatter("[deployer] - %(asctime)s - %(levelname)s - %(message)s")
@@ -21,8 +23,8 @@ class Sitedeployer:
         PATHFILE_deploypy:Path=None
     ):
         self._PATHFILE_deploypy = PATHFILE_deploypy
-        self._sys_path_old = None
         self._PATH_old = None
+        self._PYTHONPATH_old = None
         self._ynsight_projects_installed = []
 
 
@@ -30,9 +32,9 @@ class Sitedeployer:
     def environment_report() -> Dict[str,Any]:
         result = {}
         result['cwd'] = os.getcwd()
-        result['env_vars'] = dict(os.environ)
+        # result['env_vars'] = dict(os.environ)
         result['PATH'] = os.environ['PATH'].split(os.pathsep)
-        result['sys.path'] = sys.path
+        result['PYTHONPATH'] = os.environ['PYTHONPATH'].split(os.pathsep)
         return result
 
     def log_environment(self) -> None:
@@ -142,12 +144,13 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
         temp_ynsight_project:'Projekt_Sitedeployer'=None
     ) -> None:
         logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"...'.replace('%temp_ynsight_project%', temp_ynsight_project.project_NAME()))
-        self.log_environment()
         temp_ynsight_project.clonebuildinstalltemp_project()
         subprocess.run(['projekt'], shell=True)
         subprocess.run(['myrta'], shell=True)
         subprocess.run(['agent'], shell=True)
-        self.log_environment()
+        subprocess.run(['which', 'projekt'], shell=True)
+        subprocess.run(['which', 'myrta'], shell=True)
+        subprocess.run(['which', 'agent'], shell=True)
         logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"!'.replace('%temp_ynsight_project%', temp_ynsight_project.project_NAME()))
 
     def process_temp_ynsight_dependencies(self) -> None:
@@ -158,32 +161,49 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
                     PATHFILE_deploypy=self._PATHFILE_deploypy
                 )
             )
+
         logger.info('Process temp ynsight dependencies!')
 
 
 
     # ynsight dependencies:
-    @classmethod
-    def ynsight_dependencies(cls) -> List[Type['Sitedeployer']]:
+    @staticmethod
+    def ynsight_dependencies_common() -> List[Type['Sitedeployer']]:
+        from deployers.Projekt.base_ProjektSitedeployer import base_ProjektSitedeployer
+        from deployers.Projekt.projekt_ProjektSitedeployer import projekt_ProjektSitedeployer
+        from deployers.Projekt.myrta_ProjektSitedeployer import myrta_ProjektSitedeployer
+        return [
+            base_ProjektSitedeployer,
+            projekt_ProjektSitedeployer,
+            myrta_ProjektSitedeployer
+        ]
+
+    @staticmethod
+    def ynsight_dependencies_self() -> List[Type['Sitedeployer']]:
         raise NotImplementedError("")
 
-    def process_ynsight_dependency(self,
-        ynsight_dependency:'Projekt_Sitedeployer'=None
-    ) -> None:
-        logger.info('Clonebuildinstall ynsight project: "%ynsight_project%"...'.replace('%ynsight_project%', ynsight_dependency.project_NAME()))
-        if not ynsight_dependency in self._ynsight_projects_installed:
-            ynsight_dependency.clonebuildinstall_project()
-            self._ynsight_projects_installed.append(ynsight_dependency)
-        logger.info('Clonebuildinstall ynsight project: "%ynsight_project%"!'.replace('%ynsight_project%', ynsight_dependency.project_NAME()))
+    @classmethod
+    def ynsight_dependencies_all(cls) -> List[Type['Sitedeployer']]:
+        raise NotImplementedError("")
 
     def process_ynsight_dependencies(self) -> None:
         logger.info('Process ynsight dependencies...')
-        for ynsight_project in self.ynsight_dependencies():
-            self.process_ynsight_dependency(
-                ynsight_dependency=ynsight_project(
-                    PATHFILE_deploypy=self._PATHFILE_deploypy
-                )
+        for ynsight_dependency in self.ynsight_dependencies_all():
+
+            ynsight_dependency=ynsight_dependency(
+                PATHFILE_deploypy=self._PATHFILE_deploypy
             )
+            logger.info('Clonebuildinstall ynsight project: "%ynsight_project%"...'.replace('%ynsight_project%', ynsight_dependency.project_NAME()))
+            if not ynsight_dependency in self._ynsight_projects_installed:
+                ynsight_dependency.clonebuildinstall_project()
+                subprocess.run(['projekt'], shell=True)
+                subprocess.run(['myrta'], shell=True)
+                subprocess.run(['agent'], shell=True)
+                subprocess.run(['which', 'projekt'], shell=True)
+                subprocess.run(['which', 'myrta'], shell=True)
+                subprocess.run(['which', 'agent'], shell=True)
+                self._ynsight_projects_installed.append(ynsight_dependency)
+            logger.info('Clonebuildinstall ynsight project: "%ynsight_project%"!'.replace('%ynsight_project%', ynsight_dependency.project_NAME()))
         logger.info('Process ynsight dependencies!')
 
 
@@ -250,33 +270,23 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
 
 
     def clone_project(self) -> None:
-        logger.info('Cloning project repository...')
+        logger.info('Clone "%project%" repository...'.replace('%project%', self.project_NAME()))
         if not self.PATHDIR_root_repositories_projectrepository().is_dir():
             subprocess.run(
                 ['git', 'clone', self.URL_github_project_repository()],
                 cwd=str(self.PATHDIR_root_repositories())
             )
-            logger.info('Cloning project repository!')
-
-    def clonebuildinstall_project(self) -> None:
-        logger.info('Process project...')
-        self.clone_project()
-        logger.info('Build and Install project...')
-        PATHDIR_root_repositories_projectrepository_ins = self.PATHDIR_root_repositories_projectrepository() / 'src/ins'
-
-        if PATHDIR_root_repositories_projectrepository_ins.is_dir() and not self.PATHDIR_root_ins_project().is_dir():
-            shutil.copytree(
-                PATHDIR_root_repositories_projectrepository_ins,
-                self.PATHDIR_root_ins_project()
-            )
-        logger.info('Build and Install project!')
-        logger.info('Process project!')
+            logger.info('Clone "%project%" repository!'.replace('%project%', self.project_NAME()))
 
 
-    # temp installs:
+
     def clonebuildinstalltemp_project(self) -> None:
+        logger.info('Clone/Build/Install "%project%" temp project...'.replace('%project%', self.project_NAME()))
+        self.log_environment()
+
         self.clone_project()
-        logger.info('Build and Install temp project...')
+
+        logger.info('Build and Install ("%project%")'.replace('%project%', self.project_NAME()))
         PATHDIR_root_repositories_projectrepository_ins = self.PATHDIR_root_repositories_projectrepository() / 'src/ins'
 
         if PATHDIR_root_repositories_projectrepository_ins.is_dir() and not self.PATHDIR_root_instemp_project().is_dir():
@@ -285,10 +295,40 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
                 self.PATHDIR_root_instemp_project()
             )
 
-        os.environ['PATH'] += os.pathsep + str(self.PATHDIR_root_instemp_project() / 'bin')
-        sys.path.append(str(self.PATHDIR_root_instemp_project() / 'lib'))
+        os.environ['PATH'] = str(self.PATHDIR_root_instemp_project() / 'bin') + os.pathsep + os.environ['PATH']
+        os.environ['PYTHONPATH'] = str(self.PATHDIR_root_instemp_project() / 'lib') + os.pathsep + os.environ['PYTHONPATH']
+        logger.info('Build and Install ("%project%")'.replace('%project%', self.project_NAME()))
 
-        logger.info('Build and Install temp project!')
+        self.log_environment()
+        logger.info('Clone/Build/Install "%project%" temp project!'.replace('%project%', self.project_NAME()))
+
+
+
+    def clonebuildinstall_project(self) -> None:
+        logger.info('Clone/Build/Install "%project%" project...'.replace('%project%', self.project_NAME()))
+        self.log_environment()
+
+        self.clone_project()
+
+        logger.info('Build and Install ("%project%")'.replace('%project%', self.project_NAME()))
+        PATHDIR_root_repositories_projectrepository_ins = self.PATHDIR_root_repositories_projectrepository() / 'src/ins'
+
+        if PATHDIR_root_repositories_projectrepository_ins.is_dir() and not self.PATHDIR_root_ins_project().is_dir():
+            shutil.copytree(
+                PATHDIR_root_repositories_projectrepository_ins,
+                self.PATHDIR_root_ins_project()
+            )
+
+        os.environ['PATH'] = str(self.PATHDIR_root_ins_project() / 'bin') + os.pathsep + os.environ['PATH']
+        os.environ['PYTHONPATH'] = str(self.PATHDIR_root_ins_project() / 'lib') + os.pathsep + os.environ['PYTHONPATH']
+
+        if self.PATHDIR_root_instemp_project().is_dir():
+            shutil.rmtree(self.PATHDIR_root_instemp_project())
+
+        logger.info('Build and Install ("%project%")!'.replace('%project%', self.project_NAME()))
+
+        self.log_environment()
+        logger.info('Clone/Build/Install "%project%" project!'.replace('%project%', self.project_NAME()))
 
 
 
@@ -440,12 +480,15 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
 
     def Execute_PRE(self) -> None:
         self.log_environment()
-
-        self._sys_path_old = copy(sys.path)
-        self._PATH_old = copy(os.environ['PATH'])
-
         self.process_common()
+
+        self.log_environment()
+        self._PATH_old = copy(os.environ['PATH'])
+        self._PYTHONPATH_old = copy(os.environ['PYTHONPATH'])
+        self.log_environment()
+
         self.process_temp_ynsight_dependencies()
+
         self.process_ynsight_dependencies()
         self.clonebuildinstall_project()
         self.process_projektorworkshop()
@@ -462,9 +505,10 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
 
 
     def Execute_PST(self) -> None:
+        self.log_environment()
+        os.environ['PATH'] = self._PATH_old
+        os.environ['PYTHONPATH'] = self._PYTHONPATH_old
+        self.log_environment()
+
         self.process_wsgipy()
         self.process_updatepy()
-        self.log_environment()
-        sys.path = self._sys_path_old
-        os.environ['PATH'] = self._PATH_old
-        self.log_environment()
