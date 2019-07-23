@@ -403,15 +403,18 @@ from %projektorworkshop_projektorworkshopsitepubflaskpackage%.flask_app import a
 "sys.path = ['/home/%pythonanywhere_username%/root/ins/%dependency_NAME%/lib'] + sys.path"\
     .replace('%dependency_NAME%', ynsight_project_installed.project_NAME())
 
+        wsgipy_fc = wsgipy_template\
+            .replace('%ynsight_projects_packages_syspaths_appends%', ynsight_projects_packages_syspaths_appends)\
+            .replace('%ynsight_projects_packages_PATH_appends%', ynsight_projects_packages_PATH_appends)\
+            .replace('%pythonanywhere_username%', self.pythonanywhere_username())\
+            .replace('%projektorworkshop_projektorworkshopsitepubflaskpackage%', self.projektorworkshop_projektorworkshopsitepubflaskpackage())\
+            .replace('%projektorworkshop%', self.projektorworkshop_Type())
 
         self.PATHFILE_wsgipy().write_text(
-            wsgipy_template
-                .replace('%ynsight_projects_packages_syspaths_appends%', ynsight_projects_packages_syspaths_appends)
-                .replace('%ynsight_projects_packages_PATH_appends%', ynsight_projects_packages_PATH_appends)
-                .replace('%pythonanywhere_username%', self.pythonanywhere_username())
-                .replace('%projektorworkshop_projektorworkshopsitepubflaskpackage%', self.projektorworkshop_projektorworkshopsitepubflaskpackage())
-                .replace('%projektorworkshop%', self.projektorworkshop_Type())
+            wsgipy_fc
         )
+
+        logger.info('wsgipy file begin <' + wsgipy_fc + 'wsgipy file end >')
         logger.info('Write wsgi.py file!')
 
         logger.info('Process wsgi.py!')
