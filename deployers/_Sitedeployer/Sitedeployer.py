@@ -178,7 +178,7 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
         logger.info('Process ynsight dependencies...')
         for ynsight_project in self.ynsight_dependencies():
             self.process_ynsight_dependency(
-                ynsight_project=ynsight_project(
+                ynsight_dependency=ynsight_project(
                     PATHFILE_deploypy=self._PATHFILE_deploypy
                 )
             )
