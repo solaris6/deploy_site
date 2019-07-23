@@ -484,8 +484,8 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
         self.process_common()
 
         self.log_environment()
-        self._PATH_old = copy(os.environ['PATH'])
-        self._PYTHONPATH_old = copy(os.environ['PYTHONPATH'])
+        self._PATH_old = copy(os.environ['PATH']) if 'PATH' in os.environ else ''
+        self._PYTHONPATH_old = copy(os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else ''
         self.log_environment()
 
         self.process_temp_ynsight_dependencies()
