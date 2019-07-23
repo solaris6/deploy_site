@@ -22,5 +22,13 @@ class Workshop_Sitedeployer(
         return 'workshop'
 
     @staticmethod
-    def projekts() -> List[Type[Projekt_Sitedeployer]]:
+    def workshop_projekts() -> List[Type[Projekt_Sitedeployer]]:
         raise NotImplementedError("")
+
+    @classmethod
+    def ynsight_dependencies(cls) -> List[Type[Projekt_Sitedeployer]]:
+        return Sitedeployer.ynsight_dependencies() + cls.workshop_projekts()
+
+
+    def Execute(self) -> None:
+        pass

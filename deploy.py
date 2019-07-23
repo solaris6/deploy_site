@@ -39,6 +39,6 @@ if __name__ == '__main__':
         'ynsight': ynsight_WorkshopSitedeployer
     }[pythonanywhere_username](
         PATHFILE_deploypy=PATHFILE_deploypy
-    ).Execute()
+    )._Execute()
 
     logger.info('Deploy site!')

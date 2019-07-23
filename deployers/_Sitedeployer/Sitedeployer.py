@@ -21,6 +21,10 @@ class Sitedeployer:
         PATHFILE_deploypy:Path=None
     ):
         self._PATHFILE_deploypy = PATHFILE_deploypy
+        self._sys_path_old = None
+        self._PATH_old = None
+        self._ynsight_projects_installed = []
+
 
 
     @staticmethod
@@ -70,6 +74,15 @@ class Sitedeployer:
     def PATHDIR_root_instemp(self) -> Path:
         return self.PATHDIR_home_pythonanywhereusername_root() / 'instemp'
 
+    def PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_deploypy(self) -> Path:
+        return self._PATHFILE_deploypy
+
+    def PATHDIR_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage(self) -> Path:
+        return self.PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_deploypy().parent
+
+    def PATHDIR_home_pythonanywhereusername_root_sitedeployer(self) -> Path:
+        return self.PATHDIR_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage().parent
+
     def process_common(self) -> None:
         logger.info('Process common...')
 
@@ -83,7 +96,10 @@ URL_site=%URL_site%
 PATHDIR_home_pythonanywhereusername_root=%PATHDIR_home_pythonanywhereusername_root%
 PATHDIR_home_pythonanywhereusername=%PATHDIR_home_pythonanywhereusername%
 
-PATHDIR_root_repositories=%PATHDIR_root_repositories%'''
+PATHDIR_root_repositories=%PATHDIR_root_repositories%
+PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_deploypy=%PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_deploypy%
+PATHDIR_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage=%PATHDIR_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage%
+PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhereusername_root_sitedeployer%'''
             .replace('%pythonanywhere_username%', str(self.pythonanywhere_username()))
             .replace('%project_NAME%', str(self.project_NAME()))
             .replace('%projektorworkshop_projektorworkshopsitepubflaskpackage%', str(self.projektorworkshop_projektorworkshopsitepubflaskpackage()))
@@ -92,6 +108,11 @@ PATHDIR_root_repositories=%PATHDIR_root_repositories%'''
             .replace('%PATHDIR_home_pythonanywhereusername_root%', str(self.PATHDIR_home_pythonanywhereusername_root()))
             .replace('%PATHDIR_home_pythonanywhereusername%', str(self.PATHDIR_home_pythonanywhereusername()))
             .replace('%PATHDIR_root_repositories%', str(self.PATHDIR_root_repositories()))
+            .replace('%PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_deploypy%',
+                     str(self.PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_deploypy()))
+            .replace('%PATHDIR_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage%',
+                     str(self.PATHDIR_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage()))
+            .replace('%PATHDIR_home_pythonanywhereusername_root_sitedeployer%', str(self.PATHDIR_home_pythonanywhereusername_root_sitedeployer()))
         )
         logger.info('Resolve common paths!')
 
@@ -106,37 +127,6 @@ PATHDIR_root_repositories=%PATHDIR_root_repositories%'''
         logger.info('Process common!')
 
 
-
-    # sitedeployer:
-    def PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_deploypy(self) -> Path:
-        return self._PATHFILE_deploypy
-
-    def PATHDIR_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage(self) -> Path:
-        return self.PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_deploypy().parent
-
-    def PATHDIR_home_pythonanywhereusername_root_sitedeployer(self) -> Path:
-        return self.PATHDIR_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage().parent
-
-    def process_sitedeployer(self) -> None:
-        logger.info('Process sitedeployer...')
-        logger.info('Resolve sitedeployer paths...')
-
-        logger.info(
-'''PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_deploypy=%PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_deploypy%
-PATHDIR_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage=%PATHDIR_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage%
-PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhereusername_root_sitedeployer%'''
-                .replace('%PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_deploypy%',
-                         str(self.PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_deploypy()))
-                .replace('%PATHDIR_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage%',
-                         str(self.PATHDIR_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage()))
-                .replace('%PATHDIR_home_pythonanywhereusername_root_sitedeployer%', str(self.PATHDIR_home_pythonanywhereusername_root_sitedeployer()))
-        )
-
-        logger.info('Resolve sitedeployer paths!')
-        logger.info('Process sitedeployer!')
-
-
-
     # temp ynsight dependencies:
     @staticmethod
     def temp_ynsight_dependencies() -> List[Type['Projekt_Sitedeployer']]:
@@ -149,19 +139,13 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
             myrta_ProjektSitedeployer
         ]
 
-
     def process_temp_ynsight_dependency(self,
         temp_ynsight_project:'Projekt_Sitedeployer'=None
     ) -> None:
         logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"...'.replace('%temp_ynsight_project%', temp_ynsight_project.project_NAME()))
-
         self.log_environment()
-
-        temp_ynsight_project.clone_project()
-        temp_ynsight_project.buildandinstalltemp_project()
-
+        temp_ynsight_project.clonebuildinstalltemp_project()
         self.log_environment()
-
         logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"!'.replace('%temp_ynsight_project%', temp_ynsight_project.project_NAME()))
 
     def process_temp_ynsight_dependencies(self) -> None:
@@ -177,13 +161,18 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
 
 
     # ynsight dependencies:
+    @classmethod
+    def ynsight_dependencies(cls) -> List[Type['Sitedeployer']]:
+        raise NotImplementedError("")
+
     def process_ynsight_dependency(self,
-        ynsight_project:'Projekt_Sitedeployer'=None
+        ynsight_dependency:'Projekt_Sitedeployer'=None
     ) -> None:
-        logger.info('Process ynsight project: "%ynsight_project%"...'.replace('%ynsight_project%', ynsight_project.project_NAME()))
-        ynsight_project.clone_project()
-        ynsight_project.buildandinstall_project()
-        logger.info('Process ynsight project: "%ynsight_project%"!'.replace('%ynsight_project%', ynsight_project.project_NAME()))
+        logger.info('Clonebuildinstall ynsight project: "%ynsight_project%"...'.replace('%ynsight_project%', ynsight_dependency.project_NAME()))
+        if not ynsight_dependency in self._ynsight_projects_installed:
+            ynsight_dependency.clonebuildinstall_project()
+            self._ynsight_projects_installed.append(ynsight_dependency)
+        logger.info('Clonebuildinstall ynsight project: "%ynsight_project%"!'.replace('%ynsight_project%', ynsight_dependency.project_NAME()))
 
     def process_ynsight_dependencies(self) -> None:
         logger.info('Process ynsight dependencies...')
@@ -257,10 +246,6 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
             result = cls.URLHTTPS_github_project_repository()
         return result
 
-    @staticmethod
-    def ynsight_dependencies() -> List[Type['Sitedeployer']]:
-        raise NotImplementedError("")
-
 
     def clone_project(self) -> None:
         logger.info('Cloning project repository...')
@@ -272,7 +257,7 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
             logger.info('Cloning project repository!')
 
 
-    def buildandinstall_project(self) -> None:
+    def buildinstall_project(self) -> None:
         logger.info('Build and Install project...')
         PATHDIR_root_repositories_projectrepository_ins = self.PATHDIR_root_repositories_projectrepository() / 'src/ins'
 
@@ -283,8 +268,13 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
             )
         logger.info('Build and Install project!')
 
+    def clonebuildinstall_project(self) -> None:
+        self.clone_project()
+        self.buildinstall_project()
 
-    def buildandinstalltemp_project(self) -> None:
+
+    # temp installs:
+    def buildinstalltemp_project(self) -> None:
         logger.info('Build and Install temp project...')
         PATHDIR_root_repositories_projectrepository_ins = self.PATHDIR_root_repositories_projectrepository() / 'src/ins'
 
@@ -299,11 +289,15 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
 
         logger.info('Build and Install temp project!')
 
+    def clonebuildinstalltemp_project(self) -> None:
+        self.clone_project()
+        self.buildinstalltemp_project()
+
 
     def process_project(self) -> None:
         logger.info('Process project...')
         self.clone_project()
-        self.buildandinstall_project()
+        self.buildinstall_project()
         logger.info('Process project!')
 
 
@@ -389,31 +383,31 @@ if not str(PATHDIR_projektorworkshop) in sys.path:
     sys.path = [str(PATHDIR_projektorworkshop)] + sys.path
 
 
-# Append ynsight packages to sys.paths:
-%ynsight_dependencies_syspaths_appends%
+# Append ynsight project`s packages to sys.paths:
+%ynsight_projects_packages_syspaths_appends%
 
-# Append ynsight executables to PATH envvar:
-%ynsight_dependencies_PATH_appends%
+# Append ynsight project`s executables to PATH envvar:
+%ynsight_projects_packages_PATH_appends%
 
 from %projektorworkshop_projektorworkshopsitepubflaskpackage%.flask_app import app as application
 '''
 
-        ynsight_dependencies_syspaths_appends = ''
-        for i,ynsight_dependency in enumerate(self.ynsight_dependencies()):
-            ynsight_dependencies_syspaths_appends += ('' if i==0 else '\n') +\
-"sys.path = ['/home/%pythonanywhere_username%/root/ins/%dependency_NAME%/lib'] + sys.path"\
-    .replace('%dependency_NAME%', ynsight_dependency.project_NAME())
-
-        ynsight_dependencies_PATH_appends = ''
-        for i,ynsight_dependency in enumerate(self.ynsight_dependencies()):
-            ynsight_dependencies_PATH_appends += ('' if i==0 else '\n') +\
+        ynsight_projects_packages_syspaths_appends = ''
+        ynsight_projects_packages_PATH_appends = ''
+        for i,ynsight_project_installed in enumerate(self._ynsight_projects_installed):
+            ynsight_projects_packages_syspaths_appends += ('' if i==0 else '\n') +\
 "os.environ['PATH'] += os.pathsep + '/home/%pythonanywhere_username%/root/ins/%dependency_NAME%/bin'"\
-    .replace('%dependency_NAME%', ynsight_dependency.project_NAME())
+    .replace('%dependency_NAME%', ynsight_project_installed.project_NAME())
+
+            ynsight_projects_packages_PATH_appends += ('' if i==0 else '\n') +\
+"sys.path = ['/home/%pythonanywhere_username%/root/ins/%dependency_NAME%/lib'] + sys.path"\
+    .replace('%dependency_NAME%', ynsight_project_installed.project_NAME())
+
 
         self.PATHFILE_wsgipy().write_text(
             wsgipy_template
-                .replace('%ynsight_dependencies_syspaths_appends%', ynsight_dependencies_syspaths_appends)
-                .replace('%ynsight_dependencies_PATH_appends%', ynsight_dependencies_PATH_appends)
+                .replace('%ynsight_projects_packages_syspaths_appends%', ynsight_projects_packages_syspaths_appends)
+                .replace('%ynsight_projects_packages_PATH_appends%', ynsight_projects_packages_PATH_appends)
                 .replace('%pythonanywhere_username%', self.pythonanywhere_username())
                 .replace('%projektorworkshop_projektorworkshopsitepubflaskpackage%', self.projektorworkshop_projektorworkshopsitepubflaskpackage())
                 .replace('%projektorworkshop%', self.projektorworkshop_Type())
@@ -451,26 +445,33 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
 
         logger.info('Process update.py!')
 
-
-
-    def Execute(self) -> None:
+    def Execute_PRE(self) -> None:
         self.log_environment()
 
-        sys_path_old = copy(sys.path)
-        PATH_old = copy(os.environ['PATH'])
+        self._sys_path_old = copy(sys.path)
+        self._PATH_old = copy(os.environ['PATH'])
 
         self.process_common()
-        self.process_sitedeployer()
         self.process_temp_ynsight_dependencies()
         self.process_ynsight_dependencies()
         self.process_project()
         self.process_projektorworkshop()
+
+
+    def Execute(self) -> None:
+        pass
+
+
+    def _Execute(self) -> None:
+        self.Execute_PRE()
+        self.Execute()
+        self.Execute_PST()
+
+
+    def Execute_PST(self) -> None:
         self.process_wsgipy()
         self.process_updatepy()
-
         self.log_environment()
-
-        sys.path = sys_path_old
-        os.environ['PATH'] = PATH_old
-
+        sys.path = self._sys_path_old
+        os.environ['PATH'] = self._PATH_old
         self.log_environment()

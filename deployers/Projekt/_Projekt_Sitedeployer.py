@@ -16,3 +16,6 @@ class Projekt_Sitedeployer(
     @staticmethod
     def projektorworkshop_Type() -> str:
         return 'projekt'
+
+    def Execute(self) -> None:
+        pass
