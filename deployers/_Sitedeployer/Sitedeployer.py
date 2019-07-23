@@ -33,8 +33,8 @@ class Sitedeployer:
         result = {}
         result['cwd'] = os.getcwd()
         # result['env_vars'] = dict(os.environ)
-        result['PATH'] = os.environ['PATH'].split(os.pathsep)
-        result['PYTHONPATH'] = os.environ['PYTHONPATH'].split(os.pathsep)
+        result['PATH'] = os.environ['PATH'].split(os.pathsep) if 'PATH' in os.environ else []
+        result['PYTHONPATH'] = os.environ['PYTHONPATH'].split(os.pathsep) if 'PYTHONPATH' in os.environ else []
         return result
 
     def log_environment(self) -> None:
@@ -295,8 +295,9 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
                 self.PATHDIR_root_instemp_project()
             )
 
-        os.environ['PATH'] = str(self.PATHDIR_root_instemp_project() / 'bin') + os.pathsep + os.environ['PATH']
-        os.environ['PYTHONPATH'] = str(self.PATHDIR_root_instemp_project() / 'lib') + os.pathsep + os.environ['PYTHONPATH']
+        os.environ['PATH'] = str(self.PATHDIR_root_instemp_project() / 'bin') + os.pathsep + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
+        os.environ['PYTHONPATH'] = str(self.PATHDIR_root_instemp_project() / 'lib') + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
+
         logger.info('Build and Install ("%project%")'.replace('%project%', self.project_NAME()))
 
         self.log_environment()
@@ -319,8 +320,8 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
                 self.PATHDIR_root_ins_project()
             )
 
-        os.environ['PATH'] = str(self.PATHDIR_root_ins_project() / 'bin') + os.pathsep + os.environ['PATH']
-        os.environ['PYTHONPATH'] = str(self.PATHDIR_root_ins_project() / 'lib') + os.pathsep + os.environ['PYTHONPATH']
+        os.environ['PATH'] = str(self.PATHDIR_root_ins_project() / 'bin') + os.pathsep + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
+        os.environ['PYTHONPATH'] = str(self.PATHDIR_root_ins_project() / 'lib') + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
 
         if self.PATHDIR_root_instemp_project().is_dir():
             shutil.rmtree(self.PATHDIR_root_instemp_project())
