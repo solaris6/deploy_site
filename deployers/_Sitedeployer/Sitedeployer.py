@@ -414,7 +414,7 @@ from %projektorworkshop_projektorworkshopsitepubflaskpackage%.flask_app import a
             wsgipy_fc
         )
 
-        logger.info('wsgipy file begin <' + wsgipy_fc + 'wsgipy file end >')
+        logger.info('WSGIPY_FILE_BEGIN[[[' + wsgipy_fc + ']]]WSGIPY_FILE_END')
         logger.info('Write wsgi.py file!')
 
         logger.info('Process wsgi.py!')
