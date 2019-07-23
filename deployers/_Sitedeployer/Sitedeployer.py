@@ -426,11 +426,11 @@ from %projektorworkshop_projektorworkshopsitepubflaskpackage%.flask_app import a
         for i,ynsight_project_installed in enumerate(self._ynsight_projects_installed):
             ynsight_projects_packages_syspaths_appends += ('' if i==0 else '\n') +\
 "os.environ['PATH'] += os.pathsep + '/home/%pythonanywhere_username%/root/ins/%dependency_NAME%/bin'"\
-    .replace('%dependency_NAME%', ynsight_project_installed.project_NAME())
+    .replace('%dependency_NAME%', ynsight_project_installed)
 
             ynsight_projects_packages_PATH_appends += ('' if i==0 else '\n') +\
 "sys.path = ['/home/%pythonanywhere_username%/root/ins/%dependency_NAME%/lib'] + sys.path"\
-    .replace('%dependency_NAME%', ynsight_project_installed.project_NAME())
+    .replace('%dependency_NAME%', ynsight_project_installed)
 
         wsgipy_fc = wsgipy_template\
             .replace('%ynsight_projects_packages_syspaths_appends%', ynsight_projects_packages_syspaths_appends)\
