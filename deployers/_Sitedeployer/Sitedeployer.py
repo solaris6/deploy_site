@@ -148,9 +148,6 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
         subprocess.run(['projekt'], shell=True)
         subprocess.run(['myrta'], shell=True)
         subprocess.run(['agent'], shell=True)
-        subprocess.run(['which', 'projekt'], shell=True)
-        subprocess.run(['which', 'myrta'], shell=True)
-        subprocess.run(['which', 'agent'], shell=True)
         logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"!'.replace('%temp_ynsight_project%', temp_ynsight_project.project_NAME()))
 
     def process_temp_ynsight_dependencies(self) -> None:
@@ -199,9 +196,6 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
                 subprocess.run(['projekt'], shell=True)
                 subprocess.run(['myrta'], shell=True)
                 subprocess.run(['agent'], shell=True)
-                subprocess.run(['which', 'projekt'], shell=True)
-                subprocess.run(['which', 'myrta'], shell=True)
-                subprocess.run(['which', 'agent'], shell=True)
                 self._ynsight_projects_installed.append(ynsight_dependency)
             logger.info('Clonebuildinstall ynsight project: "%ynsight_project%"!'.replace('%ynsight_project%', ynsight_dependency.project_NAME()))
         logger.info('Process ynsight dependencies!')

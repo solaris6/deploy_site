@@ -29,7 +29,7 @@ class ynsight_WorkshopSitedeployer(
         return 'ssh'
 
     @staticmethod
-    def workshop_projekts() -> List[Type[Projekt_Sitedeployer]]:
+    def workshop_projects() -> List[Type[Projekt_Sitedeployer]]:
         from deployers.Projekt.base_ProjektSitedeployer import base_ProjektSitedeployer
         from deployers.Projekt.projekt_ProjektSitedeployer import projekt_ProjektSitedeployer
         from deployers.Projekt.myrta_ProjektSitedeployer import myrta_ProjektSitedeployer
