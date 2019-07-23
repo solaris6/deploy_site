@@ -26,7 +26,6 @@ class Sitedeployer:
         self._ynsight_projects_installed = []
 
 
-
     @staticmethod
     def environment_report() -> Dict[str,Any]:
         result = {}
@@ -145,6 +144,9 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
         logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"...'.replace('%temp_ynsight_project%', temp_ynsight_project.project_NAME()))
         self.log_environment()
         temp_ynsight_project.clonebuildinstalltemp_project()
+        subprocess.run(['projekt'])
+        subprocess.run(['myrta'])
+        subprocess.run(['agent'])
         self.log_environment()
         logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"!'.replace('%temp_ynsight_project%', temp_ynsight_project.project_NAME()))
 
@@ -256,8 +258,9 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
             )
             logger.info('Cloning project repository!')
 
-
-    def buildinstall_project(self) -> None:
+    def clonebuildinstall_project(self) -> None:
+        logger.info('Process project...')
+        self.clone_project()
         logger.info('Build and Install project...')
         PATHDIR_root_repositories_projectrepository_ins = self.PATHDIR_root_repositories_projectrepository() / 'src/ins'
 
@@ -267,14 +270,12 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
                 self.PATHDIR_root_ins_project()
             )
         logger.info('Build and Install project!')
-
-    def clonebuildinstall_project(self) -> None:
-        self.clone_project()
-        self.buildinstall_project()
+        logger.info('Process project!')
 
 
     # temp installs:
-    def buildinstalltemp_project(self) -> None:
+    def clonebuildinstalltemp_project(self) -> None:
+        self.clone_project()
         logger.info('Build and Install temp project...')
         PATHDIR_root_repositories_projectrepository_ins = self.PATHDIR_root_repositories_projectrepository() / 'src/ins'
 
@@ -288,17 +289,6 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
         sys.path.append(str(self.PATHDIR_root_instemp_project() / 'lib'))
 
         logger.info('Build and Install temp project!')
-
-    def clonebuildinstalltemp_project(self) -> None:
-        self.clone_project()
-        self.buildinstalltemp_project()
-
-
-    def process_project(self) -> None:
-        logger.info('Process project...')
-        self.clone_project()
-        self.buildinstall_project()
-        logger.info('Process project!')
 
 
 
@@ -457,7 +447,7 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
         self.process_common()
         self.process_temp_ynsight_dependencies()
         self.process_ynsight_dependencies()
-        self.process_project()
+        self.clonebuildinstall_project()
         self.process_projektorworkshop()
 
 
