@@ -131,9 +131,9 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
     # temp ynsight dependencies:
     @staticmethod
     def temp_ynsight_dependencies() -> List[Type['Projekt_Sitedeployer']]:
-        from deployers.Projekt.base_ProjektSitedeployer import base_ProjektSitedeployer
-        from deployers.Projekt.projekt_ProjektSitedeployer import projekt_ProjektSitedeployer
-        from deployers.Projekt.myrta_ProjektSitedeployer import myrta_ProjektSitedeployer
+        from deployers.builtin.projekt.base_ProjektSitedeployer import base_ProjektSitedeployer
+        from deployers.builtin.projekt.projekt_ProjektSitedeployer import projekt_ProjektSitedeployer
+        from deployers.builtin.projekt.myrta_ProjektSitedeployer import myrta_ProjektSitedeployer
         return [
             base_ProjektSitedeployer,
             projekt_ProjektSitedeployer,
@@ -166,9 +166,9 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
     # ynsight dependencies:
     @staticmethod
     def ynsight_dependencies_common() -> List[Type['Sitedeployer']]:
-        from deployers.Projekt.base_ProjektSitedeployer import base_ProjektSitedeployer
-        from deployers.Projekt.projekt_ProjektSitedeployer import projekt_ProjektSitedeployer
-        from deployers.Projekt.myrta_ProjektSitedeployer import myrta_ProjektSitedeployer
+        from deployers.builtin.projekt.base_ProjektSitedeployer import base_ProjektSitedeployer
+        from deployers.builtin.projekt.projekt_ProjektSitedeployer import projekt_ProjektSitedeployer
+        from deployers.builtin.projekt.myrta_ProjektSitedeployer import myrta_ProjektSitedeployer
         return [
             base_ProjektSitedeployer,
             projekt_ProjektSitedeployer,

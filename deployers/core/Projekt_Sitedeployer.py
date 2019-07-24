@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import List, Type
 
-from deployers._Sitedeployer.Sitedeployer import Sitedeployer, logger
+from deployers.core.Sitedeployer import Sitedeployer, logger
 
 
 class Projekt_Sitedeployer(

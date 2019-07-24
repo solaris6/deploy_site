@@ -1,10 +1,9 @@
 from pathlib import Path
 from typing import Type, List
 
-from deployers.Projekt._Projekt_Sitedeployer import Projekt_Sitedeployer, logger
+from deployers.core.Projekt_Sitedeployer import Projekt_Sitedeployer, logger
 
-
-class Ln_ProjektSitedeployer(
+class rs_ProjektSitedeployer(
     Projekt_Sitedeployer
 ):
     def __init__(self,
@@ -16,11 +15,11 @@ class Ln_ProjektSitedeployer(
 
     @staticmethod
     def project_NAME() -> str:
-        return 'Ln'
+        return 'rs'
     
     @staticmethod
     def pythonanywhere_username() -> str:
-        return 'getln'
+        return 'getrs'
 
     @staticmethod
     def github_url_type() -> str:
@@ -28,14 +27,14 @@ class Ln_ProjektSitedeployer(
 
     @staticmethod
     def ynsight_dependencies_self() -> List[Type[Projekt_Sitedeployer]]:
-        from deployers.Projekt.una_ProjektSitedeployer import una_ProjektSitedeployer
-        from deployers.Projekt.rs_ProjektSitedeployer import rs_ProjektSitedeployer
-        from deployers.Projekt.fw_ProjektSitedeployer import fw_ProjektSitedeployer
-        from deployers.Projekt.sola_ProjektSitedeployer import sola_ProjektSitedeployer
+        from deployers.builtin.projekt.una_ProjektSitedeployer import una_ProjektSitedeployer
+        from deployers.builtin.projekt.fw_ProjektSitedeployer import fw_ProjektSitedeployer
+        from deployers.builtin.projekt.sola_ProjektSitedeployer import sola_ProjektSitedeployer
+        from deployers.builtin.projekt.Ln_ProjektSitedeployer import Ln_ProjektSitedeployer
         return [
             una_ProjektSitedeployer,
             # rs_ProjektSitedeployer,
-            fw_ProjektSitedeployer,
+            # fw_ProjektSitedeployer,
             # sola_ProjektSitedeployer,
             # Ln_ProjektSitedeployer
         ]

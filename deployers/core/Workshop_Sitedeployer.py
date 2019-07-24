@@ -1,8 +1,8 @@
 from pathlib import Path
 from typing import Type, List
 
-from deployers.Projekt._Projekt_Sitedeployer import Projekt_Sitedeployer
-from deployers._Sitedeployer.Sitedeployer import Sitedeployer, logger
+from deployers.core.Projekt_Sitedeployer import Projekt_Sitedeployer
+from deployers.core.Sitedeployer import Sitedeployer, logger
 
 
 
