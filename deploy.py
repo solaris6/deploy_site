@@ -2,6 +2,18 @@ import sys
 from pathlib import Path
 
 import logging
+
+from deployers.builtin.projekt.Ln_ProjektSitedeployer import Ln_ProjektSitedeployer
+from deployers.builtin.projekt.base_ProjektSitedeployer import base_ProjektSitedeployer
+from deployers.builtin.projekt.cgbase_ProjektSitedeployer import cgbase_ProjektSitedeployer
+from deployers.builtin.projekt.fw_ProjektSitedeployer import fw_ProjektSitedeployer
+from deployers.builtin.projekt.myrta_ProjektSitedeployer import myrta_ProjektSitedeployer
+from deployers.builtin.projekt.projekt_ProjektSitedeployer import projekt_ProjektSitedeployer
+from deployers.builtin.projekt.rs_ProjektSitedeployer import rs_ProjektSitedeployer
+from deployers.builtin.projekt.sola_ProjektSitedeployer import sola_ProjektSitedeployer
+from deployers.builtin.projekt.una_ProjektSitedeployer import una_ProjektSitedeployer
+from deployers.builtin.workshop.ynsight_WorkshopSitedeployer import ynsight_WorkshopSitedeployer
+
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
 formatter = logging.Formatter("[deploy] - %(asctime)s - %(levelname)s - %(message)s")
@@ -9,17 +21,6 @@ handler.setFormatter(formatter)
 handler.setLevel(logging.DEBUG)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
-
-from deployers.Projekt.Ln_ProjektSitedeployer import Ln_ProjektSitedeployer
-from deployers.Projekt.base_ProjektSitedeployer import base_ProjektSitedeployer
-from deployers.Projekt.cgbase_ProjektSitedeployer import cgbase_ProjektSitedeployer
-from deployers.Projekt.fw_ProjektSitedeployer import fw_ProjektSitedeployer
-from deployers.Projekt.myrta_ProjektSitedeployer import myrta_ProjektSitedeployer
-from deployers.Projekt.projekt_ProjektSitedeployer import projekt_ProjektSitedeployer
-from deployers.Projekt.rs_ProjektSitedeployer import rs_ProjektSitedeployer
-from deployers.Projekt.sola_ProjektSitedeployer import sola_ProjektSitedeployer
-from deployers.Projekt.una_ProjektSitedeployer import una_ProjektSitedeployer
-from deployers.Workshop.ynsight_WorkshopSitedeployer import ynsight_WorkshopSitedeployer
 
 if __name__ == '__main__':
     logger.info('Deploy site...')
