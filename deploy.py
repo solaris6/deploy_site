@@ -10,6 +10,8 @@ from deployers.builtin.projekt.fw_ProjektSitedeployer import fw_ProjektSitedeplo
 from deployers.builtin.projekt.myrta_ProjektSitedeployer import myrta_ProjektSitedeployer
 from deployers.builtin.projekt.projekt_ProjektSitedeployer import projekt_ProjektSitedeployer
 from deployers.builtin.projekt.rs_ProjektSitedeployer import rs_ProjektSitedeployer
+from deployers.builtin.projekt.rsdata_ProjektSitedeployer import rsdata_ProjektSitedeployer
+from deployers.builtin.projekt.sc_ProjektSitedeployer import sc_ProjektSitedeployer
 from deployers.builtin.projekt.sola_ProjektSitedeployer import sola_ProjektSitedeployer
 from deployers.builtin.projekt.una_ProjektSitedeployer import una_ProjektSitedeployer
 from deployers.builtin.workshop.ynsight_WorkshopSitedeployer import ynsight_WorkshopSitedeployer
@@ -32,6 +34,8 @@ if __name__ == '__main__':
         'getmyrta': myrta_ProjektSitedeployer,
         'getuna': una_ProjektSitedeployer,
         'getrs': rs_ProjektSitedeployer,
+        'getrsdata': rsdata_ProjektSitedeployer,
+        'getsc': sc_ProjektSitedeployer,
         'getfw': fw_ProjektSitedeployer,
         'getsola': sola_ProjektSitedeployer,
         'getln': Ln_ProjektSitedeployer,
