@@ -305,7 +305,7 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
         subprocess.run(
             ['projekt', 'task', 'build', 'default', 'execute'],
             cwd=self.PATHDIR_root_repositories_projectrepository(),
-            shell=True
+            # shell=True
         )
 
         if PATHDIR_root_repositories_projectrepository_ins.is_dir() and not self.PATHDIR_root_ins_project().is_dir():
