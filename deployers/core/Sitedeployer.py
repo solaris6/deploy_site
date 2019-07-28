@@ -484,7 +484,11 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
         self.process_temp_ynsight_dependencies()
 
         self.process_ynsight_dependencies()
-        self.clonebuildinstall_project()
+
+        if not self.project_NAME() in self._ynsight_projects_installed:
+            self._ynsight_projects_installed.append(self.project_NAME())
+            self.clonebuildinstall_project()
+
         self.process_projektorworkshop()
 
 
