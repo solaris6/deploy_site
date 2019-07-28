@@ -197,9 +197,9 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
             logger.info('Clonebuildinstall ynsight project: "%ynsight_project%"!'.replace('%ynsight_project%', ynsight_dependency.project_NAME()))
 
         logger.info('Test ynsight dependencies...')
-        subprocess.run(['projekt', 'task', 'execute', 'build', 'default'], shell=True)
-        subprocess.run(['myrta', 'task', 'execute', 'build', 'default'], shell=True)
-        subprocess.run(['agent', 'task', 'execute', 'build', 'default'], shell=True)
+        subprocess.run(['projekt', 'task', 'build', 'default', 'execute'], shell=True)
+        subprocess.run(['myrta', 'task', 'build', 'default', 'execute'], shell=True)
+        subprocess.run(['agent', 'task', 'build', 'default', 'execute'], shell=True)
         logger.info('Test ynsight dependencies!')
 
         logger.info('Process ynsight dependencies!')
