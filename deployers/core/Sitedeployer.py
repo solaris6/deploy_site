@@ -57,17 +57,11 @@ class Sitedeployer:
     def PATHDIR_home_pythonanywhereusername_root(self) -> Path:
         return self._PATHFILE_deploypy.parent.parent.parent
 
+    def PATHDIR_root(self) -> Path:
+        return self.PATHDIR_home_pythonanywhereusername_root()
+
     def PATHDIR_home_pythonanywhereusername(self) -> Path:
         return self.PATHDIR_home_pythonanywhereusername_root().parent
-
-    def PATHDIR_root_repositories(self) -> Path:
-        return self.PATHDIR_home_pythonanywhereusername_root() / 'repositories'
-
-    def PATHDIR_root_build(self) -> Path:
-        return self.PATHDIR_home_pythonanywhereusername_root() / 'build'
-
-    def PATHDIR_root_buildtemp(self) -> Path:
-        return self.PATHDIR_home_pythonanywhereusername_root() / 'buildtemp'
 
     def PATHDIR_root_ins(self) -> Path:
         return self.PATHDIR_home_pythonanywhereusername_root() / 'ins'
@@ -97,7 +91,6 @@ URL_site=%URL_site%
 PATHDIR_home_pythonanywhereusername_root=%PATHDIR_home_pythonanywhereusername_root%
 PATHDIR_home_pythonanywhereusername=%PATHDIR_home_pythonanywhereusername%
 
-PATHDIR_root_repositories=%PATHDIR_root_repositories%
 PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_deploypy=%PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_deploypy%
 PATHDIR_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage=%PATHDIR_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage%
 PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhereusername_root_sitedeployer%'''
@@ -108,7 +101,6 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
             \
             .replace('%PATHDIR_home_pythonanywhereusername_root%', str(self.PATHDIR_home_pythonanywhereusername_root()))
             .replace('%PATHDIR_home_pythonanywhereusername%', str(self.PATHDIR_home_pythonanywhereusername()))
-            .replace('%PATHDIR_root_repositories%', str(self.PATHDIR_root_repositories()))
             .replace('%PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_deploypy%',
                      str(self.PATHFILE_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage_deploypy()))
             .replace('%PATHDIR_home_pythonanywhereusername_root_sitedeployer_sitedeployerpackage%',
@@ -118,9 +110,6 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
         logger.info('Resolve common paths!')
 
         logger.info('Make common dirs...')
-        self.PATHDIR_root_repositories().mkdir(parents=True)
-        self.PATHDIR_root_build().mkdir(parents=True)
-        self.PATHDIR_root_buildtemp().mkdir(parents=True)
         self.PATHDIR_root_ins().mkdir(parents=True)
         self.PATHDIR_root_instemp().mkdir(parents=True)
         logger.info('Make common dirs!')
@@ -210,15 +199,8 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
         raise NotImplementedError("")
 
 
-    def PATHDIR_root_repositories_projectrepository(self) -> Path:
-        return self.PATHDIR_root_repositories() / self.project_NAME()
-
-
-    def PATHDIR_root_build_project(self) -> Path:
-        return self.PATHDIR_root_build() / self.project_NAME()
-
-    def PATHDIR_root_buildtemp_project(self) -> Path:
-        return self.PATHDIR_root_buildtemp() / self.project_NAME()
+    def PATHDIR_root_projectrepository(self) -> Path:
+        return self.PATHDIR_root() / self.project_NAME()
 
     def PATHDIR_root_ins_project(self) -> Path:
         return self.PATHDIR_root_ins() / self.project_NAME()
@@ -259,10 +241,10 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
 
     def clone_project(self) -> None:
         logger.info('Clone "%project%" repository...'.replace('%project%', self.project_NAME()))
-        if not self.PATHDIR_root_repositories_projectrepository().is_dir():
+        if not self.PATHDIR_root_projectrepository().is_dir():
             subprocess.run(
                 ['git', 'clone', self.URL_github_project_repository()],
-                cwd=str(self.PATHDIR_root_repositories())
+                cwd=str(self.PATHDIR_root())
             )
             logger.info('Clone "%project%" repository!'.replace('%project%', self.project_NAME()))
 
@@ -275,11 +257,11 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
         self.clone_project()
 
         logger.info('Build and Install ("%project%")'.replace('%project%', self.project_NAME()))
-        PATHDIR_root_repositories_projectrepository_ins = self.PATHDIR_root_repositories_projectrepository() / 'src/ins'
+        PATHDIR_root_projectrepository_ins = self.PATHDIR_root_projectrepository() / 'src/ins'
 
-        if PATHDIR_root_repositories_projectrepository_ins.is_dir() and not self.PATHDIR_root_instemp_project().is_dir():
+        if PATHDIR_root_projectrepository_ins.is_dir() and not self.PATHDIR_root_instemp_project().is_dir():
             shutil.copytree(
-                PATHDIR_root_repositories_projectrepository_ins,
+                PATHDIR_root_projectrepository_ins,
                 self.PATHDIR_root_instemp_project()
             )
 
@@ -300,17 +282,17 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
         self.clone_project()
 
         logger.info('Build and Install ("%project%")'.replace('%project%', self.project_NAME()))
-        PATHDIR_root_repositories_projectrepository_ins = self.PATHDIR_root_repositories_projectrepository() / 'src/ins'
+        PATHDIR_root_projectrepository_ins = self.PATHDIR_root_projectrepository() / 'src/ins'
 
         subprocess.run(
             ['projekt', 'task', 'build', 'default', 'execute'],
-            cwd=self.PATHDIR_root_repositories_projectrepository(),
+            cwd=self.PATHDIR_root_projectrepository(),
             # shell=True
         )
 
-        if PATHDIR_root_repositories_projectrepository_ins.is_dir() and not self.PATHDIR_root_ins_project().is_dir():
+        if PATHDIR_root_projectrepository_ins.is_dir() and not self.PATHDIR_root_ins_project().is_dir():
             shutil.copytree(
-                PATHDIR_root_repositories_projectrepository_ins,
+                PATHDIR_root_projectrepository_ins,
                 self.PATHDIR_root_ins_project()
             )
 
@@ -340,8 +322,8 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
     def projektorworkshop_package(cls) -> str:
         return cls.projektorworkshop_Type() + '_' + cls.project_NAME()
     
-    def PATHDIR_root_repositories_projectrepository_projektorworkshop(self) -> Path:
-        return self.PATHDIR_root_repositories_projectrepository() / ('_' + self.projektorworkshop_Type())
+    def PATHDIR_root_projectrepository_projektorworkshop(self) -> Path:
+        return self.PATHDIR_root_projectrepository() / ('_' + self.projektorworkshop_Type())
 
 
     def PATHDIR_root_projektorworkshop(self) -> Path:
@@ -358,22 +340,22 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
         logger.info('Process projektorworkshop...')
         logger.info(
 '''# projektorworkshop paths:
-PATHDIR_root_repositories_projectrepository_projektorworkshop=%PATHDIR_root_repositories_projectrepository_projektorworkshop%
+PATHDIR_root_projectrepository_projektorworkshop=%PATHDIR_root_projectrepository_projektorworkshop%
 
 PATHDIR_root_projektorworkshop=%PATHDIR_root_projektorworkshop%
 PATHDIR_root_projektorworkshop_projektorworkshoppackage=%PATHDIR_root_projektorworkshop_projektorworkshoppackage%
 PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage=%PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage%'''
 
-            .replace('%PATHDIR_root_repositories_projectrepository_projektorworkshop%', str(self.PATHDIR_root_repositories_projectrepository_projektorworkshop()))
+            .replace('%PATHDIR_root_projectrepository_projektorworkshop%', str(self.PATHDIR_root_projectrepository_projektorworkshop()))
             .replace('%PATHDIR_root_projektorworkshop%', str(self.PATHDIR_root_projektorworkshop()))
             .replace('%PATHDIR_root_projektorworkshop_projektorworkshoppackage%', str(self.PATHDIR_root_projektorworkshop_projektorworkshoppackage()))
             .replace('%PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage%', str(self.PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage()))
         )
 
         logger.info('Install projektorworkshop...')
-        if self.PATHDIR_root_repositories_projectrepository().is_dir():
+        if self.PATHDIR_root_projectrepository().is_dir():
             shutil.copytree(
-                self.PATHDIR_root_repositories_projectrepository_projektorworkshop(),
+                self.PATHDIR_root_projectrepository_projektorworkshop(),
                 self.PATHDIR_root_projektorworkshop()
             )
         logger.info('Install projektorworkshop!')
