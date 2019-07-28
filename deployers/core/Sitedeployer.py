@@ -145,9 +145,6 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
     ) -> None:
         logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"...'.replace('%temp_ynsight_project%', temp_ynsight_project.project_NAME()))
         temp_ynsight_project.clonebuildinstalltemp_project()
-        subprocess.run(['projekt'], shell=True)
-        subprocess.run(['myrta'], shell=True)
-        subprocess.run(['agent'], shell=True)
         logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"!'.replace('%temp_ynsight_project%', temp_ynsight_project.project_NAME()))
 
     def process_temp_ynsight_dependencies(self) -> None:
