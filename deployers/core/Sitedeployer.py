@@ -186,7 +186,6 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
     def process_ynsight_dependencies(self) -> None:
         logger.info('Process ynsight dependencies...')
         for ynsight_dependency in self.ynsight_dependencies_all():
-
             ynsight_dependency=ynsight_dependency(
                 PATHFILE_deploypy=self._PATHFILE_deploypy
             )
@@ -195,12 +194,6 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
                 self._ynsight_projects_installed.append(ynsight_dependency.project_NAME())
                 ynsight_dependency.clonebuildinstall_project()
             logger.info('Clonebuildinstall ynsight project: "%ynsight_project%"!'.replace('%ynsight_project%', ynsight_dependency.project_NAME()))
-
-        logger.info('Test ynsight dependencies...')
-        subprocess.run(['projekt', 'task', 'build', 'default', 'execute'], shell=True)
-        subprocess.run(['myrta', 'task', 'build', 'default', 'execute'], shell=True)
-        subprocess.run(['agent', 'task', 'build', 'default', 'execute'], shell=True)
-        logger.info('Test ynsight dependencies!')
 
         logger.info('Process ynsight dependencies!')
 
@@ -312,6 +305,12 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
         logger.info('Build and Install ("%project%")'.replace('%project%', self.project_NAME()))
         PATHDIR_root_repositories_projectrepository_ins = self.PATHDIR_root_repositories_projectrepository() / 'src/ins'
 
+        subprocess.run(
+            ['projekt', 'task', 'build', 'default', 'execute'],
+            cwd=self.PATHDIR_root_repositories_projectrepository(),
+            shell=True
+        )
+
         if PATHDIR_root_repositories_projectrepository_ins.is_dir() and not self.PATHDIR_root_ins_project().is_dir():
             shutil.copytree(
                 PATHDIR_root_repositories_projectrepository_ins,
@@ -382,7 +381,6 @@ PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage=%PATHDIR_roo
             )
         logger.info('Install projektorworkshop!')
         logger.info('Process projektorworkshop!')
-
 
 
 
