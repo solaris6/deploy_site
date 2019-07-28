@@ -4,7 +4,7 @@ from typing import Type, List
 from targets.core.Projekttarget import Projekttarget
 from targets.core.Workshoptarget import Workshoptarget, logger
 
-:
+
 class ynsight_Workshoptarget(
     Workshoptarget
 ):
