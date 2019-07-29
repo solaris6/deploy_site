@@ -74,6 +74,9 @@ class Project:
     def PATHDIR_root_instemp_project(self) -> Path:
         return self.PATHDIR_root_instemp() / self.NAME()
 
+    def PATHDIR_root_out_proojektorworkshop(self) -> Path:
+        return self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/_%projektorworkshop%'.replace('%project%', self.NAME()).replace('%projektorworkshop%', self.projektorworkshop_Type())
+
 
     def is_installed(self) -> bool:
         raise NotImplementedError("")

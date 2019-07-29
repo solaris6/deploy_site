@@ -23,6 +23,15 @@ class Projektproject(
         self._install_as_workshopcard_toggle = False
         self._is_installed_as_workshopcard = False
 
+
+
+    def PATHDIR_root_out_ins_bin(self) -> Path:
+        return self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/bin'.replace('%project%', self.NAME())
+
+    def PATHDIR_root_out_ins_lib(self) -> Path:
+        return self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/lib'.replace('%project%', self.NAME())
+
+
     def projektorworkshop_Type(self) -> str:
         return 'projekt'
 
@@ -33,6 +42,9 @@ class Projektproject(
 
     def is_installed(self) -> bool:
         return self.is_installed_as_lib() or self.is_installed_as_target() or self.is_installed_as_workshopcard()
+
+
+
 
 
 
@@ -136,8 +148,7 @@ class Projektproject(
 
         subprocess.run(
             ['projekt', 'task', 'build', 'default', 'execute'],
-            cwd=self.PATHDIR_root_projectrepository(),
-            # shell=True
+            cwd=self.PATHDIR_root_projectrepository()
         )
 
         logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
@@ -149,7 +160,11 @@ class Projektproject(
 
 
         self._wsgipy_entry += \
-'''install_as_lib'''
+"""# install_as_lib:
+sys.path = [%PATHDIR_root_out_ins_lib%] + sys.path
+os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_ins_bin%'"""\
+            .replace('%PATHDIR_root_out_ins_lib%', str(self.PATHDIR_root_out_ins_lib()))\
+            .replace('%PATHDIR_root_out_ins_bin%', str(self.PATHDIR_root_out_ins_bin()))
 
 
         self.uninstall_as_temp()
@@ -173,8 +188,7 @@ class Projektproject(
 
         subprocess.run(
             ['projekt', 'task', 'build', 'default', 'execute'],
-            cwd=self.PATHDIR_root_projectrepository(),
-            # shell=True
+            cwd=self.PATHDIR_root_projectrepository()
         )
 
         logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
@@ -186,7 +200,13 @@ class Projektproject(
 
 
         self._wsgipy_entry += \
-'''install_as_lib_and_workshopcard'''
+"""# install_as_lib_and_workshopcard:
+sys.path = [%PATHDIR_root_out_proojektorworkshop%] + sys.path
+sys.path = [%PATHDIR_root_out_ins_lib%] + sys.path
+os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_ins_bin%'"""\
+            .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))\
+            .replace('%PATHDIR_root_out_ins_lib%', str(self.PATHDIR_root_out_ins_lib()))\
+            .replace('%PATHDIR_root_out_ins_bin%', str(self.PATHDIR_root_out_ins_bin()))
 
 
         self.uninstall_as_temp()
@@ -213,8 +233,7 @@ class Projektproject(
 
         subprocess.run(
             ['projekt', 'task', 'build', 'default', 'execute'],
-            cwd=self.PATHDIR_root_projectrepository(),
-            # shell=True
+            cwd=self.PATHDIR_root_projectrepository()
         )
 
         logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
@@ -226,7 +245,9 @@ class Projektproject(
 
 
         self._wsgipy_entry += \
-'''install_as_target'''
+'''# install_as_target:
+sys.path = [%PATHDIR_root_out_proojektorworkshop%] + sys.path'''\
+            .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))
 
 
         self.uninstall_as_temp()
@@ -236,44 +257,6 @@ class Projektproject(
         log_environment(logger=logger)
         self._is_installed_as_target = True
         logger.info('Install as target "%project%" project!'.replace('%project%', self.NAME()))
-
-
-
-
-
-    def install_as_target_and_lib(self) -> None:
-        logger.info('Install as target and lib "%project%" project...'.replace('%project%', self.NAME()))
-
-        self.clone_project()
-
-        logger.info('Build and Install ("%project%")'.replace('%project%', self.NAME()))
-
-        subprocess.run(
-            ['projekt', 'task', 'build', 'default', 'execute'],
-            cwd=self.PATHDIR_root_projectrepository(),
-            # shell=True
-        )
-
-        logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
-        log_environment(logger=logger)
-        os.environ['PATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/bin'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
-        os.environ['PYTHONPATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/lib'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
-        log_environment(logger=logger)
-        logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables!'.replace('%project%', self.NAME()))
-
-
-        self._wsgipy_entry += \
-'''install_as_target_and_lib'''
-
-
-        self.uninstall_as_temp()
-
-        logger.info('Build and Install ("%project%")!'.replace('%project%', self.NAME()))
-
-        log_environment(logger=logger)
-        self._is_installed_as_target = True
-        logger.info('Install as target and lib "%project%" project!'.replace('%project%', self.NAME()))
-
 
 
     def set_install_as_workshopcard_toggle(self,
@@ -296,20 +279,13 @@ class Projektproject(
 
         subprocess.run(
             ['projekt', 'task', 'build', 'default', 'execute'],
-            cwd=self.PATHDIR_root_projectrepository(),
-            # shell=True
+            cwd=self.PATHDIR_root_projectrepository()
         )
 
-        logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
-        log_environment(logger=logger)
-        os.environ['PATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/bin'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
-        os.environ['PYTHONPATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/lib'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
-        log_environment(logger=logger)
-        logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables!'.replace('%project%', self.NAME()))
-
-
         self._wsgipy_entry += \
-'''install_as_workshopcard'''
+'''# install_as_workshopcard
+sys.path = [%PATHDIR_root_out_proojektorworkshop%] + sys.path'''\
+            .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))
 
 
         self.uninstall_as_temp()
@@ -322,12 +298,13 @@ class Projektproject(
 
     def report(self) -> str:
         return \
-'''NAME: "%NAME%", temp: [%install_as_temp_toggle%, %is_installed_as_temp%], workshopcard: [%install_as_workshopcard_toggle%, %is_installed_as_workshopcard%], target: [%install_as_target_toggle%, %is_installed_as_target%], lib: [%install_as_lib_toggle%, %is_installed_as_lib%]'''\
-    .replace('%install_as_temp_toggle%', str(self.install_as_temp_toggle()))\
-    .replace('%is_installed_as_temp%', str(self.is_installed_as_temp()))\
-    .replace('%install_as_workshopcard_toggle%', str(self.install_as_workshopcard_toggle()))\
-    .replace('%is_installed_as_workshopcard%', str(self.is_installed_as_workshopcard()))\
-    .replace('%install_as_target_toggle%', str(self.install_as_target_toggle()))\
-    .replace('%is_installed_as_target%', str(self.is_installed_as_target()))\
-    .replace('%install_as_lib_toggle%', str(self.install_as_lib_toggle()))\
-    .replace('%is_installed_as_lib%', str(self.is_installed_as_lib()))
+'''NAME: "%NAME%", temp: { toggle: %install_as_temp_toggle%, installed: %is_installed_as_temp% }, workshopcard: { toggle: %install_as_workshopcard_toggle%, installed: %is_installed_as_workshopcard% }, target: { toggle: %install_as_target_toggle%, installed: %is_installed_as_target% }, lib: { toggle: %install_as_lib_toggle%, installed: %is_installed_as_lib% }'''\
+    .replace('%NAME%', self.NAME())\
+    .replace('%install_as_temp_toggle%',         str(1 if self.install_as_temp_toggle() else 0))\
+    .replace('%is_installed_as_temp%',           str(1 if self.is_installed_as_temp() else 0))\
+    .replace('%install_as_workshopcard_toggle%', str(1 if self.install_as_workshopcard_toggle() else 0))\
+    .replace('%is_installed_as_workshopcard%',   str(1 if self.is_installed_as_workshopcard() else 0))\
+    .replace('%install_as_target_toggle%',       str(1 if self.install_as_target_toggle() else 0))\
+    .replace('%is_installed_as_target%',         str(1 if self.is_installed_as_target() else 0))\
+    .replace('%install_as_lib_toggle%',          str(1 if self.install_as_lib_toggle() else 0))\
+    .replace('%is_installed_as_lib%',            str(1 if self.is_installed_as_lib() else 0))

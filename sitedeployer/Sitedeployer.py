@@ -120,12 +120,10 @@ PATHFILE_wsgipy=%PATHFILE_wsgipy%'''
 '''import sys, os
 from pathlib import Path
 
-
-
 # projects entries:
 %projects_entries%
 
-from %projektorworkshop_projektorworkshopsitepubflaskpackage%.flask_app import app as application
+from %projektorworkshop%_%project%.flask_app import app as application
 '''
 
         projects_entries = ''
@@ -133,7 +131,9 @@ from %projektorworkshop_projektorworkshopsitepubflaskpackage%.flask_app import a
             projects_entries += ('' if i==0 else '\n\n') + '# ' + project.report() + ':\n' + project.wsgipy_entry()
 
         wsgipy_fc = wsgipy_template\
-            .replace('%projects_entries%', projects_entries)
+            .replace('%projects_entries%', projects_entries)\
+            .replace('%projektorworkshop%', self.target_project().projektorworkshop_Type())\
+            .replace('%project%', self.target_project().NAME())
 
         self.PATHFILE_wsgipy().write_text(
             wsgipy_fc
@@ -231,9 +231,7 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
                     project.install_as_workshopcard()
         logger.info('Process lib/workshopcard dependencies!')
 
-        if isinstance(self.target_project(), Projektproject) and self.target_project().install_as_target_toggle() and self.target_project().install_as_lib_toggle():
-            self.target_project().install_as_target_and_lib()
-        elif self.target_project().install_as_target_toggle():
+        if self.target_project().install_as_target_toggle():
             self.target_project().install_as_target()
 
         self.process_wsgipy()
