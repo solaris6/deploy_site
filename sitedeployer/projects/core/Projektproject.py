@@ -142,8 +142,8 @@ class Projektproject(
 
         logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
         log_environment(logger=logger)
-        os.environ['PATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/bin'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
-        os.environ['PYTHONPATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/lib'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
+        os.environ['PATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/bin'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
+        os.environ['PYTHONPATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/lib'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
         log_environment(logger=logger)
         logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables!'.replace('%project%', self.NAME()))
 
@@ -179,8 +179,8 @@ class Projektproject(
 
         logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
         log_environment(logger=logger)
-        os.environ['PATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/bin'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
-        os.environ['PYTHONPATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/lib'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
+        os.environ['PATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/distrib/lnx/ins/bin'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
+        os.environ['PYTHONPATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/lib'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
         log_environment(logger=logger)
         logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables!'.replace('%project%', self.NAME()))
 
@@ -219,8 +219,8 @@ class Projektproject(
 
         logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
         log_environment(logger=logger)
-        os.environ['PATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/bin'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
-        os.environ['PYTHONPATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/lib'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
+        os.environ['PATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/bin'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
+        os.environ['PYTHONPATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/lib'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
         log_environment(logger=logger)
         logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables!'.replace('%project%', self.NAME()))
 
@@ -256,8 +256,8 @@ class Projektproject(
 
         logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
         log_environment(logger=logger)
-        os.environ['PATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/bin'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
-        os.environ['PYTHONPATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/lib'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
+        os.environ['PATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/bin'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
+        os.environ['PYTHONPATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/lib'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
         log_environment(logger=logger)
         logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables!'.replace('%project%', self.NAME()))
 
@@ -302,8 +302,8 @@ class Projektproject(
 
         logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
         log_environment(logger=logger)
-        os.environ['PATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/bin'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
-        os.environ['PYTHONPATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/lib'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
+        os.environ['PATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/bin'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
+        os.environ['PYTHONPATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/lib'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
         log_environment(logger=logger)
         logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables!'.replace('%project%', self.NAME()))
 
