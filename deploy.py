@@ -30,7 +30,7 @@ from sitedeployer.projects.builtin.workshop.ynsight_Workshopproject import ynsig
 if __name__ == '__main__':
     logger.info('Deploy site...')
     PATHFILE_deploypy = Path(sys.argv[0])
-    pythonanywhere_username = PATHFILE_deploypy.parent.parent.parent.parent.name
+    pythonanywhere_username = PATHFILE_deploypy.parent.parent.parent.name
 
     target_project = {
         'getbase': base_Projektproject,
