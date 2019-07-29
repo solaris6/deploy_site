@@ -26,8 +26,7 @@ class Project:
         self._PYTHONPATH_old = None
         self._sitedeployer = None
 
-        self._wsgipy_entry = '# "%name%" project:'\
-            .replace('%NAME%', self.NAME())
+        self._wsgipy_entry = ''
 
 #             projects_packages_syspaths_appends += ('' if i==0 else '\n') +\
 # "os.environ['PATH'] += os.pathsep + '/home/%pythonanywhere_username%/root/ins/%dependency_NAME%/bin'"\
@@ -161,3 +160,6 @@ class Project:
 
     def wsgipy_entry(self) -> str:
         return self._wsgipy_entry
+
+    def report(self) -> str:
+        raise NotImplementedError("")

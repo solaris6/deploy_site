@@ -271,3 +271,15 @@ class Projektproject(
             logger.info('Install as workshopcard "%project%" project!'.replace('%project%', self.NAME()))
         else:
             logger.info('Install as workshopcard "%project%" project already installed, skipped!'.replace('%project%', self.NAME()))
+
+    def report(self) -> str:
+        return \
+'''NAME: "%NAME%", temp: [%install_as_temp_toggle%, %is_installed_as_temp%], workshopcard: [%install_as_workshopcard_toggle%, %is_installed_as_workshopcard%], target: [%install_as_target_toggle%, %is_installed_as_target%], lib: [%install_as_lib_toggle%, %is_installed_as_lib%]'''\
+    .replace('%install_as_temp_toggle%', str(self.install_as_temp_toggle()))\
+    .replace('%is_installed_as_temp%', str(self.is_installed_as_temp()))\
+    .replace('%install_as_workshopcard_toggle%', str(self.install_as_workshopcard_toggle()))\
+    .replace('%is_installed_as_workshopcard%', str(self.is_installed_as_workshopcard()))\
+    .replace('%install_as_target_toggle%', str(self.install_as_target_toggle()))\
+    .replace('%is_installed_as_target%', str(self.is_installed_as_target()))\
+    .replace('%install_as_lib_toggle%', str(self.install_as_lib_toggle()))\
+    .replace('%is_installed_as_lib%', str(self.is_installed_as_lib()))

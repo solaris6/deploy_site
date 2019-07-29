@@ -61,3 +61,10 @@ class Workshopproject(
             logger.info('Install as target "%project%" project!'.replace('%project%', self.NAME()))
         else:
             logger.info('Install as target "%project%" project already installed, skipped!'.replace('%project%', self.NAME()))
+
+
+    def report(self) -> str:
+        return \
+'''NAME: "%NAME%", target: [%install_as_target_toggle%, %is_installed_as_target%]'''\
+    .replace('%install_as_target_toggle%', str(self.install_as_target_toggle()))\
+    .replace('%is_installed_as_target%', str(self.is_installed_as_target()))

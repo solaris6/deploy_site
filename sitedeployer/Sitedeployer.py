@@ -130,7 +130,7 @@ from %projektorworkshop_projektorworkshopsitepubflaskpackage%.flask_app import a
 
         projects_entries = ''
         for i,project in enumerate(self.projects_all()):
-            projects_entries += ('' if i==0 else '\n\n') + project.wsgipy_entry()
+            projects_entries += ('' if i==0 else '\n\n') + '# ' + project.report() + ':\n' + project.wsgipy_entry()
 
         wsgipy_fc = wsgipy_template\
             .replace('%projects_entries%', projects_entries)
@@ -219,14 +219,14 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
 
 
         logger.info('Process lib/workshopcard dependencies...')
-        for projekt in self.projects_all():
-            if projekt.install_as_lib_toggle() and projekt.install_as_workshopcard_toggle():
+        for project in self.projects_all():
+            if project.install_as_lib_toggle() and project.install_as_workshopcard_toggle():
                 project.install_as_lib_and_workshopcard()
 
-            elif projekt.install_as_lib_toggle():
+            elif project.install_as_lib_toggle():
                 project.install_as_lib()
 
-            elif projekt.install_as_workshopcard_toggle():
+            elif project.install_as_workshopcard_toggle():
                 project.install_as_workshopcard()
         logger.info('Process lib/workshopcard dependencies!')
 
