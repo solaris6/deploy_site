@@ -31,6 +31,10 @@ class Projektproject(
         return remove_duplicates(self.dependencies_lib_Types_all())
 
 
+    def is_installed(self) -> bool:
+        return self.is_installed_as_lib() or self.is_installed_as_target() or self.is_installed_as_workshopcard()
+
+
 
     def set_install_as_temp_toggle(self,
         value:bool=None
@@ -135,12 +139,6 @@ class Projektproject(
                 # shell=True
             )
 
-            if PATHDIR_root_projectrepository_ins.is_dir() and not self.PATHDIR_root_ins_project().is_dir():
-                shutil.copytree(
-                    PATHDIR_root_projectrepository_ins,
-                    self.PATHDIR_root_ins_project()
-                )
-
             logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
             log_environment(logger=logger)
             os.environ['PATH'] = str(self.PATHDIR_root_ins_project() / 'bin') + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
@@ -176,12 +174,6 @@ class Projektproject(
                 cwd=self.PATHDIR_root_projectrepository(),
                 # shell=True
             )
-
-            if PATHDIR_root_projectrepository_ins.is_dir() and not self.PATHDIR_root_ins_project().is_dir():
-                shutil.copytree(
-                    PATHDIR_root_projectrepository_ins,
-                    self.PATHDIR_root_ins_project()
-                )
 
             logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
             log_environment(logger=logger)
@@ -221,12 +213,6 @@ class Projektproject(
                 cwd=self.PATHDIR_root_projectrepository(),
                 # shell=True
             )
-
-            if PATHDIR_root_projectrepository_ins.is_dir() and not self.PATHDIR_root_ins_project().is_dir():
-                shutil.copytree(
-                    PATHDIR_root_projectrepository_ins,
-                    self.PATHDIR_root_ins_project()
-                )
 
             logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
             log_environment(logger=logger)
@@ -272,12 +258,6 @@ class Projektproject(
                 cwd=self.PATHDIR_root_projectrepository(),
                 # shell=True
             )
-
-            if PATHDIR_root_projectrepository_ins.is_dir() and not self.PATHDIR_root_ins_project().is_dir():
-                shutil.copytree(
-                    PATHDIR_root_projectrepository_ins,
-                    self.PATHDIR_root_ins_project()
-                )
 
             logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
             log_environment(logger=logger)

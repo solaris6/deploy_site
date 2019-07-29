@@ -29,6 +29,10 @@ class Workshopproject(
         )
 
 
+    def is_installed(self) -> bool:
+        return self.is_installed_as_target()
+
+
     def install_as_target(self) -> None:
         logger.info('Install as target "%project%" project...'.replace('%project%', self.NAME()))
 
@@ -43,12 +47,6 @@ class Workshopproject(
                 cwd=self.PATHDIR_root_projectrepository(),
                 # shell=True
             )
-
-            if PATHDIR_root_projectrepository_ins.is_dir() and not self.PATHDIR_root_ins_project().is_dir():
-                shutil.copytree(
-                    PATHDIR_root_projectrepository_ins,
-                    self.PATHDIR_root_ins_project()
-                )
 
             logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
             log_environment(logger=logger)

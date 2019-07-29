@@ -24,10 +24,18 @@ class Project:
 
         self._PATH_old = None
         self._PYTHONPATH_old = None
-        self._projects_installed = []
         self._sitedeployer = None
 
+        self._wsgipy_entry = '# "%name%" project:'\
+            .replace('%NAME%', self.NAME())
 
+#             projects_packages_syspaths_appends += ('' if i==0 else '\n') +\
+# "os.environ['PATH'] += os.pathsep + '/home/%pythonanywhere_username%/root/ins/%dependency_NAME%/bin'"\
+#     .replace('%dependency_NAME%', project_installed)
+#
+#             projects_packages_PATH_appends += ('' if i==0 else '\n') +\
+# "sys.path = ['/home/%pythonanywhere_username%/root/ins/%dependency_NAME%/lib'] + sys.path"\
+#     .replace('%dependency_NAME%', project_installed)
 
     def attach_to_sitedeployer(self,
         sitedeployer:'Sitedeployer'=None
@@ -41,11 +49,8 @@ class Project:
     def PATHDIR_root(self) -> Path:
         return self.sitedeployer().PATHDIR_root()
 
-    def PATHDIR_root_ins(self) -> Path:
-        return self.sitedeployer().PATHDIR_root_ins()
-
     def PATHDIR_root_instemp(self) -> Path:
-        return self.sitedeployer().PATHDIR_root_ins()
+        return self.sitedeployer().PATHDIR_root_instemp()
 
 
     def NAME(self) -> str:
@@ -60,17 +65,19 @@ class Project:
     def github_url_type(self) -> str:
         raise NotImplementedError("")
 
+    def projektorworkshop_Type(self) -> str:
+        raise NotImplementedError("")
+
 
     def PATHDIR_root_projectrepository(self) -> Path:
         return self.PATHDIR_root() / self.NAME()
-
-    def PATHDIR_root_ins_project(self) -> Path:
-        return self.PATHDIR_root_ins() / self.NAME()
 
     def PATHDIR_root_instemp_project(self) -> Path:
         return self.PATHDIR_root_instemp() / self.NAME()
 
 
+    def is_installed(self) -> bool:
+        raise NotImplementedError("")
 
 
     def set_install_as_target_toggle(self,
@@ -152,51 +159,5 @@ class Project:
         else:
             logger.info('Cloned "%project%" already exists, skipped...'.replace('%project%', self.NAME()))
 
-    # projektorworkshop:
-    def projektorworkshop_Type(self) -> str:
-        raise NotImplementedError("")
-
-    def projektorworkshop_projektorworkshopsitepubflaskpackage(self) -> str:
-        return self.projektorworkshop_Type() + 'sitepub_' + self.NAME()
-
-    def projektorworkshop_package(self) -> str:
-        return self.projektorworkshop_Type() + '_' + self.NAME()
-
-    def PATHDIR_root_projectrepository_projektorworkshop(self) -> Path:
-        return self.PATHDIR_root_projectrepository() / ('_' + self.projektorworkshop_Type())
-
-
-    def PATHDIR_root_projektorworkshop(self) -> Path:
-        return self.PATHDIR_root() / ('_' + self.projektorworkshop_Type())
-
-    def PATHDIR_root_projektorworkshop_projektorworkshoppackage(self) -> Path:
-        return self.PATHDIR_root_projektorworkshop() / self.projektorworkshop_package()
-
-    def PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage(self) -> Path:
-        return self.PATHDIR_root_projektorworkshop() / self.projektorworkshop_projektorworkshopsitepubflaskpackage()
-
-
-    def process_projektorworkshop(self) -> None:
-        logger.info('Process projektorworkshop...')
-        logger.info(
-'''# projektorworkshop paths:
-PATHDIR_root_projectrepository_projektorworkshop=%PATHDIR_root_projectrepository_projektorworkshop%
-
-PATHDIR_root_projektorworkshop=%PATHDIR_root_projektorworkshop%
-PATHDIR_root_projektorworkshop_projektorworkshoppackage=%PATHDIR_root_projektorworkshop_projektorworkshoppackage%
-PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage=%PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage%'''
-
-            .replace('%PATHDIR_root_projectrepository_projektorworkshop%', str(self.PATHDIR_root_projectrepository_projektorworkshop()))
-            .replace('%PATHDIR_root_projektorworkshop%', str(self.PATHDIR_root_projektorworkshop()))
-            .replace('%PATHDIR_root_projektorworkshop_projektorworkshoppackage%', str(self.PATHDIR_root_projektorworkshop_projektorworkshoppackage()))
-            .replace('%PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage%', str(self.PATHDIR_root_projektorworkshop_projektorworkshopsitepubflaskpackage()))
-        )
-
-        logger.info('Install projektorworkshop...')
-        if self.PATHDIR_root_projectrepository().is_dir():
-            shutil.copytree(
-                self.PATHDIR_root_projectrepository_projektorworkshop(),
-                self.PATHDIR_root_projektorworkshop()
-            )
-        logger.info('Install projektorworkshop!')
-        logger.info('Process projektorworkshop!')
+    def wsgipy_entry(self) -> str:
+        return self._wsgipy_entry
