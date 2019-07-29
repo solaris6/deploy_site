@@ -15,7 +15,7 @@ class fw_Projektproject(
     def github_url_type(self) -> str:
         return 'ssh'
 
-    def dependencies_lib_Types(self) -> List[Type[Projektproject]]:
+    def dependencies_lib_self_Types(self) -> List[Type[Projektproject]]:
         from sitedeployer.projects.builtin.projekt.una_Projektproject import una_Projektproject
         from sitedeployer.projects.builtin.projekt.rs_Projektproject import rs_Projektproject
         from sitedeployer.projects.builtin.projekt.sola_Projektproject import sola_Projektproject

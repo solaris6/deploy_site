@@ -37,7 +37,7 @@ class ynsight_Workshopproject(
             Ln_Projektproject
         ]
 
-    def dependencies_lib_Types(self) -> List[Type[Projektproject]]:
+    def dependencies_lib_self_Types(self) -> List[Type[Projektproject]]:
         from sitedeployer.projects.builtin.projekt.una_Projektproject import una_Projektproject
         from sitedeployer.projects.builtin.projekt.rs_Projektproject import rs_Projektproject
         from sitedeployer.projects.builtin.projekt.fw_Projektproject import fw_Projektproject
