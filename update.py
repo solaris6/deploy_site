@@ -17,21 +17,18 @@ if __name__ == '__main__':
 
     PATHFILE_updatepy = Path(sys.argv[0])
     PATHDIR_root = PATHFILE_updatepy.parent / 'root'
-    PATHDIR_root_sitedeployer = PATHDIR_root / '_sitedeployer'
-    PATHDIR_root_sitedeployer_sitedeployerpackage = PATHDIR_root_sitedeployer / 'sitedeployer'
-    PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy = PATHDIR_root_sitedeployer_sitedeployerpackage / 'deploy.py'
+    PATHDIR_root_sitedeployer = PATHDIR_root / 'sitedeployer'
+    PATHFILE_root_sitedeployer_deploypy = PATHDIR_root_sitedeployer / 'deploy.py'
 
     logger.info(
 '''PATHFILE_updatepy=%PATHFILE_updatepy%
 PATHDIR_root=%PATHDIR_root%
 PATHDIR_root_sitedeployer=%PATHDIR_root_sitedeployer%
-PATHDIR_root_sitedeployer_sitedeployerpackage=%PATHDIR_root_sitedeployer_sitedeployerpackage%
-PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy=%PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy%'''
+PATHFILE_root_sitedeployer_deploypy=%PATHFILE_root_sitedeployer_deploypy%'''
           .replace('%PATHFILE_updatepy%', str(PATHFILE_updatepy))
           .replace('%PATHDIR_root%', str(PATHDIR_root))
           .replace('%PATHDIR_root_sitedeployer%', str(PATHDIR_root_sitedeployer))
-          .replace('%PATHDIR_root_sitedeployer_sitedeployerpackage%', str(PATHDIR_root_sitedeployer_sitedeployerpackage))
-          .replace('%PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy%', str(PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy))
+          .replace('%PATHFILE_root_sitedeployer_deploypy%', str(PATHFILE_root_sitedeployer_deploypy))
     )
 
     logger.info('Create root dir...')
@@ -40,18 +37,17 @@ PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy=%PATHFILE_root_sitedeplo
     PATHDIR_root.mkdir()
     logger.info('Create root dir!')
 
-    logger.info('Update sitedeployerpackage...')
-    PATHDIR_root_sitedeployer.mkdir()
+    logger.info('Update sitedeployer package...')
     subprocess.run(
         ['git', 'clone', 'https://github.com/solaris6/sitedeployer.git'],
-        cwd=str(PATHDIR_root_sitedeployer)
+        cwd=str(PATHDIR_root)
     )
-    logger.info('Update sitedeployerpackage!')
+    logger.info('Update sitedeployer package!')
 
-    logger.info('Use sitedeployerpackage...')
+    logger.info('Use sitedeployer package...')
     subprocess.run(
-        ['python3.6', PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy]
+        ['python3.6', PATHFILE_root_sitedeployer_deploypy]
     )
-    logger.info('Use sitedeployerpackage!')
+    logger.info('Use sitedeployer package!')
 
     logger.info('Update sitedeployer package then use them to update site!')

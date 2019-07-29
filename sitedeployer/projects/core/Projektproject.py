@@ -4,8 +4,8 @@ import subprocess
 from pathlib import Path
 from typing import List, Type
 
-from projects.core.Project import Project, logger
-from utils import log_environment
+from sitedeployer.projects.core.Project import Project, logger
+from sitedeployer.utils import log_environment
 
 
 class Projektproject(
@@ -27,7 +27,7 @@ class Projektproject(
         return 'projekt'
 
     def dependencies_Types_all(self) -> List[Type['Project']]:
-        from base.util import remove_duplicates
+        from sitedeployer.utils import remove_duplicates
         return remove_duplicates(self.dependencies_lib_Types_all())
 
 

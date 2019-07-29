@@ -9,8 +9,6 @@ from typing import Type, List, Dict, Any
 
 import logging
 
-from utils import log_environment
-
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
 formatter = logging.Formatter("[sitedeployer] - %(asctime)s - %(levelname)s - %(message)s")
@@ -23,7 +21,6 @@ class Project:
     def __init__(self):
         self._install_as_target_toggle = False
         self._is_installed_as_target = False
-
 
         self._PATH_old = None
         self._PYTHONPATH_old = None
@@ -98,9 +95,9 @@ class Project:
         raise NotImplementedError("")
 
     def dependencies_lib_common_Types(self) -> List[Type['Project']]:
-        from projects.builtin.projekt.base_Projektproject import base_Projektproject
-        from projects.builtin.projekt.projekt_Projektproject import projekt_Projektproject
-        from projects.builtin.projekt.myrta_Projektproject import myrta_Projektproject
+        from sitedeployer.projects.builtin.projekt.base_Projektproject import base_Projektproject
+        from sitedeployer.projects.builtin.projekt.projekt_Projektproject import projekt_Projektproject
+        from sitedeployer.projects.builtin.projekt.myrta_Projektproject import myrta_Projektproject
         return [
             base_Projektproject,
             projekt_Projektproject,
