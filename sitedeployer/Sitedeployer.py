@@ -1,6 +1,8 @@
 import logging
 from typing import List
 
+from sitedeployer.projects.core.Projektproject import Projektproject
+
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
 formatter = logging.Formatter("[deployer] - %(asctime)s - %(levelname)s - %(message)s")
@@ -118,9 +120,7 @@ PATHFILE_wsgipy=%PATHFILE_wsgipy%'''
 '''import sys, os
 from pathlib import Path
 
-# PATHDIR_projektorworkshop = Path('/home/%pythonanywhere_username%/root/_%projektorworkshop%')
-# if not str(PATHDIR_projektorworkshop) in sys.path:
-#     sys.path = [str(PATHDIR_projektorworkshop)] + sys.path
+
 
 # projects entries:
 %projects_entries%
@@ -220,17 +220,21 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
 
         logger.info('Process lib/workshopcard dependencies...')
         for project in self.projects_all():
-            if project.install_as_lib_toggle() and project.install_as_workshopcard_toggle():
-                project.install_as_lib_and_workshopcard()
+            if not project is self.target_project():
+                if project.install_as_lib_toggle() and project.install_as_workshopcard_toggle():
+                    project.install_as_lib_and_workshopcard()
 
-            elif project.install_as_lib_toggle():
-                project.install_as_lib()
+                elif project.install_as_lib_toggle():
+                    project.install_as_lib()
 
-            elif project.install_as_workshopcard_toggle():
-                project.install_as_workshopcard()
+                elif project.install_as_workshopcard_toggle():
+                    project.install_as_workshopcard()
         logger.info('Process lib/workshopcard dependencies!')
 
-        self.target_project().install_as_target()
+        if isinstance(self.target_project(), Projektproject) and self.target_project().install_as_target_toggle() and self.target_project().install_as_lib_toggle():
+            self.target_project().install_as_target_and_lib()
+        elif self.target_project().install_as_target_toggle():
+            self.target_project().install_as_target()
 
         self.process_wsgipy()
 

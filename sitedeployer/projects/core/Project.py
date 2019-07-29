@@ -29,11 +29,11 @@ class Project:
         self._wsgipy_entry = ''
 
 #             projects_packages_syspaths_appends += ('' if i==0 else '\n') +\
-# "os.environ['PATH'] += os.pathsep + '/home/%pythonanywhere_username%/root/ins/%dependency_NAME%/bin'"\
+# "os.environ['PATH'] += os.pathsep + '/home/%pythonanywhere_username%/root/distrib/%dependency_NAME%/bin'"\
 #     .replace('%dependency_NAME%', project_installed)
 #
 #             projects_packages_PATH_appends += ('' if i==0 else '\n') +\
-# "sys.path = ['/home/%pythonanywhere_username%/root/ins/%dependency_NAME%/lib'] + sys.path"\
+# "sys.path = ['/home/%pythonanywhere_username%/root/distrib/%dependency_NAME%/lib'] + sys.path"\
 #     .replace('%dependency_NAME%', project_installed)
 
     def attach_to_sitedeployer(self,
@@ -91,6 +91,9 @@ class Project:
         return self._is_installed_as_target
 
     def install_as_target(self) -> None:
+        raise NotImplementedError("")
+
+    def install_as_target_and_lib(self) -> None:
         raise NotImplementedError("")
 
 
