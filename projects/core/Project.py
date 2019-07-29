@@ -19,12 +19,17 @@ handler.setLevel(logging.DEBUG)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
-class Target:
+class Project:
     def __init__(self):
+        self._install_as_target_toggle = False
+        self._is_installed_as_target = False
+
+
         self._PATH_old = None
         self._PYTHONPATH_old = None
-        self._ynsight_projects_installed = []
+        self._projects_installed = []
         self._sitedeployer = None
+
 
 
     def attach_to_sitedeployer(self,
@@ -44,36 +49,6 @@ class Target:
 
     def PATHDIR_root_instemp(self) -> Path:
         return self.sitedeployer().PATHDIR_root_ins()
-
-
-    # temp ynsight dependencies:
-    def temp_ynsight_dependencies(self) -> List[Type['Projekttarget']]:
-        from targets.builtin.projekt.base_Projekttarget import base_Projekttarget
-        from targets.builtin.projekt.projekt_Projekttarget import projekt_Projekttarget
-        from targets.builtin.projekt.myrta_Projekttarget import myrta_Projekttarget
-        return [
-            base_Projekttarget,
-            projekt_Projekttarget,
-            myrta_Projekttarget
-        ]
-
-
-    # ynsight dependencies:
-    def ynsight_dependencies_common(self) -> List[Type['Target']]:
-        from targets.builtin.projekt.base_Projekttarget import base_Projekttarget
-        from targets.builtin.projekt.projekt_Projekttarget import projekt_Projekttarget
-        from targets.builtin.projekt.myrta_Projekttarget import myrta_Projekttarget
-        return [
-            base_Projekttarget,
-            projekt_Projekttarget,
-            myrta_Projekttarget
-        ]
-
-    def ynsight_dependencies_self(self) -> List[Type['Target']]:
-        raise NotImplementedError("")
-
-    def ynsight_dependencies_all(self) -> List[Type['Target']]:
-        raise NotImplementedError("")
 
 
     def NAME(self) -> str:
@@ -97,6 +72,46 @@ class Target:
 
     def PATHDIR_root_instemp_project(self) -> Path:
         return self.PATHDIR_root_instemp() / self.NAME()
+
+
+
+
+    def set_install_as_target_toggle(self,
+        value:bool=None
+    ) -> None:
+        self._install_as_target_toggle = value
+
+    def install_as_target_toggle(self) -> bool:
+        return self._install_as_target_toggle
+
+    def is_installed_as_target(self) -> bool:
+        return self._is_installed_as_target
+
+    def install_as_target(self) -> None:
+        raise NotImplementedError("")
+
+
+    def dependencies_lib_self_Types(self) -> List[Type['Project']]:
+        raise NotImplementedError("")
+
+    def dependencies_Types_all(self) -> List[Type['Project']]:
+        raise NotImplementedError("")
+
+    def dependencies_lib_common_Types(self) -> List[Type['Project']]:
+        from projects.builtin.projekt.base_Projektproject import base_Projektproject
+        from projects.builtin.projekt.projekt_Projektproject import projekt_Projektproject
+        from projects.builtin.projekt.myrta_Projektproject import myrta_Projektproject
+        return [
+            base_Projektproject,
+            projekt_Projektproject,
+            myrta_Projektproject
+        ]
+
+    def dependencies_lib_Types_all(self) -> List[Type['Project']]:
+        return self.dependencies_lib_common_Types() + self.dependencies_lib_self_Types()
+
+    def dependencies_lib_temp_Types(self) -> List[Type['Project']]:
+        return self.dependencies_lib_common_Types()
 
 
 
@@ -137,68 +152,8 @@ class Target:
                 cwd=str(self.PATHDIR_root())
             )
             logger.info('Clone "%project%" repository!'.replace('%project%', self.NAME()))
-
-
-
-    def clonebuildinstalltemp(self) -> None:
-        logger.info('Clone/Build/Install "%project%" temp project...'.replace('%project%', self.NAME()))
-        log_environment(logger=logger)
-
-        self.clone_project()
-
-        logger.info('Build and Install ("%project%")'.replace('%project%', self.NAME()))
-        PATHDIR_root_projectrepository_ins = self.PATHDIR_root_projectrepository() / 'src/ins'
-
-        if PATHDIR_root_projectrepository_ins.is_dir() and not self.PATHDIR_root_instemp_project().is_dir():
-            shutil.copytree(
-                PATHDIR_root_projectrepository_ins,
-                self.PATHDIR_root_instemp_project()
-            )
-
-        os.environ['PATH'] = str(self.PATHDIR_root_instemp_project() / 'bin') + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
-        os.environ['PYTHONPATH'] = str(self.PATHDIR_root_instemp_project() / 'lib') + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
-
-        logger.info('Build and Install ("%project%")'.replace('%project%', self.NAME()))
-
-        log_environment(logger=logger)
-        logger.info('Clone/Build/Install "%project%" temp project!'.replace('%project%', self.NAME()))
-
-
-
-    def clonebuildinstall(self) -> None:
-        logger.info('Clone/Build/Install "%project%" project...'.replace('%project%', self.NAME()))
-        log_environment(logger=logger)
-
-        self.clone_project()
-
-        logger.info('Build and Install ("%project%")'.replace('%project%', self.NAME()))
-        PATHDIR_root_projectrepository_ins = self.PATHDIR_root_projectrepository() / 'src/ins'
-
-        subprocess.run(
-            ['projekt', 'task', 'build', 'default', 'execute'],
-            cwd=self.PATHDIR_root_projectrepository(),
-            # shell=True
-        )
-
-        if PATHDIR_root_projectrepository_ins.is_dir() and not self.PATHDIR_root_ins_project().is_dir():
-            shutil.copytree(
-                PATHDIR_root_projectrepository_ins,
-                self.PATHDIR_root_ins_project()
-            )
-
-        os.environ['PATH'] = str(self.PATHDIR_root_ins_project() / 'bin') + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
-        os.environ['PYTHONPATH'] = str(self.PATHDIR_root_ins_project() / 'lib') + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
-
-        if self.PATHDIR_root_instemp_project().is_dir():
-            shutil.rmtree(self.PATHDIR_root_instemp_project())
-
-        logger.info('Build and Install ("%project%")!'.replace('%project%', self.NAME()))
-
-        log_environment(logger=logger)
-        logger.info('Clone/Build/Install "%project%" project!'.replace('%project%', self.NAME()))
-
-
-
+        else:
+            logger.info('Cloned "%project%" already exists, skipped...'.replace('%project%', self.NAME()))
 
     # projektorworkshop:
     def projektorworkshop_Type(self) -> str:
@@ -209,7 +164,7 @@ class Target:
 
     def projektorworkshop_package(self) -> str:
         return self.projektorworkshop_Type() + '_' + self.NAME()
-    
+
     def PATHDIR_root_projectrepository_projektorworkshop(self) -> Path:
         return self.PATHDIR_root_projectrepository() / ('_' + self.projektorworkshop_Type())
 

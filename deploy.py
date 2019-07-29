@@ -5,7 +5,8 @@ from copy import copy
 from pathlib import Path
 from typing import Type, List
 
-from targets.core.Target import Target
+from projects.core.Project import Project
+from projects.core.Workshopproject import Workshopproject
 from utils import log_environment
 
 import logging
@@ -17,36 +18,36 @@ handler.setLevel(logging.DEBUG)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
-from targets.builtin.projekt.Ln_Projekttarget import Ln_Projekttarget
-from targets.builtin.projekt.base_Projekttarget import base_Projekttarget
-from targets.builtin.projekt.cgbase_Projekttarget import cgbase_Projekttarget
-from targets.builtin.projekt.fw_Projekttarget import fw_Projekttarget
-from targets.builtin.projekt.myrta_Projekttarget import myrta_Projekttarget
-from targets.builtin.projekt.projekt_Projekttarget import projekt_Projekttarget
-from targets.builtin.projekt.rs_Projekttarget import rs_Projekttarget
-from targets.builtin.projekt.rsdata_Projekttarget import rsdata_Projekttarget
-from targets.builtin.projekt.sc_Projekttarget import sc_Projekttarget
-from targets.builtin.projekt.sola_Projekttarget import sola_Projekttarget
-from targets.builtin.projekt.una_Projekttarget import una_Projekttarget
-from targets.builtin.workshop.ynsight_Workshoptarget import ynsight_Workshoptarget
+from projects.builtin.projekt.Ln_Projektproject import Ln_Projektproject
+from projects.builtin.projekt.base_Projektproject import base_Projektproject
+from projects.builtin.projekt.cgbase_Projektproject import cgbase_Projektproject
+from projects.builtin.projekt.fw_Projektproject import fw_Projektproject
+from projects.builtin.projekt.myrta_Projektproject import myrta_Projektproject
+from projects.builtin.projekt.projekt_Projektproject import projekt_Projektproject
+from projects.builtin.projekt.rs_Projektproject import rs_Projektproject
+from projects.builtin.projekt.rsdata_Projektproject import rsdata_Projektproject
+from projects.builtin.projekt.sc_Projektproject import sc_Projektproject
+from projects.builtin.projekt.sola_Projektproject import sola_Projektproject
+from projects.builtin.projekt.una_Projektproject import una_Projektproject
+from projects.builtin.workshop.ynsight_Workshopproject import ynsight_Workshopproject
+
 
 class Sitedeployer:
     def __init__(self,
         PATHFILE_deploypy:Path=None,
-        target:Target=None
+        target_project:Project=None
     ):
         self._PATHFILE_deploypy = PATHFILE_deploypy
-        self._target = target
+        self._target_project = target_project
 
         self._PATH_old = None
         self._PYTHONPATH_old = None
-        self._ynsight_projects_installed = []
 
-    def target(self) -> Target:
-        return self._target
+    def target_project(self) -> Project:
+        return self._target_project
 
     def pythonanywhere_username(self) -> str:
-        return self.target().pythonanywhere_username()
+        return self.target_project().pythonanywhere_username()
 
     def URL_site(self) -> str:
         return self.pythonanywhere_username() + '.pythonanywhere.com'
@@ -107,32 +108,6 @@ PATHDIR_home_pythonanywhereusername_root_sitedeployer=%PATHDIR_home_pythonanywhe
         logger.info('Process common!')
 
 
-    # temp ynsight dependencies:
-    def process_temp_ynsight_dependencies(self) -> None:
-        logger.info('Process temp ynsight dependencies...')
-        for temp_ynsight_dependency in self.target().temp_ynsight_dependencies():
-            logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"...'.replace('%temp_ynsight_project%', temp_ynsight_dependency.NAME()))
-            temp_ynsight_dependency(
-                PATHFILE_deploypy=self._PATHFILE_deploypy
-            ).clonebuildinstalltemp()
-            logger.info('Process temp_ynsight_project: "%temp_ynsight_project%"!'.replace('%temp_ynsight_project%', temp_ynsight_dependency.NAME()))
-        logger.info('Process temp ynsight dependencies!')
-
-
-    # ynsight dependencies:
-    def process_ynsight_dependencies(self) -> None:
-        logger.info('Process ynsight dependencies...')
-        for ynsight_dependency in self.target().ynsight_dependencies_all():
-            ynsight_dependency=ynsight_dependency(
-                PATHFILE_deploypy=self._PATHFILE_deploypy
-            )
-            logger.info('Clonebuildinstall ynsight project: "%ynsight_project%"...'.replace('%ynsight_project%', ynsight_dependency.NAME()))
-            if not ynsight_dependency.NAME() in self._ynsight_projects_installed:
-                self._ynsight_projects_installed.append(ynsight_dependency.NAME())
-                ynsight_dependency.clonebuildinstall()
-            logger.info('Clonebuildinstall ynsight project: "%ynsight_project%"!'.replace('%ynsight_project%', ynsight_dependency.NAME()))
-        logger.info('Process ynsight dependencies!')
-
 
     # process project:
     def github_username(self) -> str:
@@ -164,32 +139,32 @@ if not str(PATHDIR_projektorworkshop) in sys.path:
     sys.path = [str(PATHDIR_projektorworkshop)] + sys.path
 
 
-# Append ynsight project`s packages to sys.paths:
-%ynsight_projects_packages_syspaths_appends%
+# Append project`s packages to sys.paths:
+%projects_packages_syspaths_appends%
 
-# Append ynsight project`s executables to PATH envvar:
-%ynsight_projects_packages_PATH_appends%
+# Append project`s executables to PATH envvar:
+%projects_packages_PATH_appends%
 
 from %projektorworkshop_projektorworkshopsitepubflaskpackage%.flask_app import app as application
 '''
 
-        ynsight_projects_packages_syspaths_appends = ''
-        ynsight_projects_packages_PATH_appends = ''
-        for i,ynsight_project_installed in enumerate(self._ynsight_projects_installed):
-            ynsight_projects_packages_syspaths_appends += ('' if i==0 else '\n') +\
+        projects_packages_syspaths_appends = ''
+        projects_packages_PATH_appends = ''
+        for i,project_installed in enumerate(self._projects_installed):
+            projects_packages_syspaths_appends += ('' if i==0 else '\n') +\
 "os.environ['PATH'] += os.pathsep + '/home/%pythonanywhere_username%/root/ins/%dependency_NAME%/bin'"\
-    .replace('%dependency_NAME%', ynsight_project_installed)
+    .replace('%dependency_NAME%', project_installed)
 
-            ynsight_projects_packages_PATH_appends += ('' if i==0 else '\n') +\
+            projects_packages_PATH_appends += ('' if i==0 else '\n') +\
 "sys.path = ['/home/%pythonanywhere_username%/root/ins/%dependency_NAME%/lib'] + sys.path"\
-    .replace('%dependency_NAME%', ynsight_project_installed)
+    .replace('%dependency_NAME%', project_installed)
 
         wsgipy_fc = wsgipy_template\
-            .replace('%ynsight_projects_packages_syspaths_appends%', ynsight_projects_packages_syspaths_appends)\
-            .replace('%ynsight_projects_packages_PATH_appends%', ynsight_projects_packages_PATH_appends)\
-            .replace('%pythonanywhere_username%', self.target().pythonanywhere_username())\
+            .replace('%projects_packages_syspaths_appends%', projects_packages_syspaths_appends)\
+            .replace('%projects_packages_PATH_appends%', projects_packages_PATH_appends)\
+            .replace('%pythonanywhere_username%', self.target_project().pythonanywhere_username())\
             .replace('%projektorworkshop_projektorworkshopsitepubflaskpackage%', self.target().projektorworkshop_projektorworkshopsitepubflaskpackage())\
-            .replace('%projektorworkshop%', self.target().projektorworkshop_Type())
+            .replace('%projektorworkshop%', self.target_project().projektorworkshop_Type())
 
         self.PATHFILE_wsgipy().write_text(
             wsgipy_fc
@@ -228,6 +203,38 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
 
 
     def Execute(self) -> None:
+        projects_all = []
+
+        for project_Type in self.target_project().dependencies_Types_all():
+            if not project_Type is type(self.target_project()):
+                projects_all.append(
+                    project_Type()
+                )
+
+        projects_all += self.target_project()
+
+        for project in projects_all:
+            project.attach_to_sitedeployer(
+                sitedeployer=self
+            )
+
+        for project in projects_all:
+            if type(project) in self.target_project().dependencies_lib_temp_Types():
+                project.set_install_as_temp_toggle(
+                    value=True
+                )
+
+            if type(project) in self.target_project().dependencies_lib_Types_all():
+                project.set_install_as_lib_toggle(
+                    value=True
+                )
+
+            if isinstance(self.target_project(), Workshopproject) and\
+                type(project) in self.target_project().dependencies_workshop_Types():
+                project.set_install_as_workshopcard_toggle(
+                    value=True
+                )
+
         log_environment(logger=logger)
         self.process_common()
 
@@ -236,14 +243,28 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
         self._PYTHONPATH_old = copy(os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else ''
         log_environment(logger=logger)
 
-        self.process_temp_ynsight_dependencies()
-        self.process_ynsight_dependencies()
+        logger.info('Process temp dependencies...')
+        for project in projects_all:
+            if project.install_as_temp_toggle():
+                project.install_as_temp()
+        logger.info('Process temp dependencies!')
 
-        if not self.target().NAME() in self._ynsight_projects_installed:
-            self._ynsight_projects_installed.append(self.target().NAME())
-            self.target().clonebuildinstall()
 
-        self.target().process_projektorworkshop()
+        logger.info('Process lib/workshopcard dependencies...')
+        for projekt in projects_all:
+            if projekt.install_as_lib_toggle() and projekt.install_as_workshopcard_toggle():
+                project.install_as_lib_and_workshopcard()
+
+            elif projekt.install_as_lib_toggle():
+                project.install_as_lib()
+
+            elif projekt.install_as_workshopcard_toggle():
+                project.install_as_workshopcard()
+        logger.info('Process lib/workshopcard dependencies!')
+
+        self.target_project().install_as_target()
+
+        self.target_project().process_projektorworkshop()
 
         log_environment(logger=logger)
         os.environ['PATH'] = self._PATH_old
@@ -260,23 +281,27 @@ if __name__ == '__main__':
     PATHFILE_deploypy = Path(sys.argv[0])
     pythonanywhere_username = PATHFILE_deploypy.parent.parent.parent.parent.name
 
+    target_project = {
+        'getbase': base_Projektproject,
+        'getprojekt': projekt_Projektproject,
+        'getmyrta': myrta_Projektproject,
+        'getuna': una_Projektproject,
+        'getrs': rs_Projektproject,
+        'getrsdata': rsdata_Projektproject,
+        'getsc': sc_Projektproject,
+        'getfw': fw_Projektproject,
+        'getsola': sola_Projektproject,
+        'getln': Ln_Projektproject,
+        'getcgbase': cgbase_Projektproject,
+
+        'ynsight': ynsight_Workshopproject
+    }[pythonanywhere_username]()
+
+    target_project.set_install_as_target_toggle(value=True)
+
     Sitedeployer(
         PATHFILE_deploypy=PATHFILE_deploypy,
-        target={
-            'getbase': base_Projekttarget,
-            'getprojekt': projekt_Projekttarget,
-            'getmyrta': myrta_Projekttarget,
-            'getuna': una_Projekttarget,
-            'getrs': rs_Projekttarget,
-            'getrsdata': rsdata_Projekttarget,
-            'getsc': sc_Projekttarget,
-            'getfw': fw_Projekttarget,
-            'getsola': sola_Projekttarget,
-            'getln': Ln_Projekttarget,
-            'getcgbase': cgbase_Projekttarget,
-
-            'ynsight': ynsight_Workshoptarget
-        }[pythonanywhere_username]()
+        target_project=target_project
     ).Execute()
 
     logger.info('Deploy site!')

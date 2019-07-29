@@ -1,0 +1,66 @@
+import os
+import shutil
+import subprocess
+from pathlib import Path
+from typing import Type, List
+
+from projects.core.Projektproject import Projektproject
+from projects.core.Project import Project, logger
+from utils import log_environment
+
+
+class Workshopproject(
+    Project
+):
+    def __init__(self):
+        Project.__init__(self)
+
+    def projektorworkshop_Type(self) -> str:
+        return 'workshop'
+
+    def dependencies_workshop_Types(self) -> List[Type[Projektproject]]:
+        raise NotImplementedError("")
+
+    def dependencies_Types_all(self) -> List[Type['Project']]:
+        from base.util import remove_duplicates
+        return remove_duplicates(
+            self.dependencies_lib_Types_all() +\
+            self.dependencies_workshop_Types()
+        )
+
+
+    def install_as_target(self) -> None:
+        logger.info('Install as target "%project%" project...'.replace('%project%', self.NAME()))
+
+        if not self.is_installed_as_target():
+            self.clone_project()
+
+            logger.info('Build and Install ("%project%")'.replace('%project%', self.NAME()))
+            PATHDIR_root_projectrepository_ins = self.PATHDIR_root_projectrepository() / 'src/ins'
+
+            subprocess.run(
+                ['projekt', 'task', 'build', 'default', 'execute'],
+                cwd=self.PATHDIR_root_projectrepository(),
+                # shell=True
+            )
+
+            if PATHDIR_root_projectrepository_ins.is_dir() and not self.PATHDIR_root_ins_project().is_dir():
+                shutil.copytree(
+                    PATHDIR_root_projectrepository_ins,
+                    self.PATHDIR_root_ins_project()
+                )
+
+            logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
+            log_environment(logger=logger)
+            os.environ['PATH'] = str(self.PATHDIR_root_ins_project() / 'bin') + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
+            os.environ['PYTHONPATH'] = str(self.PATHDIR_root_ins_project() / 'lib') + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
+            log_environment(logger=logger)
+            logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables!'.replace('%project%', self.NAME()))
+
+            logger.info('Build and Install ("%project%")!'.replace('%project%', self.NAME()))
+
+            log_environment(logger=logger)
+            self._is_installed_as_target = True
+            logger.info('Install as target "%project%" project!'.replace('%project%', self.NAME()))
+        else:
+            logger.info('Install as target "%project%" project already installed, skipped!'.replace('%project%', self.NAME()))
