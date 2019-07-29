@@ -161,7 +161,7 @@ class Projektproject(
 
         self._wsgipy_entry += \
 """# install_as_lib:
-sys.path = [%PATHDIR_root_out_ins_lib%] + sys.path
+sys.path = ['%PATHDIR_root_out_ins_lib%'] + sys.path
 os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_ins_bin%'"""\
             .replace('%PATHDIR_root_out_ins_lib%', str(self.PATHDIR_root_out_ins_lib()))\
             .replace('%PATHDIR_root_out_ins_bin%', str(self.PATHDIR_root_out_ins_bin()))
@@ -201,8 +201,8 @@ os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_ins_bin%'"""\
 
         self._wsgipy_entry += \
 """# install_as_lib_and_workshopcard:
-sys.path = [%PATHDIR_root_out_proojektorworkshop%] + sys.path
-sys.path = [%PATHDIR_root_out_ins_lib%] + sys.path
+sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path
+sys.path = ['%PATHDIR_root_out_ins_lib%'] + sys.path
 os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_ins_bin%'"""\
             .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))\
             .replace('%PATHDIR_root_out_ins_lib%', str(self.PATHDIR_root_out_ins_lib()))\
@@ -246,7 +246,7 @@ os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_ins_bin%'"""\
 
         self._wsgipy_entry += \
 '''# install_as_target:
-sys.path = [%PATHDIR_root_out_proojektorworkshop%] + sys.path'''\
+sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path'''\
             .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))
 
 
@@ -284,7 +284,7 @@ sys.path = [%PATHDIR_root_out_proojektorworkshop%] + sys.path'''\
 
         self._wsgipy_entry += \
 '''# install_as_workshopcard
-sys.path = [%PATHDIR_root_out_proojektorworkshop%] + sys.path'''\
+sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path'''\
             .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))
 
 
@@ -298,7 +298,7 @@ sys.path = [%PATHDIR_root_out_proojektorworkshop%] + sys.path'''\
 
     def report(self) -> str:
         return \
-'''NAME: "%NAME%", temp: { toggle: %install_as_temp_toggle%, installed: %is_installed_as_temp% }, workshopcard: { toggle: %install_as_workshopcard_toggle%, installed: %is_installed_as_workshopcard% }, target: { toggle: %install_as_target_toggle%, installed: %is_installed_as_target% }, lib: { toggle: %install_as_lib_toggle%, installed: %is_installed_as_lib% }'''\
+'''NAME: "%NAME%", temp: { t: %install_as_temp_toggle%, i: %is_installed_as_temp% }, workshopcard: { t: %install_as_workshopcard_toggle%, i: %is_installed_as_workshopcard% }, target: { t: %install_as_target_toggle%, i: %is_installed_as_target% }, lib: { t: %install_as_lib_toggle%, i: %is_installed_as_lib% }'''\
     .replace('%NAME%', self.NAME())\
     .replace('%install_as_temp_toggle%',         str(1 if self.install_as_temp_toggle() else 0))\
     .replace('%is_installed_as_temp%',           str(1 if self.is_installed_as_temp() else 0))\

@@ -46,7 +46,7 @@ class Workshopproject(
 
         self._wsgipy_entry += \
 '''# install_as_target:
-sys.path = [%PATHDIR_root_out_proojektorworkshop%] + sys.path'''\
+sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path'''\
             .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))
 
 
@@ -59,7 +59,7 @@ sys.path = [%PATHDIR_root_out_proojektorworkshop%] + sys.path'''\
 
     def report(self) -> str:
         return \
-'''NAME: "%NAME%", target: { toggle: %install_as_target_toggle%, installed: %is_installed_as_target% }'''\
+'''NAME: "%NAME%", target: { t: %install_as_target_toggle%, i: %is_installed_as_target% }'''\
     .replace('%NAME%', self.NAME())\
     .replace('%install_as_target_toggle%', str(1 if self.install_as_target_toggle() else 0))\
     .replace('%is_installed_as_target%', str(1 if self.is_installed_as_target() else 0))
