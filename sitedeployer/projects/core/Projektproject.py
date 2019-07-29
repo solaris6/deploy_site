@@ -132,6 +132,12 @@ class Projektproject(
 
             logger.info('Build and Install ("%project%")'.replace('%project%', self.NAME()))
 
+            logger.info(str(self.sitedeployer()))
+            logger.info(str(self.sitedeployer().PATHDIR_root()))
+            logger.info(str(self.PATHDIR_root()))
+            logger.info(str(self.PATHDIR_root_projectrepository()))
+            logger.info(str(self.NAME()))
+
             subprocess.run(
                 ['projekt', 'task', 'build', 'default', 'execute'],
                 cwd=self.PATHDIR_root_projectrepository(),
