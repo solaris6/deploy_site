@@ -209,7 +209,7 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
                     project_Type()
                 )
 
-        projects_all += self.target_project()
+        projects_all += [self.target_project()]
 
         for project in projects_all:
             project.attach_to_sitedeployer(
