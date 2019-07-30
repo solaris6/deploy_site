@@ -111,7 +111,7 @@ class Sitedeployer:
 
             if isinstance(self.target_project(), Workshopproject) and\
                 type(project) in self.target_project().dependencies_workshop_Types():
-                project.set_install_as_workshopcard_toggle(
+                project.set_install_as_projektcard_toggle(
                     value=True
                 )
 
@@ -179,18 +179,18 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
         logger.info('Process temp dependencies!')
 
 
-        logger.info('Process lib/workshopcard dependencies...')
+        logger.info('Process lib/projektcard dependencies...')
         for project in self.projects_all():
             if not project is self.target_project():
-                if project.install_as_lib_toggle() and project.install_as_workshopcard_toggle():
-                    project.install_as_lib_and_workshopcard()
+                if project.install_as_lib_toggle() and project.install_as_projektcard_toggle():
+                    project.install_as_lib_and_projektcard()
 
                 elif project.install_as_lib_toggle():
                     project.install_as_lib()
 
-                elif project.install_as_workshopcard_toggle():
-                    project.install_as_workshopcard()
-        logger.info('Process lib/workshopcard dependencies!')
+                elif project.install_as_projektcard_toggle():
+                    project.install_as_projektcard()
+        logger.info('Process lib/projektcard dependencies!')
 
         if self.target_project().install_as_target_toggle():
             self.target_project().install_as_target()
