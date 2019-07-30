@@ -81,11 +81,11 @@ PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib: '%PATHDIR_root_out_type_NAME_
         logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
 
         if as_temp:
-            PATHDIR_bin = self.PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin()
-            PATHDIR_lib = self.PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib()
-        else:
             PATHDIR_bin = self.PATHDIR_root_instemp_project_bin()
             PATHDIR_lib = self.PATHDIR_root_instemp_project_lib()
+        else:
+            PATHDIR_bin = self.PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin()
+            PATHDIR_lib = self.PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib()
 
         log_environment(logger=logger)
         os.environ['PATH'] = str(PATHDIR_bin) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
