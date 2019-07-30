@@ -15,9 +15,24 @@ class Workshopproject(
     def __init__(self):
         Project.__init__(self)
 
-    def projektorworkshop_Type(self) -> str:
+
+    def Init(self) -> None:
+        Project.Init(self)
+        logger.info('Init Workshopproject...')
+        logger.info(
+'''PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib: '%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib%'
+'''
+            .replace('', '')
+        )
+        logger.info('Init Workshopproject!')
+
+
+    # names:
+    def projektorworkshop(self) -> str:
         return 'workshop'
 
+
+    # dependencies:
     def dependencies_workshop_Types(self) -> List[Type[Projektproject]]:
         raise NotImplementedError("")
 
@@ -29,10 +44,8 @@ class Workshopproject(
         )
 
 
-    def is_installed(self) -> bool:
-        return self.is_installed_as_target()
-
-
+    # build:
+    # as target:
     def install_as_target(self) -> None:
         logger.info('Install as target "%project%" project...'.replace('%project%', self.NAME()))
         self.clone_project()
@@ -48,7 +61,6 @@ class Workshopproject(
 '''# install_as_target:
 sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path'''\
             .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))
-
 
         logger.info('Build and Install ("%project%")!'.replace('%project%', self.NAME()))
 

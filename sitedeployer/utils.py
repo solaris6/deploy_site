@@ -1,5 +1,6 @@
 import json
 import os
+import platform
 from typing import Dict, Any, List
 
 
@@ -20,6 +21,18 @@ def log_environment(
             }, indent=2
         )
     )
+
+def lnx_mac_win() -> str:
+    """"""
+    system = platform.system()
+    result = None
+    if   system == 'Linux':
+        result = 'lnx'
+    elif system == 'Darwin':
+        result = 'mac'
+    elif system == 'Windows':
+        result = 'win'
+    return result
 
 def remove_duplicates(
     input_list:List=None

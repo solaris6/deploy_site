@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import List, Type
 
 from sitedeployer.projects.core.Project import Project, logger
-from sitedeployer.utils import log_environment
+from sitedeployer.utils import log_environment, lnx_mac_win
 
 
 class Projektproject(
@@ -24,30 +24,63 @@ class Projektproject(
         self._is_installed_as_workshopcard = False
 
 
+    def Init(self) -> None:
+        Project.Init(self)
+        logger.info('Init Projektproject...')
+        logger.info(
+'''# names:
+workshopcard_package: '%workshopcard_package%'
+PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin: '%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin%'
+PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib: '%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib%'
+'''
+            .replace('%workshopcard_package%', self.workshopcard_package())
+            .replace('%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin%', str(self.PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin()))
+            .replace('%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib%', str(self.PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib()))
+        )
+        logger.info('Init Projektproject!')
 
-    def PATHDIR_root_out_ins_bin(self) -> Path:
-        return self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/bin'.replace('%project%', self.NAME())
 
-    def PATHDIR_root_out_ins_lib(self) -> Path:
-        return self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/lib'.replace('%project%', self.NAME())
-
-
-    def projektorworkshop_Type(self) -> str:
+    # names:
+    def projektorworkshop(self) -> str:
         return 'projekt'
 
+    def workshopcard_package(self) -> str:
+        return '%projektorworkshop%card_%NAME%'\
+            .replace('%projektorworkshop%', self.projektorworkshop())\
+            .replace('%NAME%', self.NAME())
+
+
+    # PATHS:
+    def PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin(self) -> Path:
+        return self.PATHDIR_root() / '_out/Release/%NAME%/_2019_2_0/output/%os%/ins/bin'\
+            .replace('%NAME%', self.NAME())\
+            .replace('%os%', lnx_mac_win())
+
+    def PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib(self) -> Path:
+        return self.PATHDIR_root() / '_out/Release/%NAME%/_2019_2_0/output/%os%/ins/lib'\
+            .replace('%NAME%', self.NAME())\
+            .replace('%os%', lnx_mac_win())
+
+
+    # dependencies:
     def dependencies_Types_all(self) -> List[Type['Project']]:
         from sitedeployer.utils import remove_duplicates
         return remove_duplicates(self.dependencies_lib_Types_all())
 
 
-    def is_installed(self) -> bool:
-        return self.is_installed_as_lib() or self.is_installed_as_target() or self.is_installed_as_workshopcard()
+    # build:
+    def add_to_environment(self) -> None:
+        logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
+
+        log_environment(logger=logger)
+        os.environ['PATH'] = str(self.PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin()) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
+        os.environ['PYTHONPATH'] = str(self.PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib()) + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
+        log_environment(logger=logger)
+
+        logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables!'.replace('%project%', self.NAME()))
 
 
-
-
-
-
+    # as temp:
     def set_install_as_temp_toggle(self,
         value:bool=None
     ) -> None:
@@ -74,12 +107,7 @@ class Projektproject(
                 self.PATHDIR_root_instemp_project()
             )
 
-        logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
-        log_environment(logger=logger)
-        os.environ['PATH'] = str(self.PATHDIR_root_instemp_project() / 'bin') + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
-        os.environ['PYTHONPATH'] = str(self.PATHDIR_root_instemp_project() / 'lib') + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
-        log_environment(logger=logger)
-        logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables!'.replace('%project%', self.NAME()))
+        self.add_to_environment()
 
         logger.info('Build and Install ("%project%")'.replace('%project%', self.NAME()))
 
@@ -121,7 +149,7 @@ class Projektproject(
             logger.info('Uninstall as temp "%project%" project NOT installed as temp, skipped!'.replace('%project%', self.NAME()))
 
 
-
+    # as lib:
     def set_install_as_lib_toggle(self,
         value:bool=None
     ) -> None:
@@ -140,31 +168,19 @@ class Projektproject(
 
         logger.info('Build and Install ("%project%")'.replace('%project%', self.NAME()))
 
-        logger.info(str(self.sitedeployer()))
-        logger.info(str(self.sitedeployer().PATHDIR_root()))
-        logger.info(str(self.PATHDIR_root()))
-        logger.info(str(self.PATHDIR_root_projectrepository()))
-        logger.info(str(self.NAME()))
-
         subprocess.run(
             ['projekt', 'task', 'build', 'default', 'execute'],
             cwd=self.PATHDIR_root_projectrepository()
         )
 
-        logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
-        log_environment(logger=logger)
-        os.environ['PATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/bin'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
-        os.environ['PYTHONPATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/lib'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
-        log_environment(logger=logger)
-        logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables!'.replace('%project%', self.NAME()))
-
+        self.add_to_environment()
 
         self._wsgipy_entry += \
 """# install_as_lib:
-sys.path = ['%PATHDIR_root_out_ins_lib%'] + sys.path
-os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_ins_bin%'"""\
-            .replace('%PATHDIR_root_out_ins_lib%', str(self.PATHDIR_root_out_ins_lib()))\
-            .replace('%PATHDIR_root_out_ins_bin%', str(self.PATHDIR_root_out_ins_bin()))
+sys.path = ['%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib%'] + sys.path
+os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin%'"""\
+            .replace('%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib%', str(self.PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib()))\
+            .replace('%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin%', str(self.PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin()))
 
 
         self.uninstall_as_temp()
@@ -176,9 +192,7 @@ os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_ins_bin%'"""\
         logger.info('Install as lib "%project%" project!'.replace('%project%', self.NAME()))
 
 
-
-
-
+    # as lib and workshopcard:
     def install_as_lib_and_workshopcard(self) -> None:
         logger.info('Install as lib and workshopcard "%project%" project...'.replace('%project%', self.NAME()))
 
@@ -191,22 +205,16 @@ os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_ins_bin%'"""\
             cwd=self.PATHDIR_root_projectrepository()
         )
 
-        logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
-        log_environment(logger=logger)
-        os.environ['PATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/distrib/lnx/ins/bin'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
-        os.environ['PYTHONPATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/lib'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
-        log_environment(logger=logger)
-        logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables!'.replace('%project%', self.NAME()))
-
+        self.add_to_environment()
 
         self._wsgipy_entry += \
 """# install_as_lib_and_workshopcard:
 sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path
-sys.path = ['%PATHDIR_root_out_ins_lib%'] + sys.path
-os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_ins_bin%'"""\
+sys.path = ['%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib%'] + sys.path
+os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin%'"""\
             .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))\
-            .replace('%PATHDIR_root_out_ins_lib%', str(self.PATHDIR_root_out_ins_lib()))\
-            .replace('%PATHDIR_root_out_ins_bin%', str(self.PATHDIR_root_out_ins_bin()))
+            .replace('%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib%', str(self.PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib()))\
+            .replace('%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin%', str(self.PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin()))
 
 
         self.uninstall_as_temp()
@@ -221,9 +229,7 @@ os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_ins_bin%'"""\
         logger.info('Install as lib and workshopcard "%project%" project!'.replace('%project%', self.NAME()))
 
 
-
-
-
+    # as target:
     def install_as_target(self) -> None:
         logger.info('Install as target "%project%" project...'.replace('%project%', self.NAME()))
 
@@ -236,19 +242,12 @@ os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_ins_bin%'"""\
             cwd=self.PATHDIR_root_projectrepository()
         )
 
-        logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables...'.replace('%project%', self.NAME()))
-        log_environment(logger=logger)
-        os.environ['PATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/bin'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
-        os.environ['PYTHONPATH'] = str(self.PATHDIR_root() / '_out/Release/%project%/_2019_2_0/distrib/lnx/ins/lib'.replace('%project%', self.NAME())) + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
-        log_environment(logger=logger)
-        logger.info('Adding "%project%" project to PATH and PYTHONPATH environment variables!'.replace('%project%', self.NAME()))
-
+        self.add_to_environment()
 
         self._wsgipy_entry += \
 '''# install_as_target:
 sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path'''\
             .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))
-
 
         self.uninstall_as_temp()
 
@@ -259,6 +258,7 @@ sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path'''\
         logger.info('Install as target "%project%" project!'.replace('%project%', self.NAME()))
 
 
+    # as workshopcard:
     def set_install_as_workshopcard_toggle(self,
         value:bool=None
     ) -> None:
@@ -287,7 +287,6 @@ sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path'''\
 sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path'''\
             .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))
 
-
         self.uninstall_as_temp()
 
         logger.info('Build and Install ("%project%")!'.replace('%project%', self.NAME()))
@@ -295,6 +294,7 @@ sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path'''\
         log_environment(logger=logger)
         self._is_installed_as_workshopcard = True
         logger.info('Install as workshopcard "%project%" project!'.replace('%project%', self.NAME()))
+
 
     def report(self) -> str:
         return \
