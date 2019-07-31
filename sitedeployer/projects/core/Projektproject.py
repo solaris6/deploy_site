@@ -199,7 +199,7 @@ PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib: '%PATHDIR_root_out_type_NAME_
         self.add_to_environment()
 
         self._wsgipy_entry += \
-"""# install_as_lib:
+"""# install_as__lib_deployer():
 sys.path = ['%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib%'] + sys.path
 os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin%'"""\
             .replace('%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib%', str(self.PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib()))\
@@ -243,7 +243,7 @@ os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_distrib_os_i
         self.add_to_environment()
 
         self._wsgipy_entry += \
-"""# install_as_lib:
+"""# install_as__lib_site():
 sys.path = ['%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib%'] + sys.path
 os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin%'"""\
             .replace('%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib%', str(self.PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib()))\
@@ -276,7 +276,7 @@ os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_distrib_os_i
         self.add_to_environment()
 
         self._wsgipy_entry += \
-"""# install_as_lib:
+"""# install_as__lib_deployer__lib_site():
 sys.path = ['%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib%'] + sys.path
 os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin%'"""\
             .replace('%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib%', str(self.PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib()))\
@@ -311,7 +311,7 @@ os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_distrib_os_i
         self.add_to_environment()
 
         self._wsgipy_entry += \
-"""# install_as_lib_and_projektcard:
+"""# install_as__lib_deployer__projektcard():
 sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path
 sys.path = ['%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib%'] + sys.path
 os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin%'"""\
@@ -348,7 +348,7 @@ os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_distrib_os_i
         self.add_to_environment()
 
         self._wsgipy_entry += \
-"""# install_as_lib_and_projektcard:
+"""# install_as__lib_site__projektcard():
 sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path
 sys.path = ['%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib%'] + sys.path
 os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin%'"""\
@@ -385,7 +385,7 @@ os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_distrib_os_i
         self.add_to_environment()
 
         self._wsgipy_entry += \
-"""# install_as_lib_and_projektcard:
+"""# install_as__lib_deployer__lib_site__projektcard():
 sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path
 sys.path = ['%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib%'] + sys.path
 os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_bin%'"""\
@@ -432,7 +432,7 @@ os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_distrib_os_i
         )
 
         self._wsgipy_entry += \
-'''# install_as__projektcard
+'''# install_as__projektcard():
 sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path'''\
             .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))
 
@@ -463,7 +463,7 @@ sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path'''\
         self.add_to_environment()
 
         self._wsgipy_entry += \
-'''# install_as__target:
+'''# install_as__target():
 sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path'''\
             .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))
 
