@@ -48,7 +48,7 @@ if __name__ == '__main__':
         'ynsight': ynsight_Workshopproject
     }[pythonanywhere_username]()
 
-    target_project.set_install_as__target_toggle(value=True)
+    target_project.set_toggle_install_as__target(value=True)
 
     Sitedeployer(
         PATHFILE_deploypy=PATHFILE_deploypy,

@@ -20,7 +20,7 @@ class Workshopproject(
         Project.Init(self)
         logger.info('Init Workshopproject...')
         logger.info(
-'''PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib: '%PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib%'
+'''PATHDIR_root_out_type_NAME_ver_output_os_ins_lib: '%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%'
 '''
             .replace('', '')
         )
@@ -64,16 +64,18 @@ sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path'''\
 
         logger.info('Build and Install ("%project%")!'.replace('%project%', self.NAME()))
 
-        log_environment(logger=logger)
-
         self._is_installed_as__target = True
 
         logger.info('Install as target "%project%" project!'.replace('%project%', self.NAME()))
 
 
+    def install(self) -> None:
+        self.install_as__target()
+
+
     def report(self) -> str:
         return \
-'''NAME: "%NAME%", target: { t: %install_as__target_toggle%, i: %is_installed_as__target% }'''\
+'''NAME: "%NAME%", target: { t: %toggle_install_as__target%, i: %is_installed_as__target% }'''\
     .replace('%NAME%', self.NAME())\
-    .replace('%install_as__target_toggle%', str(1 if self.install_as__target_toggle() else 0))\
+    .replace('%toggle_install_as__target%', str(1 if self.toggle_install_as__target() else 0))\
     .replace('%is_installed_as__target%', str(1 if self.is_installed_as__target() else 0))

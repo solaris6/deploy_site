@@ -21,7 +21,7 @@ logger.addHandler(handler)
 
 class Project:
     def __init__(self):
-        self._install_as__target_toggle = False
+        self._toggle_install_as__target = False
         self._is_installed_as__target = False
 
         self._PATH_old = None
@@ -217,18 +217,21 @@ dependencies_Types_all: '%dependencies_Types_all%'
         return self._wsgipy_entry
 
     # as target:
-    def set_install_as__target_toggle(self,
+    def set_toggle_install_as__target(self,
         value:bool=None
     ) -> None:
-        self._install_as__target_toggle = value
+        self._toggle_install_as__target = value
 
-    def install_as__target_toggle(self) -> bool:
-        return self._install_as__target_toggle
+    def toggle_install_as__target(self) -> bool:
+        return self._toggle_install_as__target
 
     def is_installed_as__target(self) -> bool:
         return self._is_installed_as__target
 
     def install_as__target(self) -> None:
+        raise NotImplementedError("")
+
+    def install(self) -> None:
         raise NotImplementedError("")
 
 

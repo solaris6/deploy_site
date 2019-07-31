@@ -188,8 +188,7 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
                 project.install_as_dependency()
         logger.info('Process lib/projektcard dependencies!')
 
-        if self.target_project().install_as__target_toggle():
-            self.target_project().install_as__target()
+        self.target_project().install()
 
         # wsgi.py:
         logger.info('Process wsgi.py...')
@@ -232,6 +231,8 @@ from %projektorworkshopsitepub_package%.flask_app import app as application
         os.environ['PYTHONPATH'] = self._PYTHONPATH_old
         log_environment(logger=logger)
 
+        if self.PATHDIR_root_instemp().is_dir():
+            shutil.rmtree(self.PATHDIR_root_instemp())
 
         # update.py:
         logger.info('Process update.py...')
