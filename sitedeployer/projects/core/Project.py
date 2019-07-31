@@ -69,10 +69,10 @@ URL_github_project_repository: '%URL_github_project_repository%'
 pythonanywhere_username: '%pythonanywhere_username%'
 
 # dependencies:
-dependencies_lib_specific_deployer_Types: '%dependencies_lib_specific_deployer_Types%'
+dependencies_lib_deployer_Types: '%dependencies_lib_deployer_Types%'
 dependencies_Types_all: '%dependencies_Types_all%'
 dependencies_lib_common_deployer_Types: '%dependencies_lib_common_deployer_Types%'
-dependencies_lib_specific_deployer_Types_all: '%dependencies_lib_specific_deployer_Types_all%'
+dependencies_lib_deployer_Types_all: '%dependencies_lib_deployer_Types_all%'
 dependencies_lib_temp_deployer_Types: '%dependencies_lib_temp_deployer_Types%'
 '''
             .replace('%NAME%', self.NAME())
@@ -95,10 +95,10 @@ dependencies_lib_temp_deployer_Types: '%dependencies_lib_temp_deployer_Types%'
             \
             .replace('%pythonanywhere_username%', self.pythonanywhere_username())
             \
-            .replace('%dependencies_lib_specific_deployer_Types%', str(self.dependencies_lib_specific_deployer_Types()))
+            .replace('%dependencies_lib_deployer_Types%', str(self.dependencies_lib_deployer_Types()))
             .replace('%dependencies_Types_all%', str(self.dependencies_Types_all()))
             .replace('%dependencies_lib_common_deployer_Types%', str(self.dependencies_lib_common_deployer_Types()))
-            .replace('%dependencies_lib_specific_deployer_Types_all%', str(self.dependencies_lib_specific_deployer_Types_all()))
+            .replace('%dependencies_lib_deployer_Types_all%', str(self.dependencies_lib_deployer_Types_all()))
             .replace('%dependencies_lib_temp_deployer_Types%', str(self.dependencies_lib_temp_deployer_Types()))
         )
 
@@ -183,48 +183,19 @@ dependencies_lib_temp_deployer_Types: '%dependencies_lib_temp_deployer_Types%'
     # dependencies:
     #   temp:
     def dependencies_lib_temp_deployer_Types(self) -> List[Type['Project']]:
-        return self.dependencies_lib_common_deployer_Types()
+        raise NotImplementedError("")
 
     #   deployer:
-    def dependencies_lib_common_deployer_Types(self) -> List[Type['Project']]:
-        from sitedeployer.projects.builtin.projekt.base_Projektproject import base_Projektproject
-        from sitedeployer.projects.builtin.projekt.projekt_Projektproject import projekt_Projektproject
-        from sitedeployer.projects.builtin.projekt.myrta_Projektproject import myrta_Projektproject
-        return [
-            base_Projektproject,
-            projekt_Projektproject,
-            myrta_Projektproject
-        ]
-
-    def dependencies_lib_specific_deployer_Types(self) -> List[Type['Project']]:
+    def dependencies_lib_deployer_Types(self) -> List[Type['Project']]:
         raise NotImplementedError("")
-
-    def dependencies_lib_specific_deployer_Types_all(self) -> List[Type['Project']]:
-        return remove_duplicates(self.dependencies_lib_common_deployer_Types() + self.dependencies_lib_specific_deployer_Types())
-
 
     #   site:
-    def dependencies_lib_common_site_Types(self) -> List[Type['Project']]:
-        from sitedeployer.projects.builtin.projekt.base_Projektproject import base_Projektproject
-        from sitedeployer.projects.builtin.projekt.projekt_Projektproject import projekt_Projektproject
-        from sitedeployer.projects.builtin.projekt.myrta_Projektproject import myrta_Projektproject
-        return [
-            base_Projektproject,
-            projekt_Projektproject,
-            myrta_Projektproject
-        ]
-
-    def dependencies_lib_specific_site_Types(self) -> List[Type['Project']]:
+    def dependencies_lib_site_Types(self) -> List[Type['Project']]:
         raise NotImplementedError("")
-
-    def dependencies_lib_specific_site_Types_all(self) -> List[Type['Project']]:
-        return remove_duplicates(self.dependencies_lib_common_site_Types() + self.dependencies_lib_specific_site_Types())
-
-
 
     #   all:
     def dependencies_lib_Types_all(self) -> List[Type['Project']]:
-        return remove_duplicates(self.dependencies_lib_specific_deployer_Types_all() + self.dependencies_lib_specific_site_Types_all())
+        return remove_duplicates(self.dependencies_lib_deployer_Types() + self.dependencies_lib_site_Types())
 
     def dependencies_Types_all(self) -> List[Type['Project']]:
         raise NotImplementedError("")

@@ -74,7 +74,9 @@ PATHDIR_root_out_type_NAME_ver_distrib_os_ins_lib: '%PATHDIR_root_out_type_NAME_
     # dependencies:
     def dependencies_Types_all(self) -> List[Type['Project']]:
         from sitedeployer.utils import remove_duplicates
-        return remove_duplicates(self.dependencies_lib_Types_all())
+        return remove_duplicates(
+            self.dependencies_lib_Types_all()
+        )
 
 
     # build:
