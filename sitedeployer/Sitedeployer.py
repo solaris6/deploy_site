@@ -174,7 +174,7 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
 
         logger.info('Process temp dependencies...')
         for project in self.projects_all():
-            if project.install_as_temp_toggle():
+            if not isinstance(project, Workshopproject) and project.install_as_temp_toggle():
                 project.install_as_temp()
         logger.info('Process temp dependencies!')
 
