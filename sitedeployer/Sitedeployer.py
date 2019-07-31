@@ -171,13 +171,11 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
         self._PYTHONPATH_old = copy(os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else ''
         log_environment(logger=logger)
 
-
         logger.info('Process temp dependencies...')
         for project in self.projects_all():
             if not isinstance(project, Workshopproject) and project.install_as_temp_toggle():
                 project.install_as_temp()
         logger.info('Process temp dependencies!')
-
 
         logger.info('Process lib/projektcard dependencies...')
         for project in self.projects_all():
