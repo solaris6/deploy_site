@@ -69,7 +69,7 @@ URL_github_project_repository: '%URL_github_project_repository%'
 pythonanywhere_username: '%pythonanywhere_username%'
 
 # dependencies:
-dependencies_lib_temp_deployer_Types: '%dependencies_lib_temp_deployer_Types%'
+dependencies_lib_temp_Types: '%dependencies_lib_temp_Types%'
 dependencies_lib_deployer_Types: '%dependencies_lib_deployer_Types%'
 dependencies_lib_site_Types: '%dependencies_lib_site_Types%'
 dependencies_Types_all: '%dependencies_Types_all%'
@@ -94,7 +94,7 @@ dependencies_Types_all: '%dependencies_Types_all%'
             \
             .replace('%pythonanywhere_username%', self.pythonanywhere_username())
             \
-            .replace('%dependencies_lib_temp_deployer_Types%', str(self.dependencies_lib_temp_deployer_Types()))
+            .replace('%dependencies_lib_temp_Types%', str(self.dependencies_lib_temp_Types()))
             .replace('%dependencies_lib_deployer_Types%', str(self.dependencies_lib_deployer_Types()))
             .replace('%dependencies_lib_site_Types%', str(self.dependencies_lib_site_Types()))
             .replace('%dependencies_Types_all%', str(self.dependencies_Types_all()))
@@ -180,7 +180,7 @@ dependencies_Types_all: '%dependencies_Types_all%'
 
     # dependencies:
     #   temp:
-    def dependencies_lib_temp_deployer_Types(self) -> List[Type['Project']]:
+    def dependencies_lib_temp_Types(self) -> List[Type['Project']]:
         raise NotImplementedError("")
 
     #   deployer:

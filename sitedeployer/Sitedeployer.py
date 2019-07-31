@@ -99,7 +99,7 @@ class Sitedeployer:
             project.Init()
 
         for project in self.projects_all():
-            if type(project) in self.target_project().dependencies_lib_temp_deployer_Types():
+            if type(project) in self.target_project().dependencies_lib_temp_Types():
                 project.set_toggle_install_as__temp(
                     value=True
                 )
