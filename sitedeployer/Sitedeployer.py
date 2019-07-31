@@ -104,12 +104,12 @@ class Sitedeployer:
                     value=True
                 )
 
-            if type(project) in self.target_project().dependencies_lib_deployer_Types_all():
+            if type(project) in self.target_project().dependencies_lib_deployer_Types():
                 project.set_toggle_install_as__lib_deployer(
                     value=True
                 )
 
-            if type(project) in self.target_project().dependencies_lib_site_Types_all():
+            if type(project) in self.target_project().dependencies_lib_site_Types():
                 project.set_toggle_install_as__lib_site(
                     value=True
                 )
