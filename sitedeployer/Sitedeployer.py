@@ -99,19 +99,24 @@ class Sitedeployer:
             project.Init()
 
         for project in self.projects_all():
-            if type(project) in self.target_project().dependencies_lib_temp_Types():
-                project.set_install_as_temp_toggle(
+            if type(project) in self.target_project().dependencies_lib_temp_deployer_Types():
+                project.set_toggle_install_as__temp(
                     value=True
                 )
 
-            if type(project) in self.target_project().dependencies_lib_Types_all():
-                project.set_install_as_lib_toggle(
+            if type(project) in self.target_project().dependencies_lib_deployer_Types_all():
+                project.set_toggle_install_as__lib_deployer(
+                    value=True
+                )
+
+            if type(project) in self.target_project().dependencies_lib_site_Types_all():
+                project.set_toggle_install_as__lib_site(
                     value=True
                 )
 
             if isinstance(self.target_project(), Workshopproject) and\
                 type(project) in self.target_project().dependencies_workshop_Types():
-                project.set_install_as_projektcard_toggle(
+                project.set_toggle_install_as__projektcard(
                     value=True
                 )
 
@@ -173,25 +178,18 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
 
         logger.info('Process temp dependencies...')
         for project in self.projects_all():
-            if not isinstance(project, Workshopproject) and project.install_as_temp_toggle():
-                project.install_as_temp()
+            if not isinstance(project, Workshopproject) and project.toggle_install_as__temp():
+                project.install_as__temp()
         logger.info('Process temp dependencies!')
 
         logger.info('Process lib/projektcard dependencies...')
         for project in self.projects_all():
             if not project is self.target_project():
-                if project.install_as_lib_toggle() and project.install_as_projektcard_toggle():
-                    project.install_as_lib_and_projektcard()
-
-                elif project.install_as_lib_toggle():
-                    project.install_as_lib()
-
-                elif project.install_as_projektcard_toggle():
-                    project.install_as_projektcard()
+                project.install_as_dependency()
         logger.info('Process lib/projektcard dependencies!')
 
-        if self.target_project().install_as_target_toggle():
-            self.target_project().install_as_target()
+        if self.target_project().install_as__target_toggle():
+            self.target_project().install_as__target()
 
         # wsgi.py:
         logger.info('Process wsgi.py...')

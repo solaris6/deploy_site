@@ -9,6 +9,8 @@ from typing import Type, List, Dict, Any
 
 import logging
 
+from sitedeployer.utils import remove_duplicates
+
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
 formatter = logging.Formatter("[sitedeployer] - %(asctime)s - %(levelname)s - %(message)s")
@@ -19,8 +21,8 @@ logger.addHandler(handler)
 
 class Project:
     def __init__(self):
-        self._install_as_target_toggle = False
-        self._is_installed_as_target = False
+        self._install_as__target_toggle = False
+        self._is_installed_as__target = False
 
         self._PATH_old = None
         self._PYTHONPATH_old = None
@@ -67,11 +69,11 @@ URL_github_project_repository: '%URL_github_project_repository%'
 pythonanywhere_username: '%pythonanywhere_username%'
 
 # dependencies:
-dependencies_lib_self_Types: '%dependencies_lib_self_Types%'
+dependencies_lib_specific_deployer_Types: '%dependencies_lib_specific_deployer_Types%'
 dependencies_Types_all: '%dependencies_Types_all%'
-dependencies_lib_common_Types: '%dependencies_lib_common_Types%'
-dependencies_lib_Types_all: '%dependencies_lib_Types_all%'
-dependencies_lib_temp_Types: '%dependencies_lib_temp_Types%'
+dependencies_lib_common_deployer_Types: '%dependencies_lib_common_deployer_Types%'
+dependencies_lib_specific_deployer_Types_all: '%dependencies_lib_specific_deployer_Types_all%'
+dependencies_lib_temp_deployer_Types: '%dependencies_lib_temp_deployer_Types%'
 '''
             .replace('%NAME%', self.NAME())
             .replace('%projektorworkshopsitepub_package%', self.projektorworkshopsitepub_package())
@@ -93,11 +95,11 @@ dependencies_lib_temp_Types: '%dependencies_lib_temp_Types%'
             \
             .replace('%pythonanywhere_username%', self.pythonanywhere_username())
             \
-            .replace('%dependencies_lib_self_Types%', str(self.dependencies_lib_self_Types()))
+            .replace('%dependencies_lib_specific_deployer_Types%', str(self.dependencies_lib_specific_deployer_Types()))
             .replace('%dependencies_Types_all%', str(self.dependencies_Types_all()))
-            .replace('%dependencies_lib_common_Types%', str(self.dependencies_lib_common_Types()))
-            .replace('%dependencies_lib_Types_all%', str(self.dependencies_lib_Types_all()))
-            .replace('%dependencies_lib_temp_Types%', str(self.dependencies_lib_temp_Types()))
+            .replace('%dependencies_lib_common_deployer_Types%', str(self.dependencies_lib_common_deployer_Types()))
+            .replace('%dependencies_lib_specific_deployer_Types_all%', str(self.dependencies_lib_specific_deployer_Types_all()))
+            .replace('%dependencies_lib_temp_deployer_Types%', str(self.dependencies_lib_temp_deployer_Types()))
         )
 
         logger.info('Init Project!')
@@ -179,13 +181,12 @@ dependencies_lib_temp_Types: '%dependencies_lib_temp_Types%'
 
 
     # dependencies:
-    def dependencies_lib_self_Types(self) -> List[Type['Project']]:
-        raise NotImplementedError("")
+    #   temp:
+    def dependencies_lib_temp_deployer_Types(self) -> List[Type['Project']]:
+        return self.dependencies_lib_common_deployer_Types()
 
-    def dependencies_Types_all(self) -> List[Type['Project']]:
-        raise NotImplementedError("")
-
-    def dependencies_lib_common_Types(self) -> List[Type['Project']]:
+    #   deployer:
+    def dependencies_lib_common_deployer_Types(self) -> List[Type['Project']]:
         from sitedeployer.projects.builtin.projekt.base_Projektproject import base_Projektproject
         from sitedeployer.projects.builtin.projekt.projekt_Projektproject import projekt_Projektproject
         from sitedeployer.projects.builtin.projekt.myrta_Projektproject import myrta_Projektproject
@@ -195,11 +196,40 @@ dependencies_lib_temp_Types: '%dependencies_lib_temp_Types%'
             myrta_Projektproject
         ]
 
-    def dependencies_lib_Types_all(self) -> List[Type['Project']]:
-        return self.dependencies_lib_common_Types() + self.dependencies_lib_self_Types()
+    def dependencies_lib_specific_deployer_Types(self) -> List[Type['Project']]:
+        raise NotImplementedError("")
 
-    def dependencies_lib_temp_Types(self) -> List[Type['Project']]:
-        return self.dependencies_lib_common_Types()
+    def dependencies_lib_specific_deployer_Types_all(self) -> List[Type['Project']]:
+        return remove_duplicates(self.dependencies_lib_common_deployer_Types() + self.dependencies_lib_specific_deployer_Types())
+
+
+    #   site:
+    def dependencies_lib_common_site_Types(self) -> List[Type['Project']]:
+        from sitedeployer.projects.builtin.projekt.base_Projektproject import base_Projektproject
+        from sitedeployer.projects.builtin.projekt.projekt_Projektproject import projekt_Projektproject
+        from sitedeployer.projects.builtin.projekt.myrta_Projektproject import myrta_Projektproject
+        return [
+            base_Projektproject,
+            projekt_Projektproject,
+            myrta_Projektproject
+        ]
+
+    def dependencies_lib_specific_site_Types(self) -> List[Type['Project']]:
+        raise NotImplementedError("")
+
+    def dependencies_lib_specific_site_Types_all(self) -> List[Type['Project']]:
+        return remove_duplicates(self.dependencies_lib_common_site_Types() + self.dependencies_lib_specific_site_Types())
+
+
+
+    #   all:
+    def dependencies_lib_Types_all(self) -> List[Type['Project']]:
+        return remove_duplicates(self.dependencies_lib_specific_deployer_Types_all() + self.dependencies_lib_specific_site_Types_all())
+
+    def dependencies_Types_all(self) -> List[Type['Project']]:
+        raise NotImplementedError("")
+
+
 
 
     # build:
@@ -218,22 +248,18 @@ dependencies_lib_temp_Types: '%dependencies_lib_temp_Types%'
         return self._wsgipy_entry
 
     # as target:
-    def set_install_as_target_toggle(self,
+    def set_install_as__target_toggle(self,
         value:bool=None
     ) -> None:
-        self._install_as_target_toggle = value
+        self._install_as__target_toggle = value
 
-    def install_as_target_toggle(self) -> bool:
-        return self._install_as_target_toggle
+    def install_as__target_toggle(self) -> bool:
+        return self._install_as__target_toggle
 
-    def is_installed_as_target(self) -> bool:
-        return self._is_installed_as_target
+    def is_installed_as__target(self) -> bool:
+        return self._is_installed_as__target
 
-    def install_as_target(self) -> None:
-        raise NotImplementedError("")
-
-    # as target and lib:
-    def install_as_target_and_lib(self) -> None:
+    def install_as__target(self) -> None:
         raise NotImplementedError("")
 
 
