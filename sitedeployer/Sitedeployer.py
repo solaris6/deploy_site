@@ -185,7 +185,7 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
         logger.info('Process lib/projektcard dependencies...')
         for project in self.projects_all():
             if not project is self.target_project():
-                project.install_as_dependency()
+                project.install()
         logger.info('Process lib/projektcard dependencies!')
 
         self.target_project().install()
