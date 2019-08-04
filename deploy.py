@@ -13,18 +13,18 @@ logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
 from sitedeployer.Sitedeployer import Sitedeployer
-from sitedeployer.projects.builtin.projekt.Ln_Projektproject import Ln_Projektproject
-from sitedeployer.projects.builtin.projekt.base_Projektproject import base_Projektproject
-from sitedeployer.projects.builtin.projekt.cgbase_Projektproject import cgbase_Projektproject
-from sitedeployer.projects.builtin.projekt.fw_Projektproject import fw_Projektproject
-from sitedeployer.projects.builtin.projekt.myrta_Projektproject import myrta_Projektproject
-from sitedeployer.projects.builtin.projekt.projekt_Projektproject import projekt_Projektproject
-from sitedeployer.projects.builtin.projekt.rs_Projektproject import rs_Projektproject
-from sitedeployer.projects.builtin.projekt.rsdata_Projektproject import rsdata_Projektproject
-from sitedeployer.projects.builtin.projekt.sc_Projektproject import sc_Projektproject
-from sitedeployer.projects.builtin.projekt.sola_Projektproject import sola_Projektproject
-from sitedeployer.projects.builtin.projekt.una_Projektproject import una_Projektproject
-from sitedeployer.projects.builtin.workshop.ynsight_Workshopproject import ynsight_Workshopproject
+from sitedeployer.projects.builtin.project.Ln_Project import Ln_Project
+from sitedeployer.projects.builtin.project.base_Project import base_Project
+from sitedeployer.projects.builtin.project.cgbase_Project import cgbase_Project
+from sitedeployer.projects.builtin.project.fw_Project import fw_Project
+from sitedeployer.projects.builtin.project.myrta_Project import myrta_Project
+from sitedeployer.projects.builtin.project.projekt_Project import projekt_Project
+from sitedeployer.projects.builtin.project.rs_Project import rs_Project
+from sitedeployer.projects.builtin.project.rsdata_Project import rsdata_Project
+from sitedeployer.projects.builtin.project.sc_Project import sc_Project
+from sitedeployer.projects.builtin.project.sola_Project import sola_Project
+from sitedeployer.projects.builtin.project.una_Project import una_Project
+from sitedeployer.projects.builtin.workshop.ynsight_Workshop import ynsight_Workshop
 
 
 if __name__ == '__main__':
@@ -32,27 +32,27 @@ if __name__ == '__main__':
     PATHFILE_deploypy = Path(sys.argv[0])
     pythonanywhere_username = PATHFILE_deploypy.parent.parent.parent.name
 
-    target_project = {
-        'getbase': base_Projektproject,
-        'getprojekt': projekt_Projektproject,
-        'getmyrta': myrta_Projektproject,
-        'getuna': una_Projektproject,
-        'getrs': rs_Projektproject,
-        'getrsdata': rsdata_Projektproject,
-        'getsc': sc_Projektproject,
-        'getfw': fw_Projektproject,
-        'getsola': sola_Projektproject,
-        'getln': Ln_Projektproject,
-        'getcgbase': cgbase_Projektproject,
+    target_projekt = {
+        'getbase': base_Project,
+        'getprojekt': projekt_Project,
+        'getmyrta': myrta_Project,
+        'getuna': una_Project,
+        'getrs': rs_Project,
+        'getrsdata': rsdata_Project,
+        'getsc': sc_Project,
+        'getfw': fw_Project,
+        'getsola': sola_Project,
+        'getln': Ln_Project,
+        'getcgbase': cgbase_Project,
 
-        'ynsight': ynsight_Workshopproject
+        'ynsight': ynsight_Workshop
     }[pythonanywhere_username]()
 
-    target_project.set_toggle_install_as__target(value=True)
+    target_projekt.set_toggle_install_as__target(value=True)
 
     Sitedeployer(
         PATHFILE_deploypy=PATHFILE_deploypy,
-        target_project=target_project
+        target_projekt=target_projekt
     ).Execute()
 
     logger.info('Deploy site!')

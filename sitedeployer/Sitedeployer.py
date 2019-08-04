@@ -1,7 +1,7 @@
 import logging
 from typing import List
 
-from sitedeployer.projects.core.Projektproject import Projektproject
+from sitedeployer.projects.core.Project import Project
 
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
@@ -16,33 +16,33 @@ import shutil
 from copy import copy
 from pathlib import Path
 
-from sitedeployer.projects.core.Project import Project
-from sitedeployer.projects.core.Workshopproject import Workshopproject
+from sitedeployer.projects.core.Projekt import Projekt
+from sitedeployer.projects.core.Workshop import Workshop
 from sitedeployer.utils import log_environment
 
 class Sitedeployer:
     def __init__(self,
         PATHFILE_deploypy:Path=None,
-        target_project:Project=None
+        target_projekt:Projekt=None
     ):
         self._PATHFILE_deploypy = PATHFILE_deploypy
-        self._target_project = target_project
+        self._target_projekt = target_projekt
 
-        self._projects_all = []
+        self._projekts_all = []
 
         self._PATH_old = None
         self._PYTHONPATH_old = None
 
-    # project:
-    def target_project(self) -> Project:
-        return self._target_project
+    # projekt:
+    def target_projekt(self) -> Projekt:
+        return self._target_projekt
 
-    def projects_all(self) -> List[Project]:
-        return self._projects_all
+    def projekts_all(self) -> List[Projekt]:
+        return self._projekts_all
 
     # pythonanywhere:
     def pythonanywhere_username(self) -> str:
-        return self.target_project().pythonanywhere_username()
+        return self.target_projekt().pythonanywhere_username()
 
     def URL_site(self) -> str:
         return self.pythonanywhere_username() + '.pythonanywhere.com'
@@ -84,39 +84,39 @@ class Sitedeployer:
 
 
     def Execute(self) -> None:
-        for project_Type in self.target_project().dependencies_Types_all():
-            if not project_Type is type(self.target_project()):
-                self._projects_all.append(
-                    project_Type()
+        for projekt_Type in self.target_projekt().dependencies_Types_all():
+            if not projekt_Type is type(self.target_projekt()):
+                self._projekts_all.append(
+                    projekt_Type()
                 )
 
-        self._projects_all += [self.target_project()]
+        self._projekts_all += [self.target_projekt()]
 
-        for project in self.projects_all():
-            project.attach_to_sitedeployer(
+        for projekt in self.projekts_all():
+            projekt.attach_to_sitedeployer(
                 sitedeployer=self
             )
-            project.Init()
+            projekt.Init()
 
-        for project in self.projects_all():
-            if type(project) in self.target_project().dependencies_lib_temp_Types():
-                project.set_toggle_install_as__temp(
+        for projekt in self.projekts_all():
+            if type(projekt) in self.target_projekt().dependencies_lib_temp_Types():
+                projekt.set_toggle_install_as__temp(
                     value=True
                 )
 
-            if type(project) in self.target_project().dependencies_lib_deployer_Types():
-                project.set_toggle_install_as__lib_deployer(
+            if type(projekt) in self.target_projekt().dependencies_lib_deployer_Types():
+                projekt.set_toggle_install_as__lib_deployer(
                     value=True
                 )
 
-            if type(project) in self.target_project().dependencies_lib_site_Types():
-                project.set_toggle_install_as__lib_site(
+            if type(projekt) in self.target_projekt().dependencies_lib_site_Types():
+                projekt.set_toggle_install_as__lib_site(
                     value=True
                 )
 
-            if isinstance(self.target_project(), Workshopproject) and\
-                type(project) in self.target_project().dependencies_workshop_Types():
-                project.set_toggle_install_as__projektcard(
+            if isinstance(self.target_projekt(), Workshop) and\
+                type(projekt) in self.target_projekt().dependencies_workshop_Types():
+                projekt.set_toggle_install_as__projektcard(
                     value=True
                 )
 
@@ -125,9 +125,9 @@ class Sitedeployer:
 
         logger.info('Process common...')
         logger.info(
-'''# project:
-target_project: '%target_project%'
-projects_all: '%projects_all%'
+'''# projekt:
+target_projekt: '%target_projekt%'
+projekts_all: '%projekts_all%'
 
 # pythonanywhere:
 pythonanywhere_username: '%pythonanywhere_username%'
@@ -147,8 +147,8 @@ PATHFILE_wsgipy: '%PATHFILE_wsgipy%'
 PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy: '%PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy%'
 PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereusername_updatepy%'
 '''
-            .replace('%target_project%', str(self.target_project()))
-            .replace('%projects_all%', str(self.projects_all()))
+            .replace('%target_projekt%', str(self.target_projekt()))
+            .replace('%projekts_all%', str(self.projekts_all()))
             \
             .replace('%pythonanywhere_username%', self.pythonanywhere_username())
             .replace('%URL_site%', self.URL_site())
@@ -177,18 +177,18 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
         log_environment(logger=logger)
 
         logger.info('Process temp dependencies...')
-        for project in self.projects_all():
-            if not isinstance(project, Workshopproject) and project.toggle_install_as__temp():
-                project.install_as__temp()
+        for projekt in self.projekts_all():
+            if not isinstance(projekt, Workshop) and projekt.toggle_install_as__temp():
+                projekt.install_as__temp()
         logger.info('Process temp dependencies!')
 
         logger.info('Process lib/projektcard dependencies...')
-        for project in self.projects_all():
-            if not project is self.target_project():
-                project.install()
+        for projekt in self.projekts_all():
+            if not projekt is self.target_projekt():
+                projekt.install()
         logger.info('Process lib/projektcard dependencies!')
 
-        self.target_project().install()
+        self.target_projekt().install()
 
         # wsgi.py:
         logger.info('Process wsgi.py...')
@@ -203,19 +203,19 @@ PATHFILE_wsgipy=%PATHFILE_wsgipy%'''
 '''import sys, os
 from pathlib import Path
 
-# projects entries:
-%projects_entries%
+# projekts entries:
+%projekts_entries%
 
 from %projektsitepub_package%.flask_app import app as application
 '''
 
-        projects_entries = ''
-        for i,project in enumerate(self.projects_all()):
-            projects_entries += ('' if i==0 else '\n\n') + '# ' + project.report() + ':\n' + project.wsgipy_entry()
+        projekts_entries = ''
+        for i,projekt in enumerate(self.projekts_all()):
+            projekts_entries += ('' if i==0 else '\n\n') + '# ' + projekt.report() + ':\n' + projekt.wsgipy_entry()
 
         wsgipy_fc = wsgipy_template\
-            .replace('%projects_entries%', projects_entries)\
-            .replace('%projektsitepub_package%', self.target_project().projectsitepub_package())
+            .replace('%projekts_entries%', projekts_entries)\
+            .replace('%projektsitepub_package%', self.target_projekt().projektsitepub_package())
 
         self.PATHFILE_wsgipy().write_text(
             wsgipy_fc
