@@ -45,7 +45,7 @@ PATHDIR_root_out_type_NAME_ver_output_os_ins_lib: '%PATHDIR_root_out_type_NAME_v
 
     # names:
     def project(self) -> str:
-        return 'projekt'
+        return 'project'
 
     def projektcard_package(self) -> str:
         return 'projektcard_%NAME%'\

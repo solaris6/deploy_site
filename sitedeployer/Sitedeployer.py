@@ -206,7 +206,7 @@ from pathlib import Path
 # projects entries:
 %projects_entries%
 
-from %projectsitepub_package%.flask_app import app as application
+from %projektsitepub_package%.flask_app import app as application
 '''
 
         projects_entries = ''
@@ -215,7 +215,7 @@ from %projectsitepub_package%.flask_app import app as application
 
         wsgipy_fc = wsgipy_template\
             .replace('%projects_entries%', projects_entries)\
-            .replace('%projectsitepub_package%', self.target_project().projectsitepub_package())
+            .replace('%projektsitepub_package%', self.target_project().projectsitepub_package())
 
         self.PATHFILE_wsgipy().write_text(
             wsgipy_fc

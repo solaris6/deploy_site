@@ -28,7 +28,7 @@ class Workshopproject(
 
 
     # names:
-    def project(self) -> str:
+    def projekt(self) -> str:
         return 'workshop'
 
 

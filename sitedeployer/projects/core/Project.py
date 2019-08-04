@@ -77,7 +77,7 @@ dependencies_Types_all: '%dependencies_Types_all%'
             .replace('%NAME%', self.NAME())
             .replace('%projectsitepub_package%', self.projectsitepub_package())
             .replace('%project_package%', self.project_package())
-            .replace('%project%', self.project())
+            .replace('%project%', self.projekt())
             \
             .replace('%PATHDIR_root%', str(self.PATHDIR_root()))
             .replace('%PATHDIR_root_instemp%', str(self.PATHDIR_root_instemp()))
@@ -108,16 +108,16 @@ dependencies_Types_all: '%dependencies_Types_all%'
         raise NotImplementedError("")
 
     def projectsitepub_package(self) -> str:
-        return '%project%sitepub_%NAME%'\
-            .replace('%project%', self.project())\
+        return '%projekt%sitepub_%NAME%'\
+            .replace('%projekt%', self.projekt())\
             .replace('%NAME%', self.NAME())
 
     def project_package(self) -> str:
         return '%project%_%NAME%'\
-            .replace('%project%', self.project())\
+            .replace('%project%', self.projekt())\
             .replace('%NAME%', self.NAME())
 
-    def project(self) -> str:
+    def projekt(self) -> str:
         raise NotImplementedError("")
 
 
@@ -137,7 +137,7 @@ dependencies_Types_all: '%dependencies_Types_all%'
     def PATHDIR_root_out_project(self) -> Path:
         return self.PATHDIR_root() / '_out/Release/%NAME%/_2019_2_0/_%project%'\
             .replace('%NAME%', self.NAME())\
-            .replace('%project%', self.project())
+            .replace('%project%', self.projekt())
 
 
     # github:
