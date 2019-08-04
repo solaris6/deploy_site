@@ -135,9 +135,8 @@ dependencies_Types_all: '%dependencies_Types_all%'
         return self.PATHDIR_root_instemp() / self.NAME()
 
     def PATHDIR_root_out_projekt(self) -> Path:
-        return self.PATHDIR_root() / '_out/Release/%NAME%/_2019_2_0/_%projekt%'\
-            .replace('%NAME%', self.NAME())\
-            .replace('%projekt%', self.projekt())
+        return self.PATHDIR_root() / '_out/Release/%NAME%/_2019_2_0/_projekt'\
+            .replace('%NAME%', self.NAME())
 
 
     # github:
