@@ -44,7 +44,7 @@ PATHDIR_root_out_type_NAME_ver_output_os_ins_lib: '%PATHDIR_root_out_type_NAME_v
 
 
     # names:
-    def projektorworkshop(self) -> str:
+    def project(self) -> str:
         return 'projekt'
 
     def projektcard_package(self) -> str:
@@ -258,8 +258,8 @@ os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_output_os_in
 
         self._wsgipy_entry += \
 """# install_as__lib_deployer__projektcard():
-sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path"""\
-            .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))
+sys.path = ['%PATHDIR_root_out_project%'] + sys.path"""\
+            .replace('%PATHDIR_root_out_project%', str(self.PATHDIR_root_out_project()))
 
 
         logger.info('Build and Install ("%project%")!'.replace('%project%', self.NAME()))
@@ -287,10 +287,10 @@ sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path"""\
 
         self._wsgipy_entry += \
 """# install_as__lib_site__projektcard():
-sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path
+sys.path = ['%PATHDIR_root_out_project%'] + sys.path
 sys.path = ['%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%'] + sys.path
 os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%'"""\
-            .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))\
+            .replace('%PATHDIR_root_out_project%', str(self.PATHDIR_root_out_project()))\
             .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_lib()))\
             .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_bin()))
 
@@ -320,10 +320,10 @@ os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_output_os_in
 
         self._wsgipy_entry += \
 """# install_as__lib_deployer__lib_site__projektcard():
-sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path
+sys.path = ['%PATHDIR_root_out_project%'] + sys.path
 sys.path = ['%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%'] + sys.path
 os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%'"""\
-            .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))\
+            .replace('%PATHDIR_root_out_project%', str(self.PATHDIR_root_out_project()))\
             .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_lib()))\
             .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_bin()))
 
@@ -364,8 +364,8 @@ os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_output_os_in
 
         self._wsgipy_entry += \
 """# install_as__projektcard():
-sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path"""\
-            .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))
+sys.path = ['%PATHDIR_root_out_project%'] + sys.path"""\
+            .replace('%PATHDIR_root_out_project%', str(self.PATHDIR_root_out_project()))
 
         logger.info('Build and Install ("%project%")!'.replace('%project%', self.NAME()))
 
@@ -389,10 +389,10 @@ sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path"""\
 
         self._wsgipy_entry += \
 """# install_as__target__lib_site():
-sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path
+sys.path = ['%PATHDIR_root_out_project%'] + sys.path
 sys.path = ['%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%'] + sys.path
 os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%'"""\
-            .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))\
+            .replace('%PATHDIR_root_out_project%', str(self.PATHDIR_root_out_project()))\
             .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_lib()))\
             .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_bin()))
 
@@ -418,8 +418,8 @@ os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_output_os_in
 
         self._wsgipy_entry += \
 '''# install_as__target():
-sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path'''\
-            .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))
+sys.path = ['%PATHDIR_root_out_project%'] + sys.path'''\
+            .replace('%PATHDIR_root_out_project%', str(self.PATHDIR_root_out_project()))
 
         logger.info('Build and Install ("%project%")!'.replace('%project%', self.NAME()))
 

@@ -28,7 +28,7 @@ class Workshopproject(
 
 
     # names:
-    def projektorworkshop(self) -> str:
+    def project(self) -> str:
         return 'workshop'
 
 
@@ -59,8 +59,8 @@ class Workshopproject(
 
         self._wsgipy_entry += \
 '''# install_as__target:
-sys.path = ['%PATHDIR_root_out_proojektorworkshop%'] + sys.path'''\
-            .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))
+sys.path = ['%PATHDIR_root_out_project%'] + sys.path'''\
+            .replace('%PATHDIR_root_out_project%', str(self.PATHDIR_root_out_project()))
 
         logger.info('Build and Install ("%project%")!'.replace('%project%', self.NAME()))
 

@@ -44,9 +44,9 @@ class Project:
         logger.info(
 '''# names:
 NAME: '%NAME%'
-projektorworkshopsitepub_package: '%projektorworkshopsitepub_package%'
-projektorworkshop_package: '%projektorworkshop_package%'
-projektorworkshop: '%projektorworkshop%'
+projectsitepub_package: '%projectsitepub_package%'
+project_package: '%project_package%'
+project: '%project%'
 
 
 # PATHS:
@@ -54,7 +54,7 @@ PATHDIR_root: '%PATHDIR_root%'
 PATHDIR_root_instemp: '%PATHDIR_root_instemp%'
 PATHDIR_root_projectrepository: '%PATHDIR_root_projectrepository%'
 PATHDIR_root_instemp_project: '%PATHDIR_root_instemp_project%'
-PATHDIR_root_out_proojektorworkshop: '%PATHDIR_root_out_proojektorworkshop%'
+PATHDIR_root_out_project: '%PATHDIR_root_out_project%'
 
 
 # github:
@@ -75,15 +75,15 @@ dependencies_lib_site_Types: '%dependencies_lib_site_Types%'
 dependencies_Types_all: '%dependencies_Types_all%'
 '''
             .replace('%NAME%', self.NAME())
-            .replace('%projektorworkshopsitepub_package%', self.projektorworkshopsitepub_package())
-            .replace('%projektorworkshop_package%', self.projektorworkshop_package())
-            .replace('%projektorworkshop%', self.projektorworkshop())
+            .replace('%projectsitepub_package%', self.projectsitepub_package())
+            .replace('%project_package%', self.project_package())
+            .replace('%project%', self.project())
             \
             .replace('%PATHDIR_root%', str(self.PATHDIR_root()))
             .replace('%PATHDIR_root_instemp%', str(self.PATHDIR_root_instemp()))
             .replace('%PATHDIR_root_projectrepository%', str(self.PATHDIR_root_projectrepository()))
             .replace('%PATHDIR_root_instemp_project%', str(self.PATHDIR_root_instemp_project()))
-            .replace('%PATHDIR_root_out_proojektorworkshop%', str(self.PATHDIR_root_out_proojektorworkshop()))
+            .replace('%PATHDIR_root_out_project%', str(self.PATHDIR_root_out_project()))
             \
             .replace('%github_username%', self.github_username())
             .replace('%github_url_type%', self.github_url_type())
@@ -107,17 +107,17 @@ dependencies_Types_all: '%dependencies_Types_all%'
     def NAME(self) -> str:
         raise NotImplementedError("")
 
-    def projektorworkshopsitepub_package(self) -> str:
-        return '%projektorworkshop%sitepub_%NAME%'\
-            .replace('%projektorworkshop%', self.projektorworkshop())\
+    def projectsitepub_package(self) -> str:
+        return '%project%sitepub_%NAME%'\
+            .replace('%project%', self.project())\
             .replace('%NAME%', self.NAME())
 
-    def projektorworkshop_package(self) -> str:
-        return '%projektorworkshop%_%NAME%'\
-            .replace('%projektorworkshop%', self.projektorworkshop())\
+    def project_package(self) -> str:
+        return '%project%_%NAME%'\
+            .replace('%project%', self.project())\
             .replace('%NAME%', self.NAME())
 
-    def projektorworkshop(self) -> str:
+    def project(self) -> str:
         raise NotImplementedError("")
 
 
@@ -134,10 +134,10 @@ dependencies_Types_all: '%dependencies_Types_all%'
     def PATHDIR_root_instemp_project(self) -> Path:
         return self.PATHDIR_root_instemp() / self.NAME()
 
-    def PATHDIR_root_out_proojektorworkshop(self) -> Path:
-        return self.PATHDIR_root() / '_out/Release/%NAME%/_2019_2_0/_%projektorworkshop%'\
+    def PATHDIR_root_out_project(self) -> Path:
+        return self.PATHDIR_root() / '_out/Release/%NAME%/_2019_2_0/_%project%'\
             .replace('%NAME%', self.NAME())\
-            .replace('%projektorworkshop%', self.projektorworkshop())
+            .replace('%project%', self.project())
 
 
     # github:
