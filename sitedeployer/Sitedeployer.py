@@ -114,12 +114,6 @@ class Sitedeployer:
                     value=True
                 )
 
-            if isinstance(self.target_projekt(), Workshop) and\
-                type(projekt) in self.target_projekt().dependencies_workshop_Types():
-                projekt.set_toggle_install_as__projektcard(
-                    value=True
-                )
-
         log_environment(logger=logger)
 
 

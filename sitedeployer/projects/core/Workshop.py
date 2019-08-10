@@ -31,16 +31,10 @@ class Workshop(
     def projekt(self) -> str:
         return 'workshop'
 
-
-    # dependencies:
-    def dependencies_workshop_Types(self) -> List[Type[Project]]:
-        raise NotImplementedError("")
-
     def dependencies_Types_all(self) -> List[Type['Projekt']]:
         from sitedeployer.utils import remove_duplicates
         return remove_duplicates(
-            self.dependencies_lib_Types_all() +\
-            self.dependencies_workshop_Types()
+            self.dependencies_lib_Types_all()
         )
 
 
