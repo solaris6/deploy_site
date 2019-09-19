@@ -49,23 +49,6 @@ PATHDIR_root_out_type_NAME_ver_output_os_ins_lib: '%PATHDIR_root_out_type_NAME_v
             .replace('%os%', lnx_mac_win())
 
 
-    # build:
-    def add_to_environment(self,
-        as_temp:bool=False
-    ) -> None:
-        logger.info('Adding "%projekt%" projekt to PATH and PYTHONPATH environment variables...'.replace('%projekt%', self.NAME()))
-
-        PATHDIR_bin = self.PATHDIR_root_out_type_NAME_ver_output_os_ins_bin()
-        PATHDIR_lib = self.PATHDIR_root_out_type_NAME_ver_output_os_ins_lib()
-
-        log_environment(logger=logger)
-        os.environ['PATH'] = str(PATHDIR_bin) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
-        os.environ['PYTHONPATH'] = str(PATHDIR_lib) + ((os.pathsep + os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else '')
-        log_environment(logger=logger)
-
-        logger.info('Adding "%projekt%" projekt to PATH and PYTHONPATH environment variables!'.replace('%projekt%', self.NAME()))
-
-
 
     # as lib site:
     def set_toggle_install_as__dependency(self,
@@ -87,16 +70,9 @@ PATHDIR_root_out_type_NAME_ver_output_os_ins_lib: '%PATHDIR_root_out_type_NAME_v
         logger.info('Build and Install ("%projekt%")'.replace('%projekt%', self.NAME()))
 
         subprocess.run(
-            ['projekt', 'task', 'build', 'default', 'execute'],
+            ['python3.6', 'setup.py', 'install'],
             cwd=self.PATHDIR_root_projektrepository()
         )
-
-        self._wsgipy_entry += \
-"""# install_as__dependency():
-sys.path = ['%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%'] + sys.path
-os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%'"""\
-            .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_lib()))\
-            .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_bin()))
 
         logger.info('Build and Install ("%projekt%")!'.replace('%projekt%', self.NAME()))
 
