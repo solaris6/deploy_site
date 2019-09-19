@@ -22,6 +22,7 @@ from sitedeployer.projects.builtin.project.projekt_Project import projekt_Projec
 from sitedeployer.projects.builtin.project.rs_Project import rs_Project
 from sitedeployer.projects.builtin.project.rsdata_Project import rsdata_Project
 from sitedeployer.projects.builtin.project.sc_Project import sc_Project
+from sitedeployer.projects.builtin.project.skfb_Project import skfb_Project
 from sitedeployer.projects.builtin.project.sola_Project import sola_Project
 from sitedeployer.projects.builtin.project.una_Project import una_Project
 from sitedeployer.projects.builtin.workshop.ynsight_Workshop import ynsight_Workshop
@@ -40,6 +41,7 @@ if __name__ == '__main__':
         'getrs': rs_Project,
         'getrsdata': rsdata_Project,
         'getsc': sc_Project,
+        'skfb': skfb_Project,
         'getfw': fw_Project,
         'getsola': sola_Project,
         'getln': Ln_Project,

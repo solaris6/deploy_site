@@ -3,14 +3,14 @@ from typing import Type, List
 
 from sitedeployer.projects.core.Project import Project, logger
 
-class Ln_Project(
+class skfb_Project(
     Project
 ):
     def NAME(self) -> str:
-        return 'Ln'
-    
+        return 'skfb'
+
     def pythonanywhere_username(self) -> str:
-        return 'getln'
+        return 'skfb'
 
     def github_url_type(self) -> str:
         return 'ssh'

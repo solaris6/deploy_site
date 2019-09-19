@@ -51,9 +51,7 @@ projekt: '%projekt%'
 
 # PATHS:
 PATHDIR_root: '%PATHDIR_root%'
-PATHDIR_root_instemp: '%PATHDIR_root_instemp%'
 PATHDIR_root_projektrepository: '%PATHDIR_root_projektrepository%'
-PATHDIR_root_instemp_projekt: '%PATHDIR_root_instemp_projekt%'
 PATHDIR_root_out_projekt: '%PATHDIR_root_out_projekt%'
 
 
@@ -69,10 +67,7 @@ URL_github_projekt_repository: '%URL_github_projekt_repository%'
 pythonanywhere_username: '%pythonanywhere_username%'
 
 # dependencies:
-dependencies_lib_temp_Types: '%dependencies_lib_temp_Types%'
-dependencies_lib_deployer_Types: '%dependencies_lib_deployer_Types%'
-dependencies_lib_site_Types: '%dependencies_lib_site_Types%'
-dependencies_Types_all: '%dependencies_Types_all%'
+dependencies_Types: '%dependencies_Types%'
 '''
             .replace('%NAME%', self.NAME())
             .replace('%projektsitepub_package%', self.projektsitepub_package())
@@ -80,9 +75,7 @@ dependencies_Types_all: '%dependencies_Types_all%'
             .replace('%projekt%', self.projekt())
             \
             .replace('%PATHDIR_root%', str(self.PATHDIR_root()))
-            .replace('%PATHDIR_root_instemp%', str(self.PATHDIR_root_instemp()))
             .replace('%PATHDIR_root_projektrepository%', str(self.PATHDIR_root_projektrepository()))
-            .replace('%PATHDIR_root_instemp_projekt%', str(self.PATHDIR_root_instemp_projekt()))
             .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))
             \
             .replace('%github_username%', self.github_username())
@@ -94,10 +87,7 @@ dependencies_Types_all: '%dependencies_Types_all%'
             \
             .replace('%pythonanywhere_username%', self.pythonanywhere_username())
             \
-            .replace('%dependencies_lib_temp_Types%', str(self.dependencies_lib_temp_Types()))
-            .replace('%dependencies_lib_deployer_Types%', str(self.dependencies_lib_deployer_Types()))
-            .replace('%dependencies_lib_site_Types%', str(self.dependencies_lib_site_Types()))
-            .replace('%dependencies_Types_all%', str(self.dependencies_Types_all()))
+            .replace('%dependencies_Types%', str(self.dependencies_Types()))
         )
 
         logger.info('Init Projekt!')
@@ -125,14 +115,8 @@ dependencies_Types_all: '%dependencies_Types_all%'
     def PATHDIR_root(self) -> Path:
         return self.sitedeployer().PATHDIR_root()
 
-    def PATHDIR_root_instemp(self) -> Path:
-        return self.sitedeployer().PATHDIR_root_instemp()
-
     def PATHDIR_root_projektrepository(self) -> Path:
         return self.PATHDIR_root() / self.NAME()
-
-    def PATHDIR_root_instemp_projekt(self) -> Path:
-        return self.PATHDIR_root_instemp() / self.NAME()
 
     def PATHDIR_root_out_projekt(self) -> Path:
         return self.PATHDIR_root() / '_out/Release/%NAME%/_2019_2_0/_projekt'\
@@ -178,26 +162,15 @@ dependencies_Types_all: '%dependencies_Types_all%'
 
 
     # dependencies:
-    #   temp:
-    def dependencies_lib_temp_Types(self) -> List[Type['Projekt']]:
-        raise NotImplementedError("")
-
-    #   deployer:
-    def dependencies_lib_deployer_Types(self) -> List[Type['Projekt']]:
-        raise NotImplementedError("")
-
     #   site:
-    def dependencies_lib_site_Types(self) -> List[Type['Projekt']]:
-        raise NotImplementedError("")
 
-    #   all:
-    def dependencies_lib_Types_all(self) -> List[Type['Projekt']]:
-        return remove_duplicates(self.dependencies_lib_deployer_Types() + self.dependencies_lib_site_Types())
-
-    def dependencies_Types_all(self) -> List[Type['Projekt']]:
-        raise NotImplementedError("")
-
-
+    def dependencies_Types(self) -> List[Type['Projekt']]:
+        from sitedeployer.projects.builtin.project.base_Project import base_Project
+        from sitedeployer.projects.builtin.project.projekt_Project import projekt_Project
+        return [
+            base_Project,
+            projekt_Project
+        ]
 
 
     # build:

@@ -14,17 +14,8 @@ class Project(
     def __init__(self):
         Projekt.__init__(self)
 
-        self._toggle_install_as__temp = False
-        self._is_installed_as__temp = False
-
-        self._toggle_install_as__lib_deployer = False
-        self._is_installed_as__lib_deployer = False
-
-        self._toggle_install_as__lib_site = False
-        self._is_installed_as__lib_site = False
-
-        self._toggle_install_as__projektcard = False
-        self._is_installed_as__projektcard = False
+        self._toggle_install_as__dependency = False
+        self._is_installed_as__dependency = False
 
 
     def Init(self) -> None:
@@ -32,11 +23,9 @@ class Project(
         logger.info('Init Project...')
         logger.info(
 '''# names:
-projektcard_package: '%projektcard_package%'
 PATHDIR_root_out_type_NAME_ver_output_os_ins_bin: '%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%'
 PATHDIR_root_out_type_NAME_ver_output_os_ins_lib: '%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%'
 '''
-            .replace('%projektcard_package%', self.projektcard_package())
             .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_bin()))
             .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_lib()))
         )
@@ -47,19 +36,8 @@ PATHDIR_root_out_type_NAME_ver_output_os_ins_lib: '%PATHDIR_root_out_type_NAME_v
     def projekt(self) -> str:
         return 'project'
 
-    def projektcard_package(self) -> str:
-        return 'projektcard_%NAME%'\
-            .replace('%NAME%', self.NAME())
-
 
     # PATHS:
-    def PATHDIR_root_instemp_projekt_bin(self) -> Path:
-        return self.PATHDIR_root_instemp_projekt() / 'bin'
-
-    def PATHDIR_root_instemp_projekt_lib(self) -> Path:
-        return self.PATHDIR_root_instemp_projekt() / 'lib'
-
-
     def PATHDIR_root_out_type_NAME_ver_output_os_ins_bin(self) -> Path:
         return self.PATHDIR_root() / '_out/Release/%NAME%/_2019_2_0/output/%os%/ins/bin'\
             .replace('%NAME%', self.NAME())\
@@ -71,26 +49,14 @@ PATHDIR_root_out_type_NAME_ver_output_os_ins_lib: '%PATHDIR_root_out_type_NAME_v
             .replace('%os%', lnx_mac_win())
 
 
-    # dependencies:
-    def dependencies_Types_all(self) -> List[Type['Projekt']]:
-        from sitedeployer.utils import remove_duplicates
-        return remove_duplicates(
-            self.dependencies_lib_Types_all()
-        )
-
-
     # build:
     def add_to_environment(self,
         as_temp:bool=False
     ) -> None:
         logger.info('Adding "%projekt%" projekt to PATH and PYTHONPATH environment variables...'.replace('%projekt%', self.NAME()))
 
-        if as_temp:
-            PATHDIR_bin = self.PATHDIR_root_instemp_projekt_bin()
-            PATHDIR_lib = self.PATHDIR_root_instemp_projekt_lib()
-        else:
-            PATHDIR_bin = self.PATHDIR_root_out_type_NAME_ver_output_os_ins_bin()
-            PATHDIR_lib = self.PATHDIR_root_out_type_NAME_ver_output_os_ins_lib()
+        PATHDIR_bin = self.PATHDIR_root_out_type_NAME_ver_output_os_ins_bin()
+        PATHDIR_lib = self.PATHDIR_root_out_type_NAME_ver_output_os_ins_lib()
 
         log_environment(logger=logger)
         os.environ['PATH'] = str(PATHDIR_bin) + ((os.pathsep + os.environ['PATH']) if 'PATH' in os.environ else '')
@@ -100,92 +66,21 @@ PATHDIR_root_out_type_NAME_ver_output_os_ins_lib: '%PATHDIR_root_out_type_NAME_v
         logger.info('Adding "%projekt%" projekt to PATH and PYTHONPATH environment variables!'.replace('%projekt%', self.NAME()))
 
 
-    # as temp:
-    def set_toggle_install_as__temp(self,
-        value:bool=None
-    ) -> None:
-        self._toggle_install_as__temp = value
-
-    def toggle_install_as__temp(self) -> bool:
-        return self._toggle_install_as__temp
-
-    def is_installed_as__temp(self) -> bool:
-        return self._is_installed_as__temp
-
-
-    def install_as__temp(self) -> None:
-        logger.info('Install as temp "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
-
-        self.clone_projekt()
-
-        logger.info('Build and Install ("%projekt%")'.replace('%projekt%', self.NAME()))
-        PATHDIR_root_projektrepository_ins = self.PATHDIR_root_projektrepository() / 'src/ins'
-
-        if PATHDIR_root_projektrepository_ins.is_dir() and not self.PATHDIR_root_instemp_projekt().is_dir():
-            shutil.copytree(
-                PATHDIR_root_projektrepository_ins,
-                self.PATHDIR_root_instemp_projekt()
-            )
-
-        self.add_to_environment(
-            as_temp=True
-        )
-
-        logger.info('Build and Install ("%projekt%")'.replace('%projekt%', self.NAME()))
-
-        self._is_installed_as__temp = True
-
-        logger.info('Install as temp "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
-
-
-    # as lib deployer:
-    def set_toggle_install_as__lib_deployer(self,
-        value:bool=None
-    ) -> None:
-        self._toggle_install_as__lib_deployer = value
-
-    def toggle_install_as__lib_deployer(self) -> bool:
-        return self._toggle_install_as__lib_deployer
-
-    def is_installed_as__lib_deployer(self) -> bool:
-        return self._is_installed_as__lib_deployer
-
-    def install_as__lib_deployer(self) -> None:
-        logger.info('Install as lib deployer "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
-
-        self.clone_projekt()
-
-        logger.info('Build and Install ("%projekt%")'.replace('%projekt%', self.NAME()))
-
-        subprocess.run(
-            ['projekt', 'task', 'build', 'default', 'execute'],
-            cwd=self.PATHDIR_root_projektrepository()
-        )
-
-        self.add_to_environment()
-
-        logger.info('Build and Install ("%projekt%")!'.replace('%projekt%', self.NAME()))
-
-        log_environment(logger=logger)
-
-        self._is_installed_as__lib_deployer = True
-
-        logger.info('Install as lib deployer "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
 
     # as lib site:
-    def set_toggle_install_as__lib_site(self,
+    def set_toggle_install_as__dependency(self,
         value:bool=None
     ) -> None:
-        self._toggle_install_as__lib_site = value
+        self._toggle_install_as__dependency = value
 
-    def toggle_install_as__lib_site(self) -> bool:
-        return self._toggle_install_as__lib_site
+    def toggle_install_as__dependency(self) -> bool:
+        return self._toggle_install_as__dependency
 
-    def is_installed_as__lib_site(self) -> bool:
-        return self._is_installed_as__lib_site
+    def is_installed_as__dependency(self) -> bool:
+        return self._is_installed_as__dependency
 
-    def install_as__lib_site(self) -> None:
-        logger.info('Install as as lib site "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
+    def install_as__dependency(self) -> None:
+        logger.info('Install as as lib "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
 
         self.clone_projekt()
 
@@ -197,7 +92,7 @@ PATHDIR_root_out_type_NAME_ver_output_os_ins_lib: '%PATHDIR_root_out_type_NAME_v
         )
 
         self._wsgipy_entry += \
-"""# install_as__lib_site():
+"""# install_as__dependency():
 sys.path = ['%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%'] + sys.path
 os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%'"""\
             .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_lib()))\
@@ -205,202 +100,9 @@ os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_output_os_in
 
         logger.info('Build and Install ("%projekt%")!'.replace('%projekt%', self.NAME()))
 
-        self._is_installed_as__lib_site = True
+        self._is_installed_as__dependency = True
 
-        logger.info('Install as lib site "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
-
-    # as lib deployer, lib site:
-    def install_as__lib_deployer__lib_site(self) -> None:
-        logger.info('Install as lib deployer, lib site "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
-
-        self.clone_projekt()
-
-        logger.info('Build and Install ("%projekt%")'.replace('%projekt%', self.NAME()))
-
-        subprocess.run(
-            ['projekt', 'task', 'build', 'default', 'execute'],
-            cwd=self.PATHDIR_root_projektrepository()
-        )
-
-        self.add_to_environment()
-
-        self._wsgipy_entry += \
-"""# install_as__lib_deployer__lib_site():
-sys.path = ['%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%'] + sys.path
-os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%'"""\
-            .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_lib()))\
-            .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_bin()))
-
-        logger.info('Build and Install ("%projekt%")!'.replace('%projekt%', self.NAME()))
-
-        log_environment(logger=logger)
-
-        self._is_installed_as__lib_deployer = True
-        self._is_installed_as__lib_site = True
-
-        logger.info('Install as lib deployer, lib site "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
-
-
-    # as lib deployer, projektcard:
-    def install_as__lib_deployer__projektcard(self) -> None:
-        logger.info('Install as lib deployer, projektcard "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
-
-        self.clone_projekt()
-
-        logger.info('Build and Install ("%projekt%")'.replace('%projekt%', self.NAME()))
-
-        subprocess.run(
-            ['projekt', 'task', 'build', 'default', 'execute'],
-            cwd=self.PATHDIR_root_projektrepository()
-        )
-
-        self.add_to_environment()
-
-        self._wsgipy_entry += \
-"""# install_as__lib_deployer__projektcard():
-sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path"""\
-            .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))
-
-
-        logger.info('Build and Install ("%projekt%")!'.replace('%projekt%', self.NAME()))
-
-        log_environment(logger=logger)
-
-        self._is_installed_as__lib_deployer = True
-        self._is_installed_as__projektcard = True
-
-        logger.info('Install as lib deployer, projektcard "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
-
-
-    # as lib site, projektcard:
-    def install_as__lib_site__projektcard(self) -> None:
-        logger.info('Install as lib site, projektcard "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
-
-        self.clone_projekt()
-
-        logger.info('Build and Install ("%projekt%")'.replace('%projekt%', self.NAME()))
-
-        subprocess.run(
-            ['projekt', 'task', 'build', 'default', 'execute'],
-            cwd=self.PATHDIR_root_projektrepository()
-        )
-
-        self._wsgipy_entry += \
-"""# install_as__lib_site__projektcard():
-sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path
-sys.path = ['%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%'] + sys.path
-os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%'"""\
-            .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))\
-            .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_lib()))\
-            .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_bin()))
-
-
-        logger.info('Build and Install ("%projekt%")!'.replace('%projekt%', self.NAME()))
-
-        self._is_installed_as__lib_site = True
-        self._is_installed_as__projektcard = True
-
-        logger.info('Install as lib site, projektcard "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
-
-
-    # as_lib_deployer, lib_site,_projektcard:
-    def install_as__lib_deployer__lib_site__projektcard(self) -> None:
-        logger.info('Install as_lib_deployer, lib_site,_projektcard "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
-
-        self.clone_projekt()
-
-        logger.info('Build and Install ("%projekt%")'.replace('%projekt%', self.NAME()))
-
-        subprocess.run(
-            ['projekt', 'task', 'build', 'default', 'execute'],
-            cwd=self.PATHDIR_root_projektrepository()
-        )
-
-        self.add_to_environment()
-
-        self._wsgipy_entry += \
-"""# install_as__lib_deployer__lib_site__projektcard():
-sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path
-sys.path = ['%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%'] + sys.path
-os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%'"""\
-            .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))\
-            .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_lib()))\
-            .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_bin()))
-
-        logger.info('Build and Install ("%projekt%")!'.replace('%projekt%', self.NAME()))
-
-        log_environment(logger=logger)
-
-        self._is_installed_as__lib_deployer = True
-        self._is_installed_as__lib_site = True
-        self._is_installed_as__projektcard = True
-
-        logger.info('Install as_lib_deployer, lib_site,_projektcard "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
-
-
-    # as projektcard:
-    def set_toggle_install_as__projektcard(self,
-        value:bool=None
-    ) -> None:
-        self._toggle_install_as__projektcard = value
-
-    def toggle_install_as__projektcard(self) -> bool:
-        return self._toggle_install_as__projektcard
-
-    def is_installed_as__projektcard(self) -> bool:
-        return self._is_installed_as__projektcard
-
-    def install_as__projektcard(self) -> None:
-        logger.info('Install as projektcard "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
-
-        self.clone_projekt()
-
-        logger.info('Build and Install ("%projekt%")'.replace('%projekt%', self.NAME()))
-
-        subprocess.run(
-            ['projekt', 'task', 'build', 'default', 'execute'],
-            cwd=self.PATHDIR_root_projektrepository()
-        )
-
-        self._wsgipy_entry += \
-"""# install_as__projektcard():
-sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path"""\
-            .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))
-
-        logger.info('Build and Install ("%projekt%")!'.replace('%projekt%', self.NAME()))
-
-        self._is_installed_as__projektcard = True
-
-        logger.info('Install as projektcard "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
-
-
-    # as target, lib site:
-    def install_as__target__lib_site(self) -> None:
-        logger.info('Install as target, lib site "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
-
-        self.clone_projekt()
-
-        logger.info('Build and Install ("%projekt%")'.replace('%projekt%', self.NAME()))
-
-        subprocess.run(
-            ['projekt', 'task', 'build', 'default', 'execute'],
-            cwd=self.PATHDIR_root_projektrepository()
-        )
-
-        self._wsgipy_entry += \
-"""# install_as__target__lib_site():
-sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path
-sys.path = ['%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%'] + sys.path
-os.environ['PATH'] += os.pathsep + '%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%'"""\
-            .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))\
-            .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_lib()))\
-            .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_bin()))
-
-        logger.info('Build and Install ("%projekt%")!'.replace('%projekt%', self.NAME()))
-
-        self._is_installed_as__target = True
-
-        logger.info('Install as target, lib site "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
+        logger.info('Install as lib "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
 
 
     # as target:
@@ -429,49 +131,20 @@ sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path'''\
 
 
     def install(self) -> None:
-        if self.toggle_install_as__target() and self.toggle_install_as__lib_site():
-            self.install_as__target__lib_site()
-
-        elif self.toggle_install_as__target():
+        if   self.toggle_install_as__target():
             self.install_as__target()
 
-        elif self.toggle_install_as__lib_deployer() and self.toggle_install_as__lib_site() and self.toggle_install_as__projektcard():
-            self.install_as__lib_deployer__lib_site__projektcard()
-
-        elif self.toggle_install_as__lib_deployer() and self.toggle_install_as__lib_site():
-            self.install_as__lib_deployer__lib_site()
-
-        elif self.toggle_install_as__lib_deployer() and self.toggle_install_as__projektcard():
-            self.install_as__lib_deployer__projektcard()
-
-        elif self.toggle_install_as__lib_site() and self.toggle_install_as__projektcard():
-            self.install_as__lib_site__projektcard()
-
-        elif self.toggle_install_as__lib_site():
-            self.install_as__lib_site()
-
-        elif self.toggle_install_as__lib_deployer():
-            self.install_as__lib_deployer()
-
-        elif self.toggle_install_as__projektcard():
-            self.install_as__projektcard()
+        elif self.toggle_install_as__dependency():
+            self.install_as__dependency()
 
 
     def report(self) -> str:
         return \
-'''NAME: "%NAME%", temp: { t: %toggle_install_as__temp%, i: %is_installed_as__temp% }, projektcard: { t: %toggle_install_as__projektcard%, i: %is_installed_as__projektcard% }, target: { t: %toggle_install_as__target%, i: %is_installed_as__target% }, lib_deployer: { t: %toggle_install_as__lib_deployer%, i: %is_installed_as__lib_deployer% }, lib_site: { t: %toggle_install_as__lib_site%, i: %is_installed_as__lib_site% }'''\
+'''NAME: "%NAME%", target: { t: %toggle_install_as__target%, i: %is_installed_as__target% }, dependency: { t: %toggle_install_as__dependency%, i: %is_installed_as__dependency% }'''\
     .replace('%NAME%', self.NAME())\
-    .replace('%toggle_install_as__temp%',         str(1 if self.toggle_install_as__temp() else 0))\
-    .replace('%is_installed_as__temp%',           str(1 if self.is_installed_as__temp() else 0))\
     \
-    .replace('%toggle_install_as__projektcard%',  str(1 if self.toggle_install_as__projektcard() else 0))\
-    .replace('%is_installed_as__projektcard%',    str(1 if self.is_installed_as__projektcard() else 0))\
+    .replace('%toggle_install_as__target%', str(1 if self.toggle_install_as__target() else 0))\
+    .replace('%is_installed_as__target%',   str(1 if self.is_installed_as__target() else 0))\
     \
-    .replace('%toggle_install_as__target%',       str(1 if self.toggle_install_as__target() else 0))\
-    .replace('%is_installed_as__target%',         str(1 if self.is_installed_as__target() else 0))\
-    \
-    .replace('%toggle_install_as__lib_deployer%', str(1 if self.toggle_install_as__lib_deployer() else 0))\
-    .replace('%is_installed_as__lib_deployer%',   str(1 if self.is_installed_as__lib_deployer() else 0))\
-    \
-    .replace('%toggle_install_as__lib_site%',     str(1 if self.toggle_install_as__lib_site() else 0))\
-    .replace('%is_installed_as__lib_site%',       str(1 if self.is_installed_as__lib_site() else 0))
+    .replace('%toggle_install_as__dependency%',    str(1 if self.toggle_install_as__dependency() else 0))\
+    .replace('%is_installed_as__dependency%',      str(1 if self.is_installed_as__dependency() else 0))

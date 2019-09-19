@@ -1,8 +1,4 @@
 import logging
-from typing import List
-
-from sitedeployer.projects.core.Project import Project
-
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
 formatter = logging.Formatter("[deployer] - %(asctime)s - %(levelname)s - %(message)s")
@@ -11,6 +7,9 @@ handler.setLevel(logging.DEBUG)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
+from typing import List
+
+from sitedeployer.projects.core.Project import Project
 import os
 import shutil
 from copy import copy
@@ -58,9 +57,6 @@ class Sitedeployer:
     def PATHDIR_root(self) -> Path:
         return self._PATHFILE_deploypy.parent.parent
 
-    def PATHDIR_root_instemp(self) -> Path:
-        return self.PATHDIR_root() / '_instemp'
-
     def PATHDIR_root_sitedeployer(self) -> Path:
         return self.PATHDIR_root_sitedeployer_sitedeployerpackage().parent
 
@@ -84,7 +80,7 @@ class Sitedeployer:
 
 
     def Execute(self) -> None:
-        for projekt_Type in self.target_projekt().dependencies_Types_all():
+        for projekt_Type in self.target_projekt().dependencies_Types():
             if not projekt_Type is type(self.target_projekt()):
                 self._projekts_all.append(
                     projekt_Type()
@@ -99,18 +95,8 @@ class Sitedeployer:
             projekt.Init()
 
         for projekt in self.projekts_all():
-            if type(projekt) in self.target_projekt().dependencies_lib_temp_Types():
-                projekt.set_toggle_install_as__temp(
-                    value=True
-                )
-
-            if type(projekt) in self.target_projekt().dependencies_lib_deployer_Types():
-                projekt.set_toggle_install_as__lib_deployer(
-                    value=True
-                )
-
-            if type(projekt) in self.target_projekt().dependencies_lib_site_Types():
-                projekt.set_toggle_install_as__lib_site(
+            if type(projekt) in self.target_projekt().dependencies_Types():
+                projekt.set_toggle_install_as__dependency(
                     value=True
                 )
 
@@ -133,7 +119,6 @@ github_username: '%github_username%'
 # paths:
 PATHDIR_home_pythonanywhereusername: '%PATHDIR_home_pythonanywhereusername%'
 PATHDIR_root: '%PATHDIR_root%'
-PATHDIR_root_instemp: '%PATHDIR_root_instemp%'
 PATHDIR_root_sitedeployer: '%PATHDIR_root_sitedeployer%'
 PATHDIR_root_sitedeployer_sitedeployerpackage: '%PATHDIR_root_sitedeployer_sitedeployerpackage%'
 PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy: '%PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy%'
@@ -151,7 +136,6 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
             \
             .replace('%PATHDIR_home_pythonanywhereusername%', str(self.PATHDIR_home_pythonanywhereusername()))
             .replace('%PATHDIR_root%', str(self.PATHDIR_root()))
-            .replace('%PATHDIR_root_instemp%', str(self.PATHDIR_root_instemp()))
             .replace('%PATHDIR_root_sitedeployer%', str(self.PATHDIR_root_sitedeployer()))
             .replace('%PATHDIR_root_sitedeployer_sitedeployerpackage%', str(self.PATHDIR_root_sitedeployer_sitedeployerpackage()))
             .replace('%PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy%', str(self.PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy()))
@@ -160,27 +144,12 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
             .replace('%PATHFILE_home_pythonanywhereusername_updatepy%', str(self.PATHFILE_home_pythonanywhereusername_updatepy()))
         )
 
-        logger.info('Make common dirs...')
-        self.PATHDIR_root_instemp().mkdir(parents=True)
-        logger.info('Make common dirs!')
         logger.info('Process common!')
 
         log_environment(logger=logger)
         self._PATH_old = copy(os.environ['PATH']) if 'PATH' in os.environ else ''
         self._PYTHONPATH_old = copy(os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else ''
         log_environment(logger=logger)
-
-        logger.info('Process temp dependencies...')
-        for projekt in self.projekts_all():
-            if not isinstance(projekt, Workshop) and projekt.toggle_install_as__temp():
-                projekt.install_as__temp()
-        logger.info('Process temp dependencies!')
-
-        logger.info('Process lib/projektcard dependencies...')
-        for projekt in self.projekts_all():
-            if not projekt is self.target_projekt():
-                projekt.install()
-        logger.info('Process lib/projektcard dependencies!')
 
         self.target_projekt().install()
 
@@ -224,9 +193,6 @@ from %projektsitepub_package%.flask_app import app as application
         os.environ['PATH'] = self._PATH_old
         os.environ['PYTHONPATH'] = self._PYTHONPATH_old
         log_environment(logger=logger)
-
-        if self.PATHDIR_root_instemp().is_dir():
-            shutil.rmtree(self.PATHDIR_root_instemp())
 
         # update.py:
         logger.info('Process update.py...')

@@ -31,12 +31,6 @@ class Workshop(
     def projekt(self) -> str:
         return 'workshop'
 
-    def dependencies_Types_all(self) -> List[Type['Projekt']]:
-        from sitedeployer.utils import remove_duplicates
-        return remove_duplicates(
-            self.dependencies_lib_Types_all()
-        )
-
 
     # build:
     # as target:
