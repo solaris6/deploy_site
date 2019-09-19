@@ -151,6 +151,10 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
         self._PYTHONPATH_old = copy(os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else ''
         log_environment(logger=logger)
 
+
+        for projekt in self.projekts_all():
+            projekt.install()
+
         self.target_projekt().install()
 
         # wsgi.py:
