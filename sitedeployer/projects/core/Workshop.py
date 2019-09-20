@@ -34,7 +34,7 @@ class Workshop(
 
     # build:
     # as target:
-    def install_as__target(self) -> None:
+    def install_as_target(self) -> None:
         logger.info('Install as target "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
         self.clone_projekt()
 
@@ -46,24 +46,18 @@ class Workshop(
         )
 
         self._wsgipy_entry += \
-'''# install_as__target:
+'''# install_as_target:
 sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path'''\
             .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))
 
         logger.info('Build and Install ("%projekt%")!'.replace('%projekt%', self.NAME()))
 
-        self._is_installed_as__target = True
+        self._is_installed_as_target = True
 
         logger.info('Install as target "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
 
-
-    def install(self) -> None:
-        self.install_as__target()
-
-
     def report(self) -> str:
         return \
-'''NAME: "%NAME%", target: { t: %toggle_install_as__target%, i: %is_installed_as__target% }'''\
+'''NAME: "%NAME%", is_installed_as_target: %is_installed_as_target%'''\
     .replace('%NAME%', self.NAME())\
-    .replace('%toggle_install_as__target%', str(1 if self.toggle_install_as__target() else 0))\
-    .replace('%is_installed_as__target%', str(1 if self.is_installed_as__target() else 0))
+    .replace('%is_installed_as_target%', str(1 if self.is_installed_as_target() else 0))

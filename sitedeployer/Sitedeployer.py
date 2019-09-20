@@ -80,11 +80,16 @@ class Sitedeployer:
 
 
     def Execute(self) -> None:
+        package_projekts = []
         for projekt_Type in self.target_projekt().dependencies_Types():
-            if not projekt_Type is type(self.target_projekt()):
+            if projekt_Type is type(self.target_projekt()):
+                package_projekts.append(self.target_projekt())
+            else:
+                project = projekt_Type()
                 self._projekts_all.append(
-                    projekt_Type()
+                    project
                 )
+                package_projekts.append(project)
 
         self._projekts_all += [self.target_projekt()]
 
@@ -93,12 +98,6 @@ class Sitedeployer:
                 sitedeployer=self
             )
             projekt.Init()
-
-        for projekt in self.projekts_all():
-            if type(projekt) in self.target_projekt().dependencies_Types():
-                projekt.set_toggle_install_as__dependency(
-                    value=True
-                )
 
         log_environment(logger=logger)
 
@@ -151,11 +150,10 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
         self._PYTHONPATH_old = copy(os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else ''
         log_environment(logger=logger)
 
+        for package_projekt in package_projekts:
+            package_projekt.install_as_package()
 
-        for projekt in self.projekts_all():
-            projekt.install()
-
-        self.target_projekt().install()
+        self.target_projekt().install_as_target()
 
         # wsgi.py:
         logger.info('Process wsgi.py...')

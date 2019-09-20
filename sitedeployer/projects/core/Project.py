@@ -14,8 +14,7 @@ class Project(
     def __init__(self):
         Projekt.__init__(self)
 
-        self._toggle_install_as__dependency = False
-        self._is_installed_as__dependency = False
+        self._is_installed_as_package = False
 
 
     def Init(self) -> None:
@@ -51,18 +50,24 @@ PATHDIR_root_out_type_NAME_ver_output_os_ins_lib: '%PATHDIR_root_out_type_NAME_v
 
 
     # as lib site:
-    def set_toggle_install_as__dependency(self,
-        value:bool=None
-    ) -> None:
-        self._toggle_install_as__dependency = value
+    def is_installed_as_package(self) -> bool:
+        return self._is_installed_as_package
 
-    def toggle_install_as__dependency(self) -> bool:
-        return self._toggle_install_as__dependency
+    def install_as_package(self) -> None:
 
-    def is_installed_as__dependency(self) -> bool:
-        return self._is_installed_as__dependency
+        logger.info('Uninstall "%projekt%" first...'.replace('%projekt%', self.NAME()))
+        PATHDIR_egg = Path(
+            '/home/%pythonanywhere_username%/.virtualenvs/python36venv/lib/python3.6/site-packages/%NAME%-2019.2.0-py3.6.egg'\
+                .replace('%pythonanywhere_username%', self.sitedeployer().pythonanywhere_username())\
+                .replace('%NAME%', self.NAME())
+        )
+        if PATHDIR_egg.is_dir():
+            logger.info(str(PATHDIR_egg) + ' exists, deleting')
+            shutil.rmtree(PATHDIR_egg)
+        else:
+            logger.info(str(PATHDIR_egg) + ' NOT exists, skipping')
+        logger.info('Uninstall "%projekt%" first!'.replace('%projekt%', self.NAME()))
 
-    def install_as__dependency(self) -> None:
         logger.info('Install as as lib "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
 
         self.clone_projekt()
@@ -76,13 +81,13 @@ PATHDIR_root_out_type_NAME_ver_output_os_ins_lib: '%PATHDIR_root_out_type_NAME_v
 
         logger.info('Build and Install ("%projekt%")!'.replace('%projekt%', self.NAME()))
 
-        self._is_installed_as__dependency = True
+        self._is_installed_as_package = True
 
         logger.info('Install as lib "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
 
 
     # as target:
-    def install_as__target(self) -> None:
+    def install_as_target(self) -> None:
         logger.info('Install as target "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
 
         self.clone_projekt()
@@ -95,32 +100,21 @@ PATHDIR_root_out_type_NAME_ver_output_os_ins_lib: '%PATHDIR_root_out_type_NAME_v
         )
 
         self._wsgipy_entry += \
-'''# install_as__target():
+'''# install_as_target():
 sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path'''\
             .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))
 
         logger.info('Build and Install ("%projekt%")!'.replace('%projekt%', self.NAME()))
 
-        self._is_installed_as__target = True
+        self._is_installed_as_target = True
 
         logger.info('Install as target "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
 
 
-    def install(self) -> None:
-        if   self.toggle_install_as__target():
-            self.install_as__target()
-
-        elif self.toggle_install_as__dependency():
-            self.install_as__dependency()
-
-
     def report(self) -> str:
         return \
-'''NAME: "%NAME%", target: { t: %toggle_install_as__target%, i: %is_installed_as__target% }, dependency: { t: %toggle_install_as__dependency%, i: %is_installed_as__dependency% }'''\
+'''NAME: "%NAME%", is_installed_as_target: %is_installed_as_target%, is_installed_as_package: %is_installed_as_package%'''\
     .replace('%NAME%', self.NAME())\
     \
-    .replace('%toggle_install_as__target%', str(1 if self.toggle_install_as__target() else 0))\
-    .replace('%is_installed_as__target%',   str(1 if self.is_installed_as__target() else 0))\
-    \
-    .replace('%toggle_install_as__dependency%',    str(1 if self.toggle_install_as__dependency() else 0))\
-    .replace('%is_installed_as__dependency%',      str(1 if self.is_installed_as__dependency() else 0))
+    .replace('%is_installed_as_target%', str(1 if self.is_installed_as_target() else 0))\
+    .replace('%is_installed_as_package%', str(1 if self.is_installed_as_package() else 0))

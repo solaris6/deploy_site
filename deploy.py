@@ -15,6 +15,7 @@ logger.addHandler(handler)
 from sitedeployer.Sitedeployer import Sitedeployer
 from sitedeployer.projects.builtin.project.Ln_Project import Ln_Project
 from sitedeployer.projects.builtin.project.base_Project import base_Project
+from sitedeployer.projects.builtin.project.basedata_Project import basedata_Project
 from sitedeployer.projects.builtin.project.cgbase_Project import cgbase_Project
 from sitedeployer.projects.builtin.project.fw_Project import fw_Project
 from sitedeployer.projects.builtin.project.myrta_Project import myrta_Project
@@ -35,6 +36,7 @@ if __name__ == '__main__':
 
     target_projekt = {
         'getbase': base_Project,
+        'getbasedata': basedata_Project,
         'getprojekt': projekt_Project,
         'getmyrta': myrta_Project,
         'getuna': una_Project,
@@ -49,8 +51,6 @@ if __name__ == '__main__':
 
         'ynsight': ynsight_Workshop
     }[pythonanywhere_username]()
-
-    target_projekt.set_toggle_install_as__target(value=True)
 
     Sitedeployer(
         PATHFILE_deploypy=PATHFILE_deploypy,
