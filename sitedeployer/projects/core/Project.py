@@ -56,22 +56,28 @@ PATHDIR_root_out_type_NAME_ver_output_os_ins_lib: '%PATHDIR_root_out_type_NAME_v
     def install_as_package(self) -> None:
 
         logger.info('Uninstall "%projekt%" first...'.replace('%projekt%', self.NAME()))
-        PATHDIR_egg = Path(
-            '/home/%pythonanywhere_username%/.virtualenvs/python36venv/lib/python3.6/site-packages/%NAME%-2019.2.0-py3.6.egg'\
-                .replace('%pythonanywhere_username%', self.sitedeployer().pythonanywhere_username())\
-                .replace('%NAME%', self.NAME())
+
+        PATHDIR_sitepackages = Path(
+            '/home/%pythonanywhere_username%/.virtualenvs/python36venv/lib/python3.6/site-packages'\
+                .replace('%pythonanywhere_username%', self.sitedeployer().pythonanywhere_username())
         )
-        if PATHDIR_egg.is_dir():
-            logger.info(str(PATHDIR_egg) + ' exists, deleting')
-            shutil.rmtree(PATHDIR_egg)
-        else:
-            logger.info(str(PATHDIR_egg) + ' NOT exists, skipping')
+
+        prev_installation_exists = False
+        if PATHDIR_sitepackages.is_dir():
+            for item in os.listdir(PATHDIR_sitepackages):
+                PATHDIR_egg = PATHDIR_sitepackages / item
+                if item.startswith(self.NAME()) and item.endswith('-py3.6.egg') and PATHDIR_egg.is_dir():
+                    logger.info('Previous installation exists, deleting("' + str(PATHDIR_egg) + '")...')
+                    shutil.rmtree(PATHDIR_egg)
+                    prev_installation_exists = True
+
+        if not prev_installation_exists:
+            logger.info('Previous installation NOT exists, skipping')
         logger.info('Uninstall "%projekt%" first!'.replace('%projekt%', self.NAME()))
 
-        logger.info('Install as as lib "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
 
+        logger.info('Install as as package "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
         self.clone_projekt()
-
         logger.info('Build and Install ("%projekt%")'.replace('%projekt%', self.NAME()))
 
         subprocess.run(
@@ -83,32 +89,7 @@ PATHDIR_root_out_type_NAME_ver_output_os_ins_lib: '%PATHDIR_root_out_type_NAME_v
 
         self._is_installed_as_package = True
 
-        logger.info('Install as lib "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
-
-
-    # as target:
-    def install_as_target(self) -> None:
-        logger.info('Install as target "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
-
-        self.clone_projekt()
-
-        logger.info('Build and Install ("%projekt%")'.replace('%projekt%', self.NAME()))
-
-        subprocess.run(
-            ['projekt', 'task', 'build', 'default', 'execute'],
-            cwd=self.PATHDIR_root_projektrepository()
-        )
-
-        self._wsgipy_entry += \
-'''# install_as_target():
-sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path'''\
-            .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))
-
-        logger.info('Build and Install ("%projekt%")!'.replace('%projekt%', self.NAME()))
-
-        self._is_installed_as_target = True
-
-        logger.info('Install as target "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
+        logger.info('Install as package "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
 
 
     def report(self) -> str:
