@@ -1,15 +1,8 @@
-import json
-import os
-import platform
-import shutil, subprocess
-import sys
-from copy import copy
+import subprocess
 from pathlib import Path
-from typing import Type, List, Dict, Any
+from typing import Type, List
 
 import logging
-
-from sitedeployer.utils import remove_duplicates
 
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
@@ -21,38 +14,34 @@ logger.addHandler(handler)
 
 class Projekt:
     def __init__(self):
-        self._is_installed_as_target = False
-
-        self._PATH_old = None
-        self._PYTHONPATH_old = None
         self._sitedeployer = None
-
-        self._wsgipy_entry = ''
 
     def attach_to_sitedeployer(self,
         sitedeployer:'Sitedeployer'=None
     ) -> None:
-        self._sitedeployer = sitedeployer
-
-    def sitedeployer(self) -> 'Sitedeployer':
-        return self._sitedeployer
-
-
-    def Init(self) -> None:
-        logger.info('Init Projekt...')
         logger.info(
+            'Attaching "%NAME%" project to sitedeployer...'
+                .replace('%NAME%', self.NAME())
+        )
+        if self._sitedeployer is None:
+            logger.info(
+                'Project "%NAME%" already attached to sitedeployer, skipping...'
+                    .replace('%NAME%', self.NAME())
+            )
+        else:
+            self._sitedeployer = sitedeployer
+            logger.info('Init Projekt...')
+            logger.info(
 '''# names:
 NAME: '%NAME%'
 projektsitepub_package: '%projektsitepub_package%'
 projekt_package: '%projekt_package%'
 projekt: '%projekt%'
 
-
 # PATHS:
 PATHDIR_root: '%PATHDIR_root%'
 PATHDIR_root_projektrepository: '%PATHDIR_root_projektrepository%'
 PATHDIR_root_out_projekt: '%PATHDIR_root_out_projekt%'
-
 
 # github:
 github_username: '%github_username%'
@@ -68,29 +57,35 @@ pythonanywhere_username: '%pythonanywhere_username%'
 # dependencies:
 dependencies_Types: '%dependencies_Types%'
 '''
-            .replace('%NAME%', self.NAME())
-            .replace('%projektsitepub_package%', self.projektsitepub_package())
-            .replace('%projekt_package%', self.projekt_package())
-            .replace('%projekt%', self.projekt())
-            \
-            .replace('%PATHDIR_root%', str(self.PATHDIR_root()))
-            .replace('%PATHDIR_root_projektrepository%', str(self.PATHDIR_root_projektrepository()))
-            .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))
-            \
-            .replace('%github_username%', self.github_username())
-            .replace('%github_url_type%', self.github_url_type())
-            .replace('%URLSSH_github_projekt_repository%', self.URLSSH_github_projekt_repository())
-            .replace('%URLHTTP_github_projekt_repository%', self.URLHTTP_github_projekt_repository())
-            .replace('%URLHTTPS_github_projekt_repository%', self.URLHTTPS_github_projekt_repository())
-            .replace('%URL_github_projekt_repository%', self.URL_github_projekt_repository())
-            \
-            .replace('%pythonanywhere_username%', self.pythonanywhere_username())
-            \
-            .replace('%dependencies_Types%', str(self.dependencies_Types()))
-        )
+                .replace('%NAME%', self.NAME())
+                .replace('%projektsitepub_package%', self.projektsitepub_package())
+                .replace('%projekt_package%', self.projekt_package())
+                .replace('%projekt%', self.projekt())
+                \
+                .replace('%PATHDIR_root%', str(self.PATHDIR_root()))
+                .replace('%PATHDIR_root_projektrepository%', str(self.PATHDIR_root_projektrepository()))
+                .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))
+                \
+                .replace('%github_username%', self.github_username())
+                .replace('%github_url_type%', self.github_url_type())
+                .replace('%URLSSH_github_projekt_repository%', self.URLSSH_github_projekt_repository())
+                .replace('%URLHTTP_github_projekt_repository%', self.URLHTTP_github_projekt_repository())
+                .replace('%URLHTTPS_github_projekt_repository%', self.URLHTTPS_github_projekt_repository())
+                .replace('%URL_github_projekt_repository%', self.URL_github_projekt_repository())
+                \
+                .replace('%pythonanywhere_username%', self.pythonanywhere_username())
+                \
+                .replace('%dependencies_Types%', str(self.dependencies_Types()))
+            )
 
-        logger.info('Init Projekt!')
+            logger.info('Init Projekt!')
+            logger.info(
+                'Attached "%NAME%" project to sitedeployer!'
+                    .replace('%NAME%', self.NAME())
+            )
 
+    def sitedeployer(self) -> 'Sitedeployer':
+        return self._sitedeployer
 
     # names:
     def NAME(self) -> str:
@@ -160,12 +155,9 @@ dependencies_Types: '%dependencies_Types%'
         raise NotImplementedError("")
 
 
-    # dependencies:
-    #   site:
-
     def dependencies_Types(self) -> List[Type['Projekt']]:
-        from sitedeployer.projects.builtin.project.base_Project import base_Project
-        from sitedeployer.projects.builtin.project.projekt_Project import projekt_Project
+        from sitedeployer.projects.comps.Project.base_Project import base_Project
+        from sitedeployer.projects.comps.Project.projekt_Project import projekt_Project
         return [
             base_Project,
             projekt_Project
@@ -185,35 +177,17 @@ dependencies_Types: '%dependencies_Types%'
             logger.info('Cloned "%projekt%" already exists, skipped...'.replace('%projekt%', self.NAME()))
 
     def wsgipy_entry(self) -> str:
-        return self._wsgipy_entry
+        return \
+'''sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path'''\
+            .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))
 
-    # as target:
-    def is_installed_as_target(self) -> bool:
-        return self._is_installed_as_target
-
-    # as target:
     def install_as_target(self) -> None:
         logger.info('Install as target "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
         self.clone_projekt()
-        logger.info('Build and Install ("%projekt%")'.replace('%projekt%', self.NAME()))
 
         subprocess.run(
             ['projekt', 'task', 'build', 'default', 'execute'],
             cwd=self.PATHDIR_root_projektrepository()
         )
 
-        self._wsgipy_entry += \
-'\n' + '''sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path'''\
-            .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))
-
-        logger.info('Build and Install ("%projekt%")!'.replace('%projekt%', self.NAME()))
-
-        self._is_installed_as_target = True
-
         logger.info('Install as target "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
-
-    def report(self) -> str:
-        return \
-'''NAME: "%NAME%", is_installed_as_target: %is_installed_as_target%'''\
-    .replace('%NAME%', self.NAME())\
-    .replace('%is_installed_as_target%', str(1 if self.is_installed_as_target() else 0))

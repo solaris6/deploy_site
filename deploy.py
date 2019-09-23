@@ -1,9 +1,4 @@
-import sys
-from pathlib import Path
-sys.path.append(str(Path(sys.argv[0]).parent))
-
 import logging
-
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
 formatter = logging.Formatter("[deployer] - %(asctime)s - %(levelname)s - %(message)s")
@@ -12,21 +7,27 @@ handler.setLevel(logging.DEBUG)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
+import sys
+from pathlib import Path
+
+sys.path.append(str(Path(sys.argv[0]).parent))
+
+from sitedeployer.projects.comps.Project.Ln_Project import Ln_Project
+from sitedeployer.projects.comps.Project.base_Project import base_Project
+from sitedeployer.projects.comps.Project.basedata_Project import basedata_Project
+from sitedeployer.projects.comps.Project.cgbase_Project import cgbase_Project
+from sitedeployer.projects.comps.Project.fw_Project import fw_Project
+from sitedeployer.projects.comps.Project.myrta_Project import myrta_Project
+from sitedeployer.projects.comps.Project.projekt_Project import projekt_Project
+from sitedeployer.projects.comps.Project.rs_Project import rs_Project
+from sitedeployer.projects.comps.Project.rsdata_Project import rsdata_Project
+from sitedeployer.projects.comps.Project.sc_Project import sc_Project
+from sitedeployer.projects.comps.Project.skfb_Project import skfb_Project
+from sitedeployer.projects.comps.Project.sola_Project import sola_Project
+from sitedeployer.projects.comps.Project.una_Project import una_Project
+from sitedeployer.projects.comps.Workshop.ynsight_Workshop import ynsight_Workshop
+
 from sitedeployer.Sitedeployer import Sitedeployer
-from sitedeployer.projects.builtin.project.Ln_Project import Ln_Project
-from sitedeployer.projects.builtin.project.base_Project import base_Project
-from sitedeployer.projects.builtin.project.basedata_Project import basedata_Project
-from sitedeployer.projects.builtin.project.cgbase_Project import cgbase_Project
-from sitedeployer.projects.builtin.project.fw_Project import fw_Project
-from sitedeployer.projects.builtin.project.myrta_Project import myrta_Project
-from sitedeployer.projects.builtin.project.projekt_Project import projekt_Project
-from sitedeployer.projects.builtin.project.rs_Project import rs_Project
-from sitedeployer.projects.builtin.project.rsdata_Project import rsdata_Project
-from sitedeployer.projects.builtin.project.sc_Project import sc_Project
-from sitedeployer.projects.builtin.project.skfb_Project import skfb_Project
-from sitedeployer.projects.builtin.project.sola_Project import sola_Project
-from sitedeployer.projects.builtin.project.una_Project import una_Project
-from sitedeployer.projects.builtin.workshop.ynsight_Workshop import ynsight_Workshop
 
 
 if __name__ == '__main__':
@@ -34,7 +35,7 @@ if __name__ == '__main__':
     PATHFILE_deploypy = Path(sys.argv[0])
     pythonanywhere_username = PATHFILE_deploypy.parent.parent.parent.name
 
-    target_projekt = {
+    target_project = {
         'getbase': base_Project,
         'getbasedata': basedata_Project,
         'getprojekt': projekt_Project,
@@ -54,7 +55,7 @@ if __name__ == '__main__':
 
     Sitedeployer(
         PATHFILE_deploypy=PATHFILE_deploypy,
-        target_projekt=target_projekt
+        target_project=target_project
     ).Execute()
 
     logger.info('Deploy site!')

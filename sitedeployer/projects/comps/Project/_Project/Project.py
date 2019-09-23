@@ -2,10 +2,19 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
-from typing import List, Type
 
-from sitedeployer.projects.core.Projekt import Projekt, logger
-from sitedeployer.utils import log_environment, lnx_mac_win
+from sitedeployer.projects.comps._Projekt.Projekt import Projekt
+from sitedeployer.utils import lnx_mac_win
+
+import logging
+
+logger = logging.getLogger(__name__)
+handler = logging.StreamHandler()
+formatter = logging.Formatter("[sitedeployer] - %(asctime)s - %(levelname)s - %(message)s")
+handler.setFormatter(formatter)
+handler.setLevel(logging.DEBUG)
+logger.setLevel(logging.DEBUG)
+logger.addHandler(handler)
 
 
 class Project(
@@ -13,22 +22,6 @@ class Project(
 ):
     def __init__(self):
         Projekt.__init__(self)
-
-        self._is_installed_as_package = False
-
-
-    def Init(self) -> None:
-        Projekt.Init(self)
-        logger.info('Init Project...')
-        logger.info(
-'''# names:
-PATHDIR_root_out_type_NAME_ver_output_os_ins_bin: '%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%'
-PATHDIR_root_out_type_NAME_ver_output_os_ins_lib: '%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%'
-'''
-            .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_bin%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_bin()))
-            .replace('%PATHDIR_root_out_type_NAME_ver_output_os_ins_lib%', str(self.PATHDIR_root_out_type_NAME_ver_output_os_ins_lib()))
-        )
-        logger.info('Init Project!')
 
 
     # names:
@@ -48,10 +41,6 @@ PATHDIR_root_out_type_NAME_ver_output_os_ins_lib: '%PATHDIR_root_out_type_NAME_v
             .replace('%os%', lnx_mac_win())
 
 
-
-    # as lib site:
-    def is_installed_as_package(self) -> bool:
-        return self._is_installed_as_package
 
     def install_as_package(self) -> None:
 
@@ -78,24 +67,10 @@ PATHDIR_root_out_type_NAME_ver_output_os_ins_lib: '%PATHDIR_root_out_type_NAME_v
 
         logger.info('Install as as package "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
         self.clone_projekt()
-        logger.info('Build and Install ("%projekt%")'.replace('%projekt%', self.NAME()))
 
         subprocess.run(
             ['python3.6', 'setup.py', 'install'],
             cwd=self.PATHDIR_root_projektrepository()
         )
 
-        logger.info('Build and Install ("%projekt%")!'.replace('%projekt%', self.NAME()))
-
-        self._is_installed_as_package = True
-
         logger.info('Install as package "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
-
-
-    def report(self) -> str:
-        return \
-'''NAME: "%NAME%", is_installed_as_target: %is_installed_as_target%, is_installed_as_package: %is_installed_as_package%'''\
-    .replace('%NAME%', self.NAME())\
-    \
-    .replace('%is_installed_as_target%', str(1 if self.is_installed_as_target() else 0))\
-    .replace('%is_installed_as_package%', str(1 if self.is_installed_as_package() else 0))

@@ -1,4 +1,7 @@
 import logging
+
+from sitedeployer.projects.comps._Projekt.Projekt import Projekt
+
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
 formatter = logging.Formatter("[deployer] - %(asctime)s - %(levelname)s - %(message)s")
@@ -8,42 +11,30 @@ logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
 from typing import List
-
-from sitedeployer.projects.core.Project import Project
 import os
 import shutil
 from copy import copy
 from pathlib import Path
 
-from sitedeployer.projects.core.Projekt import Projekt
-from sitedeployer.projects.core.Workshop import Workshop
 from sitedeployer.utils import log_environment
 
 class Sitedeployer:
     def __init__(self,
         PATHFILE_deploypy:Path=None,
-        target_projekt:Projekt=None
+        target_project:Projekt=None
     ):
         self._PATHFILE_deploypy = PATHFILE_deploypy
-        self._target_projekt = target_projekt
-
-        self._projekts_all = []
-
-        self._PATH_old = None
-        self._PYTHONPATH_old = None
+        self._target_project = target_project
 
     # projekt:
-    def target_projekt(self) -> Projekt:
-        return self._target_projekt
-
-    def projekts_all(self) -> List[Projekt]:
-        return self._projekts_all
+    def target_project(self) -> Projekt:
+        return self._target_project
 
     # pythonanywhere:
     def pythonanywhere_username(self) -> str:
-        return self.target_projekt().pythonanywhere_username()
+        return self.target_project().pythonanywhere_username()
 
-    def URL_site(self) -> str:
+    def URL_pythonanywhere_site(self) -> str:
         return self.pythonanywhere_username() + '.pythonanywhere.com'
 
     # github:
@@ -80,37 +71,32 @@ class Sitedeployer:
 
 
     def Execute(self) -> None:
-        package_projekts = []
-        for projekt_Type in self.target_projekt().dependencies_Types():
-            if projekt_Type is type(self.target_projekt()):
-                package_projekts.append(self.target_projekt())
+        dependencies_projects = []
+        for project_Type in self.target_project().dependencies_Types():
+            if isinstance(self.target_project(), project_Type):
+                dependency_project = self.target_project()
             else:
-                project = projekt_Type()
-                self._projekts_all.append(
-                    project
-                )
-                package_projekts.append(project)
+                dependency_project = project_Type()
+            dependencies_projects.append(dependency_project)
 
-        self._projekts_all += [self.target_projekt()]
-
-        for projekt in self.projekts_all():
-            projekt.attach_to_sitedeployer(
+            dependency_project.attach_to_sitedeployer(
                 sitedeployer=self
             )
-            projekt.Init()
+
+        self.target_project().attach_to_sitedeployer(
+            sitedeployer=self
+        )
 
         log_environment(logger=logger)
 
-
-        logger.info('Process common...')
         logger.info(
 '''# projekt:
-target_projekt: '%target_projekt%'
-projekts_all: '%projekts_all%'
+target_project: '%target_project%'
+dependencies_projects: '%dependencies_projects%'
 
 # pythonanywhere:
 pythonanywhere_username: '%pythonanywhere_username%'
-URL_site: '%URL_site%'
+URL_pythonanywhere_site: '%URL_pythonanywhere_site%'
 
 # github:
 github_username: '%github_username%'
@@ -125,11 +111,11 @@ PATHFILE_wsgipy: '%PATHFILE_wsgipy%'
 PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy: '%PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy%'
 PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereusername_updatepy%'
 '''
-            .replace('%target_projekt%', str(self.target_projekt()))
-            .replace('%projekts_all%', str(self.projekts_all()))
+            .replace('%target_project%', str(self.target_project()))
+            .replace('%dependencies_projects%', str(dependencies_projects))
             \
             .replace('%pythonanywhere_username%', self.pythonanywhere_username())
-            .replace('%URL_site%', self.URL_site())
+            .replace('%URL_pythonanywhere_site%', self.URL_pythonanywhere_site())
             \
             .replace('%github_username%', self.github_username())
             \
@@ -143,23 +129,15 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
             .replace('%PATHFILE_home_pythonanywhereusername_updatepy%', str(self.PATHFILE_home_pythonanywhereusername_updatepy()))
         )
 
-        logger.info('Process common!')
+        for dependency_project in dependencies_projects:
+            dependency_project.install_as_package()
 
-        log_environment(logger=logger)
-        self._PATH_old = copy(os.environ['PATH']) if 'PATH' in os.environ else ''
-        self._PYTHONPATH_old = copy(os.environ['PYTHONPATH']) if 'PYTHONPATH' in os.environ else ''
-        log_environment(logger=logger)
-
-        for package_projekt in package_projekts:
-            package_projekt.install_as_package()
-
-        self.target_projekt().install_as_target()
+        self.target_project().install_as_target()
 
         # wsgi.py:
         logger.info('Process wsgi.py...')
         logger.info(
-'''wsgi.py paths:
-PATHFILE_wsgipy=%PATHFILE_wsgipy%'''
+'''PATHFILE_wsgipy=%PATHFILE_wsgipy%'''
             .replace('%PATHFILE_wsgipy%', str(self.PATHFILE_wsgipy()))
         )
 
@@ -168,19 +146,14 @@ PATHFILE_wsgipy=%PATHFILE_wsgipy%'''
 '''import sys, os
 from pathlib import Path
 
-# projekts entries:
-%projekts_entries%
+%project_entry%
 
 from %projektsitepub_package%.flask_app import app as application
 '''
 
-        projekts_entries = ''
-        for i,projekt in enumerate(self.projekts_all()):
-            projekts_entries += ('' if i==0 else '\n\n') + '# ' + projekt.report() + ':\n' + projekt.wsgipy_entry()
-
         wsgipy_fc = wsgipy_template\
-            .replace('%projekts_entries%', projekts_entries)\
-            .replace('%projektsitepub_package%', self.target_projekt().projektsitepub_package())
+            .replace('%project_entry%', self.target_project().wsgipy_entry())\
+            .replace('%projektsitepub_package%', self.target_project().projektsitepub_package())
 
         self.PATHFILE_wsgipy().write_text(
             wsgipy_fc
@@ -190,14 +163,8 @@ from %projektsitepub_package%.flask_app import app as application
         logger.info('Write wsgi.py file!')
         logger.info('Process wsgi.py!')
 
-
-        log_environment(logger=logger)
-        os.environ['PATH'] = self._PATH_old
-        os.environ['PYTHONPATH'] = self._PYTHONPATH_old
-        log_environment(logger=logger)
-
         # update.py:
-        logger.info('Process update.py...')
+        logger.info('Write update.py file...')
         logger.info(
 '''update.py paths:
 PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy=%PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy%
@@ -206,10 +173,8 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
             .replace('%PATHFILE_home_pythonanywhereusername_updatepy%', str(self.PATHFILE_home_pythonanywhereusername_updatepy()))
         )
 
-        logger.info('Write update.py file...')
         shutil.copyfile(
             self.PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy(),
             self.PATHFILE_home_pythonanywhereusername_updatepy()
         )
         logger.info('Write update.py file!')
-        logger.info('Process update.py!')

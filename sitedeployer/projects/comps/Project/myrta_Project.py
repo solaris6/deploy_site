@@ -1,7 +1,4 @@
-from pathlib import Path
-from typing import Type, List
-
-from sitedeployer.projects.core.Project import Project, logger
+from sitedeployer.projects.core.Project import Project
 
 class myrta_Project(
     Project
