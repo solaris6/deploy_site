@@ -1,4 +1,7 @@
-from sitedeployer.projects.core.Project import Project
+from typing import List
+
+from sitedeployer.Projekt.Project._Project.Project import Project
+
 
 class basedata_Project(
     Project
@@ -11,3 +14,6 @@ class basedata_Project(
 
     def github_url_type(self) -> str:
         return 'ssh'
+
+    def version_list(self) -> List[int]:
+        return [2019, 2, 0]

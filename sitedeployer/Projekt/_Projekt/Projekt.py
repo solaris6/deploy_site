@@ -1,3 +1,7 @@
+import os
+import shutil
+import subprocess
+
 import subprocess
 from pathlib import Path
 from typing import Type, List
@@ -91,6 +95,22 @@ dependencies_Types: '%dependencies_Types%'
     def NAME(self) -> str:
         raise NotImplementedError("")
 
+    def version_list(self) -> List[int]:
+        raise NotImplementedError("")
+
+    def version_dot_str(self) -> str:
+        return '.'.join(self.version_list())
+
+    def DIRNAME_egg(self) -> str:
+        return '%NAME%-%project_version_dot_str%-py%python_version_dot_str%.egg'\
+            .replace('%NAME%', self.NAME())\
+            .replace('%project_version_dot_str%', self.sitedeployer().version_dot_str())\
+            .replace('%python_version_dot_str%', self.sitedeployer().python_version_dot_str())
+
+    def PATHDIR_egg(self) -> Path:
+        return self.sitedeployer().PATHDIR_sitepackages() / self.DIRNAME_egg()
+
+
     def projektsitepub_package(self) -> str:
         return '%projekt%sitepub_%NAME%'\
             .replace('%projekt%', self.projekt())\
@@ -156,8 +176,8 @@ dependencies_Types: '%dependencies_Types%'
 
 
     def dependencies_Types(self) -> List[Type['Projekt']]:
-        from sitedeployer.projects.comps.Project.base_Project import base_Project
-        from sitedeployer.projects.comps.Project.projekt_Project import projekt_Project
+        from sitedeployer.Projekt.Project.base_Project import base_Project
+        from sitedeployer.Projekt.Project.projekt_Project import projekt_Project
         return [
             base_Project,
             projekt_Project
@@ -180,6 +200,37 @@ dependencies_Types: '%dependencies_Types%'
         return \
 '''sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path'''\
             .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))
+
+
+    def install_as_package(self) -> None:
+        logger.info('Uninstall "%projekt%" first...'.replace('%projekt%', self.NAME()))
+
+        PATHDIR_sitepackages = self.sitedeployer().PATHDIR_sitepackages()
+
+        prev_installation_exists = False
+        if PATHDIR_sitepackages.is_dir():
+            for item in os.listdir(PATHDIR_sitepackages):
+                PATHDIR_egg = PATHDIR_sitepackages / item
+                if item.startswith(self.NAME()) and item.endswith('-py3.6.egg') and PATHDIR_egg.is_dir():
+                    logger.info('Previous installation exists, deleting("' + str(PATHDIR_egg) + '")...')
+                    shutil.rmtree(PATHDIR_egg)
+                    prev_installation_exists = True
+
+        if not prev_installation_exists:
+            logger.info('Previous installation NOT exists, skipping')
+        logger.info('Uninstall "%projekt%" first!'.replace('%projekt%', self.NAME()))
+
+
+        logger.info('Install as as package "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
+        self.clone_projekt()
+
+        subprocess.run(
+            ['python3.6', 'setup.py', 'install'],
+            cwd=self.PATHDIR_root_projektrepository()
+        )
+
+        logger.info('Install as package "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
+
 
     def install_as_target(self) -> None:
         logger.info('Install as target "%projekt%" projekt...'.replace('%projekt%', self.NAME()))

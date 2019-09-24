@@ -1,4 +1,6 @@
-from sitedeployer.projects.comps.Workshop._Workshop.Workshop import Workshop
+from typing import List
+
+from sitedeployer.Projekt.Workshop._Workshop.Workshop import Workshop
 
 
 class ynsight_Workshop(
@@ -12,3 +14,6 @@ class ynsight_Workshop(
 
     def github_url_type(self) -> str:
         return 'ssh'
+
+    def version_list(self) -> List[int]:
+        return [2019, 2, 0]

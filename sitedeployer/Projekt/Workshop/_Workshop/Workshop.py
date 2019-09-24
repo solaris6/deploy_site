@@ -1,4 +1,4 @@
-from sitedeployer.projects.comps._Projekt.Projekt import Projekt
+from sitedeployer.Projekt._Projekt.Projekt import Projekt
 
 
 class Workshop(

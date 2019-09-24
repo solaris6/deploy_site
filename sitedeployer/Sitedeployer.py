@@ -41,6 +41,28 @@ class Sitedeployer:
     def github_username(self) -> str:
         return 'ynsight'
 
+    def python_version_list(self) -> List[int]:
+        return [3, 6]
+
+    def python_version_dot_str(self) -> str:
+        return '.'.join(self.python_version_list())
+
+    def DIRNAME_venv(self) -> str:
+        return 'python%python_version_dot_str%venv'\
+            .replace('%python_version_dot_str%', self.python_version_dot_str())
+
+    def DIRNAME_python(self) -> str:
+        return 'python%python_version_dot_str%'\
+            .replace('%python_version_dot_str%', self.python_version_dot_str())
+
+    def PATHDIR_sitepackages(self) -> Path:
+        return Path(
+            '/home/%pythonanywhere_username%/.virtualenvs/%DIRNAME_venv%/lib/%DIRNAME_python%/site-packages'
+                .replace('%pythonanywhere_username%', self.pythonanywhere_username())
+                .replace('%DIRNAME_venv%', self.DIRNAME_venv())
+                .replace('%DIRNAME_python%', self.DIRNAME_python())
+        )
+
     # PATHS:
     def PATHDIR_home_pythonanywhereusername(self) -> Path:
         return self.PATHDIR_root().parent
