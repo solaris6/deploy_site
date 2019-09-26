@@ -43,7 +43,10 @@ class Sitedeployer:
         return [3, 6]
 
     def python_version_dot_str(self) -> str:
-        return '.'.join(self.python_version_list())
+        python_version_list_str = []
+        for version_comp_int in self.python_version_list():
+            python_version_list_str.append(str(version_comp_int))
+        return '.'.join(python_version_list_str)
 
     def FILENAME_python(self) -> str:
         return 'python%python_version_dot_str%'\
