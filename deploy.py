@@ -1,3 +1,7 @@
+import sys
+from pathlib import Path
+sys.path.append(str(Path(sys.argv[0]).parent))
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -22,13 +26,6 @@ from sitedeployer.Projekt.Project.skfb_Project import skfb_Project
 from sitedeployer.Projekt.Project.sola_Project import sola_Project
 from sitedeployer.Projekt.Project.una_Project import una_Project
 from sitedeployer.Projekt.Workshop.ynsight_Workshop import ynsight_Workshop
-
-import sys
-from pathlib import Path
-
-sys.path.append(str(Path(sys.argv[0]).parent))
-
-
 
 from sitedeployer.Sitedeployer import Sitedeployer
 
