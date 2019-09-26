@@ -48,13 +48,19 @@ class Sitedeployer:
             python_version_list_str.append(str(version_comp_int))
         return '.'.join(python_version_list_str)
 
+    def python_version_solid_str(self) -> str:
+        python_version_list_str = []
+        for version_comp_int in self.python_version_list():
+            python_version_list_str.append(str(version_comp_int))
+        return ''.join(python_version_list_str)
+
     def FILENAME_python(self) -> str:
         return 'python%python_version_dot_str%'\
             .replace('%python_version_dot_str%', self.python_version_dot_str())
 
     def DIRNAME_venv(self) -> str:
-        return 'python%python_version_dot_str%venv'\
-            .replace('%python_version_dot_str%', self.python_version_dot_str())
+        return 'python%python_version_solid_str%venv'\
+            .replace('%python_version_solid_str%', self.python_version_solid_str())
 
     def DIRNAME_python(self) -> str:
         return 'python%python_version_dot_str%'\
