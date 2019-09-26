@@ -108,7 +108,7 @@ dependencies_Types: '%dependencies_Types%'
             .replace('%python_version_dot_str%', self.sitedeployer().python_version_dot_str())
 
     def PATHDIR_egg(self) -> Path:
-        return self.sitedeployer().PATHDIR_sitepackages() / self.DIRNAME_egg()
+        return self.sitedeployer().PATHDIR_venvsitepackages() / self.DIRNAME_egg()
 
 
     def projektsitepub_package(self) -> str:
@@ -202,34 +202,58 @@ dependencies_Types: '%dependencies_Types%'
             .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))
 
 
+    def is_install_as_package_supported(self) -> bool:
+        raise NotImplementedError("")
+
+    def package_executables(self) -> List[str]:
+        raise NotImplementedError("")
+
     def install_as_package(self) -> None:
-        logger.info('Uninstall "%projekt%" first...'.replace('%projekt%', self.NAME()))
+        logger.info('Install as as package "%projekt%"...'.replace('%projekt%', self.NAME()))
+        if self.is_install_as_package_supported():
+            logger.info('Uninstall "%projekt%" first...'.replace('%projekt%', self.NAME()))
 
-        PATHDIR_sitepackages = self.sitedeployer().PATHDIR_sitepackages()
+            PATHDIR_venvsitepackages = self.sitedeployer().PATHDIR_venvsitepackages()
 
-        prev_installation_exists = False
-        if PATHDIR_sitepackages.is_dir():
-            for item in os.listdir(PATHDIR_sitepackages):
-                PATHDIR_egg = PATHDIR_sitepackages / item
-                if item.startswith(self.NAME()) and item.endswith('-py3.6.egg') and PATHDIR_egg.is_dir():
-                    logger.info('Previous installation exists, deleting("' + str(PATHDIR_egg) + '")...')
-                    shutil.rmtree(PATHDIR_egg)
+            logger.info('Remove "%projekt%" package...'.replace('%projekt%', self.NAME()))
+            prev_installation_exists = False
+            if PATHDIR_venvsitepackages.is_dir():
+                for item in os.listdir(PATHDIR_venvsitepackages):
+                    PATHDIR_egg = PATHDIR_venvsitepackages / item
+                    if item.startswith(self.NAME()) and\
+                       item.endswith('-py%python_version_dot_str%.egg'.replace('%python_version_dot_str%', self.sitedeployer().python_version_dot_str())) and\
+                            PATHDIR_egg.is_dir():
+                        logger.info('Previous installation exists, deleting("' + str(PATHDIR_egg) + '")...')
+                        shutil.rmtree(PATHDIR_egg)
+                        prev_installation_exists = True
+            logger.info('Removed "%projekt%" package!'.replace('%projekt%', self.NAME()))
+
+            logger.info('Remove "%projekt%" executables...'.replace('%projekt%', self.NAME()))
+            for package_executable in self.package_executables():
+                PATHFILE_package_executable = self.sitedeployer().PATHDIR_venvbin() / package_executable
+
+                if PATHFILE_package_executable.is_file():
+                    logger.info('Executable exists, deleting("' + str(PATHFILE_package_executable) + '")...')
+                    os.remove(str(PATHFILE_package_executable))
                     prev_installation_exists = True
 
-        if not prev_installation_exists:
-            logger.info('Previous installation NOT exists, skipping')
-        logger.info('Uninstall "%projekt%" first!'.replace('%projekt%', self.NAME()))
+            logger.info('Removed "%projekt%" executables!'.replace('%projekt%', self.NAME()))
 
+            if not prev_installation_exists:
+                logger.info('Previous installation NOT exists, skipping')
+            logger.info('Uninstall "%projekt%" first!'.replace('%projekt%', self.NAME()))
 
-        logger.info('Install as as package "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
-        self.clone_projekt()
+            self.clone_projekt()
 
-        subprocess.run(
-            ['python3.6', 'setup.py', 'install'],
-            cwd=self.PATHDIR_root_projektrepository()
-        )
+            subprocess.run(
+                [self.sitedeployer().FILENAME_python(), 'setup.py', 'install'],
+                cwd=self.PATHDIR_root_projektrepository()
+            )
 
-        logger.info('Install as package "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
+            logger.info('Install as package "%projekt%"!'.replace('%projekt%', self.NAME()))
+        else:
+            logger.info('Install as package "%projekt%" is NOT supported!'.replace('%projekt%', self.NAME()))
+
 
 
     def install_as_target(self) -> None:

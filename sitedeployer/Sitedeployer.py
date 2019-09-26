@@ -47,6 +47,10 @@ class Sitedeployer:
     def python_version_dot_str(self) -> str:
         return '.'.join(self.python_version_list())
 
+    def FILENAME_python(self) -> str:
+        return 'python%python_version_dot_str%'\
+            .replace('%python_version_dot_str%', self.python_version_dot_str())
+
     def DIRNAME_venv(self) -> str:
         return 'python%python_version_dot_str%venv'\
             .replace('%python_version_dot_str%', self.python_version_dot_str())
@@ -55,12 +59,19 @@ class Sitedeployer:
         return 'python%python_version_dot_str%'\
             .replace('%python_version_dot_str%', self.python_version_dot_str())
 
-    def PATHDIR_sitepackages(self) -> Path:
+    def PATHDIR_venvsitepackages(self) -> Path:
         return Path(
             '/home/%pythonanywhere_username%/.virtualenvs/%DIRNAME_venv%/lib/%DIRNAME_python%/site-packages'
                 .replace('%pythonanywhere_username%', self.pythonanywhere_username())
                 .replace('%DIRNAME_venv%', self.DIRNAME_venv())
                 .replace('%DIRNAME_python%', self.DIRNAME_python())
+        )
+
+    def PATHDIR_venvbin(self) -> Path:
+        return Path(
+            '/home/%pythonanywhere_username%/.virtualenvs/%DIRNAME_venv%/bin'
+                .replace('%pythonanywhere_username%', self.pythonanywhere_username())
+                .replace('%DIRNAME_venv%', self.DIRNAME_venv())
         )
 
     # PATHS:
