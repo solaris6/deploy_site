@@ -1,6 +1,5 @@
 import os
 import shutil
-import subprocess
 
 import subprocess
 from pathlib import Path
@@ -27,7 +26,7 @@ class Projekt:
             'Attaching "%NAME%" project to sitedeployer...'
                 .replace('%NAME%', self.NAME())
         )
-        if self._sitedeployer is None:
+        if not self._sitedeployer is None:
             logger.info(
                 'Project "%NAME%" already attached to sitedeployer, skipping...'
                     .replace('%NAME%', self.NAME())
