@@ -1,6 +1,6 @@
 import logging
 
-from sitedeployer.projects.comps._Projekt.Projekt import Projekt
+from sitedeployer.Projekt._Projekt.Projekt import Projekt
 
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
@@ -11,9 +11,7 @@ logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
 from typing import List
-import os
 import shutil
-from copy import copy
 from pathlib import Path
 
 from sitedeployer.utils import log_environment
