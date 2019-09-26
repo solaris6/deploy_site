@@ -225,6 +225,9 @@ dependencies_Types: '%dependencies_Types%'
                         logger.info('Previous installation exists, deleting("' + str(PATHDIR_egg) + '")...')
                         shutil.rmtree(PATHDIR_egg)
                         prev_installation_exists = True
+                    else:
+                        logger.info('Item is NOT previous installation, skipping("' + str(PATHDIR_egg) + '")...')
+
             logger.info('Removed "%projekt%" package!'.replace('%projekt%', self.NAME()))
 
             logger.info('Remove "%projekt%" executables...'.replace('%projekt%', self.NAME()))
@@ -235,6 +238,8 @@ dependencies_Types: '%dependencies_Types%'
                     logger.info('Executable exists, deleting("' + str(PATHFILE_package_executable) + '")...')
                     os.remove(str(PATHFILE_package_executable))
                     prev_installation_exists = True
+                else:
+                    logger.info('Executable NOT exists, skipping("' + str(PATHFILE_package_executable) + '")...')
 
             logger.info('Removed "%projekt%" executables!'.replace('%projekt%', self.NAME()))
 
