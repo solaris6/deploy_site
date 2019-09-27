@@ -22,6 +22,9 @@ class myrta_Project(
     def is_install_as_package_supported(self) -> bool:
         return True
 
+    def is_uninstall_as_package_supported(self) -> bool:
+        return True
+
     def package_executables(self) -> List[str]:
         return [
             'myrta',

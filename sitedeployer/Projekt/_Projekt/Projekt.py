@@ -175,8 +175,8 @@ dependencies_Types: '%dependencies_Types%'
 
 
     def dependencies_Types(self) -> List[Type['Projekt']]:
-        from sitedeployer.Projekt.Project.base_Project import base_Project
         from sitedeployer.Projekt.Project.projekt_Project import projekt_Project
+        from sitedeployer.Projekt.Project.base_Project import base_Project
         return [
             base_Project,
             projekt_Project
@@ -204,14 +204,15 @@ dependencies_Types: '%dependencies_Types%'
     def is_install_as_package_supported(self) -> bool:
         raise NotImplementedError("")
 
+    def is_uninstall_as_package_supported(self) -> bool:
+        raise NotImplementedError("")
+
     def package_executables(self) -> List[str]:
         raise NotImplementedError("")
 
     def install_as_package(self) -> None:
-        logger.info('Install as as package "%projekt%"...'.replace('%projekt%', self.NAME()))
+        logger.info('Unnstall as as package "%projekt%"...'.replace('%projekt%', self.NAME()))
         if self.is_install_as_package_supported():
-            logger.info('Uninstall "%projekt%" first...'.replace('%projekt%', self.NAME()))
-
             PATHDIR_venvsitepackages = self.sitedeployer().PATHDIR_venvsitepackages()
 
             logger.info('Remove "%projekt%" package...'.replace('%projekt%', self.NAME()))
@@ -241,12 +242,14 @@ dependencies_Types: '%dependencies_Types%'
                 else:
                     logger.info('Executable NOT exists, skipping("' + str(PATHFILE_package_executable) + '")...')
 
-            logger.info('Removed "%projekt%" executables!'.replace('%projekt%', self.NAME()))
-
             if not prev_installation_exists:
                 logger.info('Previous installation NOT exists, skipping')
-            logger.info('Uninstall "%projekt%" first!'.replace('%projekt%', self.NAME()))
+            logger.info('Uninstall as package "%projekt%"!'.replace('%projekt%', self.NAME()))
+        else:
+            logger.info('Uninstall as package "%projekt%" is NOT supported!'.replace('%projekt%', self.NAME()))
 
+        logger.info('Install as as package "%projekt%"...'.replace('%projekt%', self.NAME()))
+        if self.is_install_as_package_supported():
             self.clone_projekt()
 
             subprocess.run(
@@ -265,7 +268,7 @@ dependencies_Types: '%dependencies_Types%'
         self.clone_projekt()
 
         subprocess.run(
-            ['projekt', 'task', 'build', 'default', 'execute'],
+            ['projekt', 'task', 'execute', 'build', 'default'],
             cwd=self.PATHDIR_root_projektrepository()
         )
 

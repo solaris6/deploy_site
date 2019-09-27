@@ -22,5 +22,8 @@ class sc_Project(
     def is_install_as_package_supported(self) -> bool:
         return False
 
+    def is_uninstall_as_package_supported(self) -> bool:
+        return False
+
     def package_executables(self) -> List[str]:
-        return None
+        return []
