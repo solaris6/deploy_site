@@ -26,9 +26,4 @@ class skfb_Project(
         return True
 
     def package_executables(self) -> List[str]:
-        return [
-            'skfb',
-            'skfb.sh',
-            'skfb.bat',
-            'skfb.py'
-        ]
+        return []
