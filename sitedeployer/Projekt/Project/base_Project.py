@@ -36,11 +36,6 @@ class base_Project(
 
     def package_executables(self) -> List[str]:
         return [
-            'base',
-            'base.sh',
-            'base.bat',
-            'base.py',
-
             'agent',
             'agent.sh',
             'agent.bat',
