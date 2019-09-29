@@ -30,5 +30,5 @@ class projekt_Project(
             'projekt',
             'projekt.sh',
             'projekt.bat',
-            'projekt.py'
+            'projekt_.py'
         ]

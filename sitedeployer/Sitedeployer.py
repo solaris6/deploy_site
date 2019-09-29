@@ -1,7 +1,5 @@
 import logging
 
-from sitedeployer.Projekt._Projekt.Projekt import Projekt
-
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
 formatter = logging.Formatter("[deployer] - %(asctime)s - %(levelname)s - %(message)s")
@@ -10,11 +8,28 @@ handler.setLevel(logging.DEBUG)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
-from typing import List
+from typing import List, Type
 import shutil
 from pathlib import Path
 
 from sitedeployer.utils import log_environment
+
+from sitedeployer.Projekt._Projekt.Projekt import Projekt
+
+from sitedeployer.Projekt.Project.Ln_Project import Ln_Project
+from sitedeployer.Projekt.Project.base_Project import base_Project
+from sitedeployer.Projekt.Project.basedata_Project import basedata_Project
+from sitedeployer.Projekt.Project.cgbase_Project import cgbase_Project
+from sitedeployer.Projekt.Project.fw_Project import fw_Project
+from sitedeployer.Projekt.Project.myrta_Project import myrta_Project
+from sitedeployer.Projekt.Project.projekt_Project import projekt_Project
+from sitedeployer.Projekt.Project.rs_Project import rs_Project
+from sitedeployer.Projekt.Project.rsdata_Project import rsdata_Project
+from sitedeployer.Projekt.Project.sc_Project import sc_Project
+from sitedeployer.Projekt.Project.skfb_Project import skfb_Project
+from sitedeployer.Projekt.Project.sola_Project import sola_Project
+from sitedeployer.Projekt.Project.una_Project import una_Project
+from sitedeployer.Projekt.Workshop.ynsight_Workshop import ynsight_Workshop
 
 class Sitedeployer:
     def __init__(self,
@@ -23,6 +38,25 @@ class Sitedeployer:
     ):
         self._PATHFILE_deploypy = PATHFILE_deploypy
         self._target_project = target_project
+
+    def projekts_Types_all(self) -> List[Type[Projekt]]:
+        return [
+            base_Project,
+            basedata_Project,
+            projekt_Project,
+            myrta_Project,
+            una_Project,
+            rs_Project,
+            rsdata_Project,
+            sc_Project,
+            skfb_Project,
+            fw_Project,
+            sola_Project,
+            Ln_Project,
+            cgbase_Project,
+
+            ynsight_Workshop
+        ]
 
     # projekt:
     def target_project(self) -> Projekt:
@@ -168,6 +202,13 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
             .replace('%PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy%', str(self.PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy()))
             .replace('%PATHFILE_home_pythonanywhereusername_updatepy%', str(self.PATHFILE_home_pythonanywhereusername_updatepy()))
         )
+
+        for projekt_Type in self.projekts_Types_all():
+            projekt = projekt_Type()
+            projekt.attach_to_sitedeployer(
+                sitedeployer=self
+            )
+            projekt.uninstall_as_package()
 
         for dependency_project in dependencies_projects:
             dependency_project.install_as_package()

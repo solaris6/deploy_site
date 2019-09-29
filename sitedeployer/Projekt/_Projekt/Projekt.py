@@ -200,19 +200,9 @@ dependencies_Types: '%dependencies_Types%'
 '''sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path'''\
             .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))
 
-
-    def is_install_as_package_supported(self) -> bool:
-        raise NotImplementedError("")
-
-    def is_uninstall_as_package_supported(self) -> bool:
-        raise NotImplementedError("")
-
-    def package_executables(self) -> List[str]:
-        raise NotImplementedError("")
-
-    def install_as_package(self) -> None:
+    def uninstall_as_package(self) -> None:
         logger.info('Unnstall as as package "%projekt%"...'.replace('%projekt%', self.NAME()))
-        if self.is_install_as_package_supported():
+        if self.is_uninstall_as_package_supported():
             PATHDIR_venvsitepackages = self.sitedeployer().PATHDIR_venvsitepackages()
 
             logger.info('Remove "%projekt%" package...'.replace('%projekt%', self.NAME()))
@@ -248,6 +238,16 @@ dependencies_Types: '%dependencies_Types%'
         else:
             logger.info('Uninstall as package "%projekt%" is NOT supported!'.replace('%projekt%', self.NAME()))
 
+    def is_install_as_package_supported(self) -> bool:
+        raise NotImplementedError("")
+
+    def is_uninstall_as_package_supported(self) -> bool:
+        raise NotImplementedError("")
+
+    def package_executables(self) -> List[str]:
+        raise NotImplementedError("")
+
+    def install_as_package(self) -> None:
         logger.info('Install as as package "%projekt%"...'.replace('%projekt%', self.NAME()))
         if self.is_install_as_package_supported():
             self.clone_projekt()

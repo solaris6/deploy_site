@@ -30,5 +30,5 @@ class una_Project(
             'una',
             'una.sh',
             'una.bat',
-            'una.py'
+            'una_.py'
         ]
