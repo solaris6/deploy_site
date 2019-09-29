@@ -26,9 +26,4 @@ class cgbase_Project(
         return True
 
     def package_executables(self) -> List[str]:
-        return [
-            'cgbase',
-            'cgbase.sh',
-            'cgbase.bat',
-            'cgbase.py'
-        ]
+        return []

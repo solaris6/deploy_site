@@ -26,9 +26,4 @@ class rs_Project(
         return True
 
     def package_executables(self) -> List[str]:
-        return [
-            'rs',
-            'rs.sh',
-            'rs.bat',
-            'rs.py'
-        ]
+        return []
