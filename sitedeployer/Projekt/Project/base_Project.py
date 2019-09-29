@@ -39,5 +39,10 @@ class base_Project(
             'agent',
             'agent.sh',
             'agent.bat',
-            'agent.py'
+            'agent.py',
+
+            'base',
+            'base.sh',
+            'base.bat',
+            'base.py'
         ]
