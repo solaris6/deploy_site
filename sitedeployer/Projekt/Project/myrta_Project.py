@@ -30,5 +30,6 @@ class myrta_Project(
             'myrta',
             'myrta.sh',
             'myrta.bat',
-            'myrta_.py'
+            'myrta_.py',
+            'myrta.py'
         ]

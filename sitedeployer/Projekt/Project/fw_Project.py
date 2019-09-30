@@ -30,5 +30,6 @@ class fw_Project(
             'fw',
             'fw.sh',
             'fw.bat',
-            'fw_.py'
+            'fw_.py',
+            'fw.py'
         ]
