@@ -56,9 +56,6 @@ URL_github_projekt_repository: '%URL_github_projekt_repository%'
 
 # pythonanywhere:
 pythonanywhere_username: '%pythonanywhere_username%'
-
-# dependencies:
-dependencies_Types: '%dependencies_Types%'
 '''
                 .replace('%NAME%', self.NAME())
                 .replace('%projektsitepub_package%', self.projektsitepub_package())
@@ -77,8 +74,6 @@ dependencies_Types: '%dependencies_Types%'
                 .replace('%URL_github_projekt_repository%', self.URL_github_projekt_repository())
                 \
                 .replace('%pythonanywhere_username%', self.pythonanywhere_username())
-                \
-                .replace('%dependencies_Types%', str(self.dependencies_Types()))
             )
 
             logger.info('Init Projekt!')
@@ -173,28 +168,6 @@ dependencies_Types: '%dependencies_Types%'
     def pythonanywhere_username(self) -> str:
         raise NotImplementedError("")
 
-
-    def dependencies_Types(self) -> List[Type['Projekt']]:
-        from sitedeployer.Projekt.Project.projekt_Project import projekt_Project
-        from sitedeployer.Projekt.Project.base_Project import base_Project
-        return [
-            base_Project,
-            projekt_Project
-        ]
-
-
-    # build:
-    def clone_projekt(self) -> None:
-        logger.info('Clone "%projekt%" repository...'.replace('%projekt%', self.NAME()))
-        if not self.PATHDIR_root_projektrepository().is_dir():
-            subprocess.run(
-                ['git', 'clone', self.URL_github_projekt_repository()],
-                cwd=str(self.PATHDIR_root())
-            )
-            logger.info('Clone "%projekt%" repository!'.replace('%projekt%', self.NAME()))
-        else:
-            logger.info('Cloned "%projekt%" already exists, skipped...'.replace('%projekt%', self.NAME()))
-
     def wsgipy_entry(self) -> str:
         return \
 '''sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path'''\
@@ -250,7 +223,11 @@ dependencies_Types: '%dependencies_Types%'
     def install_as_package(self) -> None:
         logger.info('Install as as package "%projekt%"...'.replace('%projekt%', self.NAME()))
         if self.is_install_as_package_supported():
-            self.clone_projekt()
+            if not self.PATHDIR_root_projektrepository().is_dir():
+                subprocess.run(
+                    ['git', 'clone', self.URL_github_projekt_repository()],
+                    cwd=str(self.PATHDIR_root())
+                )
 
             subprocess.run(
                 [self.sitedeployer().FILENAME_python(), 'setup.py', 'install'],
@@ -265,10 +242,14 @@ dependencies_Types: '%dependencies_Types%'
 
     def install_as_target(self) -> None:
         logger.info('Install as target "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
-        self.clone_projekt()
+        if not self.PATHDIR_root_projektrepository().is_dir():
+            subprocess.run(
+                ['git', 'clone', self.URL_github_projekt_repository()],
+                cwd=str(self.PATHDIR_root())
+            )
 
         subprocess.run(
-            ['projekt', 'task', 'execute', 'build', 'default'],
+            ['projekt', 'task', 'execute', 'makepub', 'default'],
             cwd=self.PATHDIR_root_projektrepository()
         )
 

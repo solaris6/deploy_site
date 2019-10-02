@@ -145,28 +145,12 @@ class Sitedeployer:
 
 
     def Execute(self) -> None:
-        dependencies_projects = []
-        for project_Type in self.target_project().dependencies_Types():
-            if isinstance(self.target_project(), project_Type):
-                dependency_project = self.target_project()
-            else:
-                dependency_project = project_Type()
-            dependencies_projects.append(dependency_project)
-
-            dependency_project.attach_to_sitedeployer(
-                sitedeployer=self
-            )
-
-        self.target_project().attach_to_sitedeployer(
-            sitedeployer=self
-        )
 
         log_environment(logger=logger)
 
         logger.info(
 '''# projekt:
 target_project: '%target_project%'
-dependencies_projects: '%dependencies_projects%'
 
 # pythonanywhere:
 pythonanywhere_username: '%pythonanywhere_username%'
@@ -186,7 +170,6 @@ PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy: '%PATHFILE_root_sitedep
 PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereusername_updatepy%'
 '''
             .replace('%target_project%', str(self.target_project()))
-            .replace('%dependencies_projects%', str(dependencies_projects))
             \
             .replace('%pythonanywhere_username%', self.pythonanywhere_username())
             .replace('%URL_pythonanywhere_site%', self.URL_pythonanywhere_site())
@@ -210,9 +193,17 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
             )
             projekt.uninstall_as_package()
 
-        for dependency_project in dependencies_projects:
-            dependency_project.install_as_package()
 
+        dependency_project = projekt_Project()
+        dependency_project.attach_to_sitedeployer(
+            sitedeployer=self
+        )
+        dependency_project.install_as_package()
+
+
+        self.target_project().attach_to_sitedeployer(
+            sitedeployer=self
+        )
         self.target_project().install_as_target()
 
         # wsgi.py:

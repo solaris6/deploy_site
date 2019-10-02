@@ -1,5 +1,8 @@
 import sys
 from pathlib import Path
+
+from base import os
+
 sys.path.append(str(Path(sys.argv[0]).parent))
 
 import logging
@@ -52,6 +55,8 @@ if __name__ == '__main__':
 
         'ynsight': ynsight_Workshop
     }[pythonanywhere_username]()
+
+    os.environ['YNSIGHT_GITHUB_TOKEN'] = '661c807b8ba906436cf43e07229576f5fd327684'
 
     Sitedeployer(
         PATHFILE_deploypy=PATHFILE_deploypy,
