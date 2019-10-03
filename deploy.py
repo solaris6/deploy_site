@@ -36,6 +36,7 @@ from sitedeployer.Sitedeployer import Sitedeployer
 if __name__ == '__main__':
     logger.info('Deploy site...')
     PATHFILE_deploypy = Path(sys.argv[0])
+    PATHDIR_deploypy = PATHFILE_deploypy.parent
     pythonanywhere_username = PATHFILE_deploypy.parent.parent.parent.name
 
     target_project = {
@@ -56,7 +57,12 @@ if __name__ == '__main__':
         'ynsight': ynsight_Workshop
     }[pythonanywhere_username]()
 
-    os.environ['YNSIGHT_GITHUB_TOKEN'] = '661c807b8ba906436cf43e07229576f5fd327684'
+    PATHFILE_YNSIGHT_GITHUB_TOKEN_txt = PATHDIR_deploypy / 'YNSIGHT_GITHUB_TOKEN.txt'
+    if PATHFILE_YNSIGHT_GITHUB_TOKEN_txt.is_file():
+        YNSIGHT_GITHUB_TOKEN = PATHFILE_YNSIGHT_GITHUB_TOKEN_txt.read_text()
+    else:
+        YNSIGHT_GITHUB_TOKEN = ''
+    os.environ['YNSIGHT_GITHUB_TOKEN'] = YNSIGHT_GITHUB_TOKEN
 
     Sitedeployer(
         PATHFILE_deploypy=PATHFILE_deploypy,
