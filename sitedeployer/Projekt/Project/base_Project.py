@@ -27,10 +27,6 @@ class base_Project(
     def version_list(self) -> List[int]:
         return [2019, 2, 0]
 
-
-    def is_install_as_package_supported(self) -> bool:
-        return False
-
     def is_uninstall_as_package_supported(self) -> bool:
         return True
 
