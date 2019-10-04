@@ -211,34 +211,11 @@ pythonanywhere_username: '%pythonanywhere_username%'
         else:
             logger.info('Uninstall as package "%projekt%" is NOT supported!'.replace('%projekt%', self.NAME()))
 
-    def is_install_as_package_supported(self) -> bool:
-        raise NotImplementedError("")
-
     def is_uninstall_as_package_supported(self) -> bool:
         raise NotImplementedError("")
 
     def package_executables(self) -> List[str]:
         raise NotImplementedError("")
-
-    # def install_as_package(self) -> None:
-    #     logger.info('Install as as package "%projekt%"...'.replace('%projekt%', self.NAME()))
-    #     if self.is_install_as_package_supported():
-    #         if not self.PATHDIR_root_projektrepository().is_dir():
-    #             subprocess.run(
-    #                 ['git', 'clone', self.URL_github_projekt_repository()],
-    #                 cwd=str(self.PATHDIR_root())
-    #             )
-    #
-    #         subprocess.run(
-    #             [self.sitedeployer().FILENAME_python(), 'setup.py', 'install'],
-    #             cwd=self.PATHDIR_root_projektrepository()
-    #         )
-    #
-    #         logger.info('Install as package "%projekt%"!'.replace('%projekt%', self.NAME()))
-    #     else:
-    #         logger.info('Install as package "%projekt%" is NOT supported!'.replace('%projekt%', self.NAME()))
-
-
 
     def install_as_target(self) -> None:
         logger.info('Install as target "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
@@ -248,15 +225,9 @@ pythonanywhere_username: '%pythonanywhere_username%'
                 cwd=str(self.PATHDIR_root())
             )
 
-            subprocess.run(
-                ['make.py'],
-                cwd=self.PATHDIR_root_projektrepository()
-            )
-
-
-        # subprocess.run(
-        #     ['projekt', 'task', 'execute', 'makepub', 'default'],
-        #     cwd=self.PATHDIR_root_projektrepository()
-        # )
+        subprocess.run(
+            ['make.py'],
+            cwd=self.PATHDIR_root_projektrepository()
+        )
 
         logger.info('Install as target "%projekt%" projekt!'.replace('%projekt%', self.NAME()))
