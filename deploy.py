@@ -1,7 +1,8 @@
+import os
 import sys
 from pathlib import Path
 
-from base import os
+import base.os
 
 sys.path.append(str(Path(sys.argv[0]).parent))
 
