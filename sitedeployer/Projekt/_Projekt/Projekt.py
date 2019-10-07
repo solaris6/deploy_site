@@ -225,8 +225,9 @@ pythonanywhere_username: '%pythonanywhere_username%'
                 cwd=str(self.PATHDIR_root())
             )
 
+        PATHfile_root_projektrepository_makepy = self.sitedeployer().PATHDIR_root_projektrepository / 'make.py'
         subprocess.run(
-            ['make.py'],
+            [PATHfile_root_projektrepository_makepy],
             cwd=self.PATHDIR_root_projektrepository()
         )
 
