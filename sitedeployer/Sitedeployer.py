@@ -208,7 +208,7 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
 
         PATHfile_root_projektrepository_makepy = PATHDIR_root_projektrepository / 'make.py'
         subprocess.run(
-            [PATHfile_root_projektrepository_makepy],
+            ['python3.6', PATHfile_root_projektrepository_makepy],
             cwd=PATHDIR_root_projektrepository
         )
 
