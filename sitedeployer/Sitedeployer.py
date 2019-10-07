@@ -1,4 +1,5 @@
 import logging
+import subprocess
 
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
@@ -194,11 +195,21 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
             projekt.uninstall_as_package()
 
 
-        dependency_project = projekt_Project()
-        dependency_project.attach_to_sitedeployer(
-            sitedeployer=self
+        PATHDIR_root_projektrepository = self.PATHDIR_root() / 'projekt'
+
+        URL_github_projekt_repository = '''git@github.com:%github_username%/projekt.git''' \
+            .replace('%github_username%', self.github_username())
+
+        if not PATHDIR_root_projektrepository.is_dir():
+            subprocess.run(
+                ['git', 'clone', URL_github_projekt_repository],
+                cwd=str(self.PATHDIR_root())
+            )
+
+        subprocess.run(
+            ['make.py'],
+            cwd=PATHDIR_root_projektrepository
         )
-        dependency_project.install_as_package()
 
 
         self.target_project().attach_to_sitedeployer(
