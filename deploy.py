@@ -2,8 +2,6 @@ import os
 import sys
 from pathlib import Path
 
-import base.os
-
 sys.path.append(str(Path(sys.argv[0]).parent))
 
 import logging
