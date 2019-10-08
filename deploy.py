@@ -56,7 +56,7 @@ if __name__ == '__main__':
         'ynsight': ynsight_Workshop
     }[pythonanywhere_username]()
 
-    PATHFILE_YNSIGHT_GITHUB_TOKEN_txt = PATHDIR_deploypy / 'YNSIGHT_GITHUB_TOKEN.txt'
+    PATHFILE_YNSIGHT_GITHUB_TOKEN_txt = PATHDIR_deploypy.parent.parent / 'YNSIGHT_GITHUB_TOKEN.txt'
     print(PATHFILE_YNSIGHT_GITHUB_TOKEN_txt)
     if PATHFILE_YNSIGHT_GITHUB_TOKEN_txt.is_file():
         print('ooo')
