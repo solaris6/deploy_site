@@ -57,9 +57,7 @@ if __name__ == '__main__':
     }[pythonanywhere_username]()
 
     PATHFILE_YNSIGHT_GITHUB_TOKEN_txt = PATHDIR_deploypy.parent.parent / 'YNSIGHT_GITHUB_TOKEN.txt'
-    print(PATHFILE_YNSIGHT_GITHUB_TOKEN_txt)
     if PATHFILE_YNSIGHT_GITHUB_TOKEN_txt.is_file():
-        print('ooo')
         YNSIGHT_GITHUB_TOKEN = PATHFILE_YNSIGHT_GITHUB_TOKEN_txt.read_text()
         os.environ['YNSIGHT_GITHUB_TOKEN'] = YNSIGHT_GITHUB_TOKEN
 
