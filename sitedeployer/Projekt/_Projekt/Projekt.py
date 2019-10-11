@@ -227,7 +227,7 @@ pythonanywhere_username: '%pythonanywhere_username%'
 
         PATHFILE_root_projektrepository_makepy = self.PATHDIR_root_projektrepository() / 'make.py'
         subprocess.run(
-            [str(PATHFILE_root_projektrepository_makepy)],
+            ['python36', str(PATHFILE_root_projektrepository_makepy)],
             cwd=self.PATHDIR_root_projektrepository()
         )
 
