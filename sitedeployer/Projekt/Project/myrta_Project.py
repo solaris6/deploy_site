@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import List
 
 from sitedeployer.Projekt.Project._Project.Project import Project
@@ -28,4 +29,10 @@ class myrta_Project(
             'myrta.bat',
             'myrta_.py',
             'myrta.py'
+        ]
+
+
+    def PATHDIRS_packages_to_upload_to_testpypi(self) -> List[Path]:
+        return [
+            # Path('src/myrta')
         ]

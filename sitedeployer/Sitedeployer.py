@@ -187,6 +187,8 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
             .replace('%PATHFILE_home_pythonanywhereusername_updatepy%', str(self.PATHFILE_home_pythonanywhereusername_updatepy()))
         )
 
+        self.target_project().upload_to_testpypi()
+
         for projekt_Type in self.projekts_Types_all():
             projekt = projekt_Type()
             projekt.attach_to_sitedeployer(

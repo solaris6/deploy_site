@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import List
 
 from sitedeployer.Projekt.Project._Project.Project import Project
@@ -23,3 +24,9 @@ class rs_Project(
 
     def package_executables(self) -> List[str]:
         return []
+
+
+    def PATHDIRS_packages_to_upload_to_testpypi(self) -> List[Path]:
+        return [
+            Path('src/rs')
+        ]

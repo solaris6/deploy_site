@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import List
 
 from sitedeployer.Projekt.Workshop._Workshop.Workshop import Workshop
@@ -23,3 +24,7 @@ class ynsight_Workshop(
 
     def package_executables(self) -> List[str]:
         return None
+
+
+    def PATHDIRS_packages_to_upload_to_testpypi(self) -> List[Path]:
+        return []

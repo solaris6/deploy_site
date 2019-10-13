@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import List
 
 from sitedeployer.Projekt.Project._Project.Project import Project
@@ -28,4 +29,10 @@ class projekt_Project(
             'projekt.bat',
             'projekt_.py',
             'projekt.py'
+        ]
+
+
+    def PATHDIRS_packages_to_upload_to_testpypi(self) -> List[Path]:
+        return [
+            # Path('src/projekt')
         ]
