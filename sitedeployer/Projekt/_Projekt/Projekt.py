@@ -175,7 +175,7 @@ pythonanywhere_username: '%pythonanywhere_username%'
         PATHDIR_testpy_projektrepository = PATHDIR_testpy / self.NAME()
 
         subprocess.run(
-            ['git', 'clone', self.sitedeployer().URL_github_projekt_repository()],
+            ['git', 'clone', self.URL_github_projekt_repository()],
             cwd=str(PATHDIR_testpy)
         )
 
