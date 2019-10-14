@@ -193,6 +193,9 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
                 sitedeployer=self
             )
             projekt.uninstall_as_package()
+        self.target_project().attach_to_sitedeployer(
+            sitedeployer=self
+        )
 
         self.target_project().upload_to_testpypi()
 
