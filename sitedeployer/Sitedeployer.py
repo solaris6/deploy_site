@@ -197,7 +197,7 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
             sitedeployer=self
         )
 
-        self.target_project().upload_to_testpypi()
+        self.target_project().upload_on_testpypi()
 
 
         """

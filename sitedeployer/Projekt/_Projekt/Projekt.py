@@ -163,10 +163,10 @@ pythonanywhere_username: '%pythonanywhere_username%'
             result = self.URLHTTPS_github_projekt_repository()
         return result
 
-    def PATHDIRS_packages_to_upload_to_testpypi(self) -> List[Path]:
+    def PATHDIRS_packages_to_upload_on_testpypi(self) -> List[Path]:
         return []
 
-    def upload_to_testpypi(self) -> None:
+    def upload_on_testpypi(self) -> None:
         PATHDIR_testpy = self.sitedeployer().PATHDIR_root() / 'testpypi'
         if PATHDIR_testpy.is_dir():
             shutil.rmtree()
@@ -188,17 +188,18 @@ pythonanywhere_username: '%pythonanywhere_username%'
             YNSIGHT_TESTPYPI_TOKEN = ''
         os.environ['TWINE_PASSWORD'] = YNSIGHT_TESTPYPI_TOKEN
 
-        for PATHDIR_package_to_upload_to_testpypi in self.PATHDIRS_packages_to_upload_to_testpypi():
-            PATHFILE_setuppy = PATHDIR_testpy_projektrepository / PATHDIR_package_to_upload_to_testpypi / 'setup.py'
+        for PATHDIR_package_to_upload_on_testpypi in self.PATHDIRS_packages_to_upload_on_testpypi():
+            PATHDIR_setuppy = PATHDIR_testpy_projektrepository / PATHDIR_package_to_upload_on_testpypi
+            PATHFILE_setuppy = PATHDIR_setuppy / 'setup.py'
 
             if PATHFILE_setuppy.is_file():
                 subprocess.run(
                     ['python3', 'setup.py', 'sdist', 'bdist_wheel'],
-                    cwd=str(PATHDIR_testpy)
+                    cwd=str(PATHDIR_setuppy)
                 )
                 subprocess.run(
                     ['twine', 'upload', '--repository-url', 'https://test.pypi.org/ynsight', 'dist/*'],
-                    cwd=str(PATHDIR_testpy)
+                    cwd=str(PATHDIR_setuppy)
                 )
 
     # pythonanywhere:

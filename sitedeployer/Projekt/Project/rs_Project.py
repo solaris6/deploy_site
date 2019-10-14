@@ -26,7 +26,7 @@ class rs_Project(
         return []
 
 
-    def PATHDIRS_packages_to_upload_to_testpypi(self) -> List[Path]:
+    def PATHDIRS_packages_to_upload_on_testpypi(self) -> List[Path]:
         return [
             Path('src/rs')
         ]
