@@ -253,19 +253,3 @@ pythonanywhere_username: '%pythonanywhere_username%'
 
     def package_executables(self) -> List[str]:
         raise NotImplementedError("")
-
-    def install_as_target(self) -> None:
-        logger.info('Install as target "%projekt%" projekt...'.replace('%projekt%', self.NAME()))
-        if not self.PATHDIR_root_projektrepository().is_dir():
-            subprocess.run(
-                ['git', 'clone', self.URL_github_projekt_repository()],
-                cwd=str(self.PATHDIR_root())
-            )
-
-        PATHFILE_root_projektrepository_makepy = self.PATHDIR_root_projektrepository() / 'make.py'
-        subprocess.run(
-            ['python3.6', str(PATHFILE_root_projektrepository_makepy)],
-            cwd=self.PATHDIR_root_projektrepository()
-        )
-
-        logger.info('Install as target "%projekt%" projekt!'.replace('%projekt%', self.NAME()))

@@ -187,8 +187,6 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
             .replace('%PATHFILE_home_pythonanywhereusername_updatepy%', str(self.PATHFILE_home_pythonanywhereusername_updatepy()))
         )
 
-        self.target_project().upload_to_testpypi()
-
         for projekt_Type in self.projekts_Types_all():
             projekt = projekt_Type()
             projekt.attach_to_sitedeployer(
@@ -196,7 +194,10 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
             )
             projekt.uninstall_as_package()
 
+        self.target_project().upload_to_testpypi()
 
+
+        """
         PATHDIR_root_projektrepository = self.PATHDIR_root() / 'projekt'
 
         URL_github_projekt_repository = '''git@github.com:%github_username%/projekt.git''' \
@@ -214,11 +215,6 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
             cwd=PATHDIR_root_projektrepository
         )
 
-
-        self.target_project().attach_to_sitedeployer(
-            sitedeployer=self
-        )
-        self.target_project().install_as_target()
 
         # wsgi.py:
         logger.info('Process wsgi.py...')
@@ -264,3 +260,4 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
             self.PATHFILE_home_pythonanywhereusername_updatepy()
         )
         logger.info('Write update.py file!')
+        """
