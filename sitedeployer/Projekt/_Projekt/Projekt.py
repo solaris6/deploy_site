@@ -198,7 +198,7 @@ pythonanywhere_username: '%pythonanywhere_username%'
                     cwd=str(PATHDIR_setuppy)
                 )
                 subprocess.run(
-                    ['twine', 'upload', '--repository-url', 'https://test.pypi.org/legacy/', 'dist/*'],
+                    ['twine', 'upload', 'dist/*'],
                     cwd=str(PATHDIR_setuppy)
                 )
 
