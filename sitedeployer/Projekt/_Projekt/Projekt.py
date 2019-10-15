@@ -197,8 +197,9 @@ pythonanywhere_username: '%pythonanywhere_username%'
                     ['python3', 'setup.py', 'sdist', 'bdist_wheel'],
                     cwd=str(PATHDIR_setuppy)
                 )
+
                 subprocess.run(
-                    ['twine', 'upload', 'dist/*'],
+                    ['twine', 'upload', 'dist/*', '--verbose'],
                     cwd=str(PATHDIR_setuppy)
                 )
 
