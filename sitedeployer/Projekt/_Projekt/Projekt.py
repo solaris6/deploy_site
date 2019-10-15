@@ -179,14 +179,14 @@ pythonanywhere_username: '%pythonanywhere_username%'
             cwd=str(PATHDIR_testpy)
         )
 
-        os.environ['TWINE_USERNAME'] = '__token__'
+        os.environ['TWINE_USERNAME'] = 'ynsight'
 
         PATHFILE_YNSIGHT_TESTPYPI_TOKEN_txt = self.sitedeployer().PATHDIR_home_pythonanywhereusername() / 'YNSIGHT_TESTPYPI_TOKEN.txt'
         if PATHFILE_YNSIGHT_TESTPYPI_TOKEN_txt.is_file():
             YNSIGHT_TESTPYPI_TOKEN = PATHFILE_YNSIGHT_TESTPYPI_TOKEN_txt.read_text()
         else:
             YNSIGHT_TESTPYPI_TOKEN = ''
-        os.environ['TWINE_PASSWORD'] = YNSIGHT_TESTPYPI_TOKEN
+        os.environ['TWINE_PASSWORD'] = 'Render1Render2'
 
         for PATHDIR_package_to_upload_on_testpypi in self.PATHDIRS_packages_to_upload_on_testpypi():
             PATHDIR_setuppy = PATHDIR_testpy_projektrepository / PATHDIR_package_to_upload_on_testpypi
@@ -197,9 +197,8 @@ pythonanywhere_username: '%pythonanywhere_username%'
                     ['python3', 'setup.py', 'sdist', 'bdist_wheel'],
                     cwd=str(PATHDIR_setuppy)
                 )
-
                 subprocess.run(
-                    ['twine', 'upload', 'dist/*', '--verbose'],
+                    ['twine', 'upload', '--repository-url', 'https://test.pypi.org/legacy/', 'dist/*'],
                     cwd=str(PATHDIR_setuppy)
                 )
 
