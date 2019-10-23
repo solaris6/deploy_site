@@ -13,14 +13,14 @@ logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
 
-class base_Project(
+class ynsbase_Project(
     Project
 ):
     def NAME(self) -> str:
-        return 'base'
+        return 'ynsbase'
     
     def pythonanywhere_username(self) -> str:
-        return 'getbase'
+        return 'getynsbase'
 
     def github_url_type(self) -> str:
         return 'ssh'
@@ -45,15 +45,15 @@ class base_Project(
             'base_.py',
             'base.py',
 
+            'ynsbase',
+            'ynsbase.sh',
+            'ynsbase.bat',
+            'ynsbase_.py',
+            'ynsbase.py',
+
             'deck',
             'deck.sh',
             'deck.bat',
             'deck_.py',
             'deck.py'
-        ]
-
-
-    def PATHDIRS_packages_to_upload_on_testpypi(self) -> List[Path]:
-        return [
-            Path('src/base')
         ]

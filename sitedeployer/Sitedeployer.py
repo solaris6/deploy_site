@@ -18,8 +18,8 @@ from sitedeployer.utils import log_environment
 from sitedeployer.Projekt._Projekt.Projekt import Projekt
 
 from sitedeployer.Projekt.Project.Ln_Project import Ln_Project
-from sitedeployer.Projekt.Project.base_Project import base_Project
-from sitedeployer.Projekt.Project.basedata_Project import basedata_Project
+from sitedeployer.Projekt.Project.ynsbase_Project import ynsbase_Project
+from sitedeployer.Projekt.Project.ynsbasedata_Project import ynsbasedata_Project
 from sitedeployer.Projekt.Project.cgbase_Project import cgbase_Project
 from sitedeployer.Projekt.Project.fw_Project import fw_Project
 from sitedeployer.Projekt.Project.myrta_Project import myrta_Project
@@ -42,8 +42,8 @@ class Sitedeployer:
 
     def projekts_Types_all(self) -> List[Type[Projekt]]:
         return [
-            base_Project,
-            basedata_Project,
+            ynsbase_Project,
+            ynsbasedata_Project,
             projekt_Project,
             myrta_Project,
             una_Project,
@@ -197,7 +197,7 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
             sitedeployer=self
         )
 
-        self.target_project().upload_on_testpypi()
+        self.target_project().upload_on_pypi()
 
 
         """

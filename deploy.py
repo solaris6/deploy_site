@@ -15,8 +15,8 @@ logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
 from sitedeployer.Projekt.Project.Ln_Project import Ln_Project
-from sitedeployer.Projekt.Project.base_Project import base_Project
-from sitedeployer.Projekt.Project.basedata_Project import basedata_Project
+from sitedeployer.Projekt.Project.ynsbase_Project import ynsbase_Project
+from sitedeployer.Projekt.Project.ynsbasedata_Project import ynsbasedata_Project
 from sitedeployer.Projekt.Project.cgbase_Project import cgbase_Project
 from sitedeployer.Projekt.Project.fw_Project import fw_Project
 from sitedeployer.Projekt.Project.myrta_Project import myrta_Project
@@ -39,8 +39,8 @@ if __name__ == '__main__':
     pythonanywhere_username = PATHFILE_deploypy.parent.parent.parent.name
 
     target_project = {
-        'getbase': base_Project,
-        'getbasedata': basedata_Project,
+        'getbase': ynsbase_Project,
+        'getbasedata': ynsbasedata_Project,
         'getprojekt': projekt_Project,
         'getmyrta': myrta_Project,
         'getuna': una_Project,

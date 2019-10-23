@@ -24,9 +24,3 @@ class sola_Project(
 
     def package_executables(self) -> List[str]:
         return []
-
-
-    def PATHDIRS_packages_to_upload_on_testpypi(self) -> List[Path]:
-        return [
-
-        ]

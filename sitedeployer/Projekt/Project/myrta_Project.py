@@ -30,9 +30,3 @@ class myrta_Project(
             'myrta_.py',
             'myrta.py'
         ]
-
-
-    def PATHDIRS_packages_to_upload_on_testpypi(self) -> List[Path]:
-        return [
-            # Path('src/myrta')
-        ]

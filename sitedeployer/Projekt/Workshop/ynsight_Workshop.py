@@ -26,5 +26,5 @@ class ynsight_Workshop(
         return None
 
 
-    def PATHDIRS_packages_to_upload_on_testpypi(self) -> List[Path]:
+    def PATHDIRS_packages_to_upload_on_pypi(self) -> List[Path]:
         return []

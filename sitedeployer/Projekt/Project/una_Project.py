@@ -30,10 +30,3 @@ class una_Project(
             'una_.py',
             'una.py'
         ]
-
-
-    def PATHDIRS_packages_to_upload_on_testpypi(self) -> List[Path]:
-        return [
-            # Path('src/una'),
-            # Path('src/una_factory')
-        ]

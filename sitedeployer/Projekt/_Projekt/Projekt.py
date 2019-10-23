@@ -163,11 +163,11 @@ pythonanywhere_username: '%pythonanywhere_username%'
             result = self.URLHTTPS_github_projekt_repository()
         return result
 
-    def PATHDIRS_packages_to_upload_on_testpypi(self) -> List[Path]:
+    def PATHDIRS_packages_to_upload_on_pypi(self) -> List[Path]:
         return []
 
-    def upload_on_testpypi(self) -> None:
-        PATHDIR_testpy = self.sitedeployer().PATHDIR_root() / 'testpypi'
+    def upload_on_pypi(self) -> None:
+        PATHDIR_testpy = self.sitedeployer().PATHDIR_root() / 'pypi'
         if PATHDIR_testpy.is_dir():
             shutil.rmtree()
         PATHDIR_testpy.mkdir(parents=True)
@@ -179,28 +179,18 @@ pythonanywhere_username: '%pythonanywhere_username%'
             cwd=str(PATHDIR_testpy)
         )
 
-        os.environ['TWINE_USERNAME'] = 'ynsight'
-
-        PATHFILE_YNSIGHT_TESTPYPI_TOKEN_txt = self.sitedeployer().PATHDIR_home_pythonanywhereusername() / 'YNSIGHT_TESTPYPI_TOKEN.txt'
-        if PATHFILE_YNSIGHT_TESTPYPI_TOKEN_txt.is_file():
-            YNSIGHT_TESTPYPI_TOKEN = PATHFILE_YNSIGHT_TESTPYPI_TOKEN_txt.read_text()
+        os.environ['TWINE_USERNAME'] = '__token__'
+        PATHFILE_YNSIGHT_pypi_TOKEN_txt = self.sitedeployer().PATHDIR_home_pythonanywhereusername() / 'YNSIGHT_pypi_TOKEN.txt'
+        if PATHFILE_YNSIGHT_pypi_TOKEN_txt.is_file():
+            YNSIGHT_pypi_TOKEN = PATHFILE_YNSIGHT_pypi_TOKEN_txt.read_text()
         else:
-            YNSIGHT_TESTPYPI_TOKEN = ''
-        os.environ['TWINE_PASSWORD'] = 'Render1Render2'
+            YNSIGHT_pypi_TOKEN = ''
+        os.environ['TWINE_PASSWORD'] = YNSIGHT_pypi_TOKEN
 
-        for PATHDIR_package_to_upload_on_testpypi in self.PATHDIRS_packages_to_upload_on_testpypi():
-            PATHDIR_setuppy = PATHDIR_testpy_projektrepository / PATHDIR_package_to_upload_on_testpypi
-            PATHFILE_setuppy = PATHDIR_setuppy / 'setup.py'
-
-            if PATHFILE_setuppy.is_file():
-                subprocess.run(
-                    ['python3', 'setup.py', 'sdist', 'bdist_wheel'],
-                    cwd=str(PATHDIR_setuppy)
-                )
-                subprocess.run(
-                    ['twine', 'upload', '--repository-url', 'https://test.pypi.org/legacy/', 'dist/*'],
-                    cwd=str(PATHDIR_setuppy)
-                )
+        subprocess.run(
+            ['python3', 'upload.py'],
+            cwd=str(PATHDIR_testpy_projektrepository)
+        )
 
     # pythonanywhere:
     def pythonanywhere_username(self) -> str:

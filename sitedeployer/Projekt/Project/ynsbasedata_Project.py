@@ -4,14 +4,14 @@ from typing import List
 from sitedeployer.Projekt.Project._Project.Project import Project
 
 
-class basedata_Project(
+class ynsbasedata_Project(
     Project
 ):
     def NAME(self) -> str:
-        return 'basedata'
+        return 'ynsbasedata'
     
     def pythonanywhere_username(self) -> str:
-        return 'getbasedata'
+        return 'getynsbasedata'
 
     def github_url_type(self) -> str:
         return 'ssh'
@@ -24,9 +24,3 @@ class basedata_Project(
 
     def package_executables(self) -> List[str]:
         return []
-
-
-    def PATHDIRS_packages_to_upload_on_testpypi(self) -> List[Path]:
-        return [
-            # Path('src/basedata')
-        ]

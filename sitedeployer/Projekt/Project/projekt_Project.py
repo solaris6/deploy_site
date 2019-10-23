@@ -30,9 +30,3 @@ class projekt_Project(
             'projekt_.py',
             'projekt.py'
         ]
-
-
-    def PATHDIRS_packages_to_upload_on_testpypi(self) -> List[Path]:
-        return [
-            # Path('src/projekt')
-        ]
