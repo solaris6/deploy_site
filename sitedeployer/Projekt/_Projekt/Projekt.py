@@ -180,12 +180,12 @@ pythonanywhere_username: '%pythonanywhere_username%'
         )
 
         os.environ['TWINE_USERNAME'] = '__token__'
-        PATHFILE_YNSIGHT_pypi_TOKEN_txt = self.sitedeployer().PATHDIR_home_pythonanywhereusername() / 'YNSIGHT_pypi_TOKEN.txt'
-        if PATHFILE_YNSIGHT_pypi_TOKEN_txt.is_file():
-            YNSIGHT_pypi_TOKEN = PATHFILE_YNSIGHT_pypi_TOKEN_txt.read_text()
+        PATHFILE_YNSIGHT_PYPI_TOKEN_txt = self.sitedeployer().PATHDIR_home_pythonanywhereusername() / 'YNSIGHT_TESTPYPI_TOKEN.txt'
+        if PATHFILE_YNSIGHT_PYPI_TOKEN_txt.is_file():
+            YNSIGHT_PYPI_TOKEN = PATHFILE_YNSIGHT_PYPI_TOKEN_txt.read_text()
         else:
-            YNSIGHT_pypi_TOKEN = ''
-        os.environ['TWINE_PASSWORD'] = YNSIGHT_pypi_TOKEN
+            YNSIGHT_PYPI_TOKEN = ''
+        os.environ['TWINE_PASSWORD'] = YNSIGHT_PYPI_TOKEN
 
         subprocess.run(
             ['python3', 'upload.py'],
