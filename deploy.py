@@ -39,8 +39,8 @@ if __name__ == '__main__':
     pythonanywhere_username = PATHFILE_deploypy.parent.parent.parent.name
 
     target_project = {
-        'getbase': ynsbase_Project,
-        'getbasedata': ynsbasedata_Project,
+        'getynsbase': ynsbase_Project,
+        'getynsbasedata': ynsbasedata_Project,
         'getprojekt': projekt_Project,
         'getmyrta': myrta_Project,
         'getuna': una_Project,
