@@ -179,10 +179,10 @@ pythonanywhere_username: '%pythonanywhere_username%'
             cwd=str(PATHDIR_testpy)
         )
 
-        os.environ['PYPI_USERNAME'] = '__token__'
-        os.environ['PYPI_PASSWORD'] = Path(self.sitedeployer().PATHDIR_home_pythonanywhereusername(), 'YNSIGHT_PYPI_TOKEN.txt').read_text()
+        os.environ['MAINPYPI_USERNAME'] = '__token__'
+        os.environ['MAINPYPI_PASSWORD'] = Path(self.sitedeployer().PATHDIR_home_pythonanywhereusername(), 'YNSIGHT_PYPI_TOKEN.txt').read_text()
 
-        os.environ['TESTPYPI_USERNAME'] = '__token__'
+        os.environ['TESTPYPI_USERNAME'] = 'ynsight'
         os.environ['TESTPYPI_PASSWORD'] = Path(self.sitedeployer().PATHDIR_home_pythonanywhereusername(), 'YNSIGHT_TESTPYPI_TOKEN.txt').read_text()
 
         subprocess.run(
