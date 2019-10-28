@@ -179,16 +179,18 @@ pythonanywhere_username: '%pythonanywhere_username%'
             cwd=str(PATHDIR_testpy)
         )
 
-        os.environ['MAINPYPI_USERNAME'] = '__token__'
-        os.environ['MAINPYPI_PASSWORD'] = Path(self.sitedeployer().PATHDIR_home_pythonanywhereusername(), 'YNSIGHT_PYPI_TOKEN.txt').read_text()
+        os.environ['PYPI_USERNAME'] = 'ynsight'
 
-        os.environ['TESTPYPI_USERNAME'] = 'ynsight'
-        os.environ['TESTPYPI_PASSWORD'] = Path(self.sitedeployer().PATHDIR_home_pythonanywhereusername(), 'YNSIGHT_TESTPYPI_TOKEN.txt').read_text()
+        PATHFILE_YNSIGHT_PYPI_PWD_txt = Path(self.sitedeployer().PATHDIR_home_pythonanywhereusername(), 'YNSIGHT_PYPI_PWD.txt')
+        if PATHFILE_YNSIGHT_PYPI_PWD_txt.is_file():
+            os.environ['PYPI_PASSWORD'] = PATHFILE_YNSIGHT_PYPI_PWD_txt.read_text()
+            subprocess.run(
+                ['python3', 'upload.py'],
+                cwd=str(PATHDIR_testpy_projektrepository)
+            )
+        else:
+            logger.error('PATHFILE_YNSIGHT_PYPI_PWD_txt NOT exists at "%PATHFILE%", upload canceled...'.replace('%PATHFILE%', PATHFILE_YNSIGHT_PYPI_PWD_txt))
 
-        subprocess.run(
-            ['python3', 'upload.py'],
-            cwd=str(PATHDIR_testpy_projektrepository)
-        )
 
     # pythonanywhere:
     def pythonanywhere_username(self) -> str:

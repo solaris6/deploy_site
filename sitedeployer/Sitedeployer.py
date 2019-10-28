@@ -197,10 +197,9 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
             sitedeployer=self
         )
 
-        self.target_project().upload_on_pypi()
+        # self.target_project().upload_on_pypi()
 
 
-        """
         PATHDIR_root_projektrepository = self.PATHDIR_root() / 'projekt'
 
         URL_github_projekt_repository = '''git@github.com:%github_username%/projekt.git''' \
@@ -263,4 +262,3 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
             self.PATHFILE_home_pythonanywhereusername_updatepy()
         )
         logger.info('Write update.py file!')
-        """
