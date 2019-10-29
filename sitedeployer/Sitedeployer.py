@@ -200,11 +200,9 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
         self.target_project().upload_on_pypi()
 
 
-        PATHDIR_root_projektrepository = self.PATHDIR_root() / 'projekt'
+        URL_github_projekt_repository = self.target_project().URLSSH_github_projekt_repository()
 
-        URL_github_projekt_repository = '''git@github.com:%github_username%/projekt.git''' \
-            .replace('%github_username%', self.github_username())
-
+        PATHDIR_root_projektrepository = self.PATHDIR_root() / self.target_project().NAME()
         if not PATHDIR_root_projektrepository.is_dir():
             subprocess.run(
                 ['git', 'clone', URL_github_projekt_repository],
@@ -216,7 +214,6 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
             ['python3.6', PATHfile_root_projektrepository_makepy],
             cwd=PATHDIR_root_projektrepository
         )
-
 
         # wsgi.py:
         logger.info('Process wsgi.py...')
