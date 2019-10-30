@@ -202,7 +202,7 @@ pythonanywhere_username: '%pythonanywhere_username%'
             .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))
 
     def uninstall_as_package(self) -> None:
-        logger.info('Unnstall as as package "%projekt%"...'.replace('%projekt%', self.NAME()))
+        logger.info('Unnstall as package "%projekt%"...'.replace('%projekt%', self.NAME()))
         if self.is_uninstall_as_package_supported():
             PATHDIR_venvsitepackages = self.sitedeployer().PATHDIR_venvsitepackages()
 
@@ -210,15 +210,15 @@ pythonanywhere_username: '%pythonanywhere_username%'
             prev_installation_exists = False
             if PATHDIR_venvsitepackages.is_dir():
                 for item in os.listdir(PATHDIR_venvsitepackages):
-                    PATHDIR_egg = PATHDIR_venvsitepackages / item
-                    if item.startswith(self.NAME()) and\
-                       item.endswith('-py%python_version_dot_str%.egg'.replace('%python_version_dot_str%', self.sitedeployer().python_version_dot_str())) and\
-                            PATHDIR_egg.is_dir():
-                        logger.info('Previous installation exists, deleting("' + str(PATHDIR_egg) + '")...')
-                        shutil.rmtree(PATHDIR_egg)
-                        prev_installation_exists = True
-                    else:
-                        logger.info('Item is NOT previous installation, skipping("' + str(PATHDIR_egg) + '")...')
+                    PATHDIR_item = PATHDIR_venvsitepackages / item
+
+                    if PATHDIR_item.is_dir():
+                        if item == self.NAME() or item.startswith(self.NAME() + '_'):
+                            logger.info('Previous installation exists, deleting("' + str(PATHDIR_item) + '")...')
+                            shutil.rmtree(PATHDIR_item)
+                            prev_installation_exists = True
+                        else:
+                            logger.info('Item is NOT previous installation, skipping("' + str(PATHDIR_item) + '")...')
 
             logger.info('Removed "%projekt%" package!'.replace('%projekt%', self.NAME()))
 
