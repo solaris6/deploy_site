@@ -213,7 +213,7 @@ pythonanywhere_username: '%pythonanywhere_username%'
                     PATHDIR_item = PATHDIR_venvsitepackages / item
 
                     if PATHDIR_item.is_dir():
-                        if item == self.NAME() or item.startswith(self.NAME() + '_'):
+                        if item == self.NAME() or item.startswith(self.NAME() + '-'):
                             logger.info('Previous installation exists, deleting("' + str(PATHDIR_item) + '")...')
                             shutil.rmtree(PATHDIR_item)
                             prev_installation_exists = True
