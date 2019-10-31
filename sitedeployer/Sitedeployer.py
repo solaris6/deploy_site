@@ -229,14 +229,12 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
 
         ver_major = int(FCONTENT_VERSION_list[0])
         ver_minor = int(FCONTENT_VERSION_list[1])
-        ver_patch = int(FCONTENT_VERSION_list[2])
 
         PATHDIR_root_out_sitepub = self.PATHDIR_root() / \
-            ('_out/Release/%NAME%-%major%.%minor%.%patch%-lnx/_projekt/projectsitepub_%NAME%'
+            ('_out/Release/%NAME%-%major%.%minor%-lnx/_projekt/projectsitepub_%NAME%'
              .replace('%NAME%', self.target_project().NAME())
              .replace('%major%', str(ver_major))
              .replace('%minor%', str(ver_minor))
-             .replace('%patch%', str(ver_patch))
              )
 
         wsgipy_template = \
