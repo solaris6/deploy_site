@@ -223,17 +223,33 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
         )
 
         logger.info('Write wsgi.py file...')
+
+        PATHFILE_VERSION = PATHDIR_root_projektrepository / 'VERSION'
+        FCONTENT_VERSION_list = PATHFILE_VERSION.read_text().splitlines()
+
+        ver_major = int(FCONTENT_VERSION_list[0])
+        ver_minor = int(FCONTENT_VERSION_list[1])
+        ver_patch = int(FCONTENT_VERSION_list[2])
+
+        PATHDIR_root_out_sitepub = self.PATHDIR_root() / \
+            ('_out/Release/%NAME%-%major%.%minor%.%patch%-lnx/_projekt/projectsitepub_%NAME%'
+             .replace('%NAME%', self.target_project().NAME())
+             .replace('%major%', str(ver_major))
+             .replace('%minor%', str(ver_minor))
+             .replace('%patch%', str(ver_patch))
+             )
+
         wsgipy_template = \
 '''import sys, os
 from pathlib import Path
 
-%project_entry%
+sys.path = ['%PATHDIR_root_out_sitepub%'] + sys.path
 
 from %projektsitepub_package%.flask_app import app as application
 '''
 
         wsgipy_fc = wsgipy_template\
-            .replace('%project_entry%', self.target_project().wsgipy_entry())\
+            .replace('%%PATHDIR_root_out_sitepub%%', str(PATHDIR_root_out_sitepub))\
             .replace('%projektsitepub_package%', self.target_project().projektsitepub_package())
 
         self.PATHFILE_wsgipy().write_text(

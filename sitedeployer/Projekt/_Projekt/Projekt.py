@@ -196,11 +196,6 @@ pythonanywhere_username: '%pythonanywhere_username%'
     def pythonanywhere_username(self) -> str:
         raise NotImplementedError("")
 
-    def wsgipy_entry(self) -> str:
-        return \
-'''sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path'''\
-            .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))
-
     def uninstall_as_package(self) -> None:
         logger.info('Unnstall as package "%projekt%"...'.replace('%projekt%', self.NAME()))
         if self.is_uninstall_as_package_supported():
