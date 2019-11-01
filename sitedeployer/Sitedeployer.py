@@ -247,7 +247,7 @@ from %projektsitepub_package%.flask_app import app as application
 '''
 
         wsgipy_fc = wsgipy_template\
-            .replace('%%PATHDIR_root_out_sitepub%%', str(PATHDIR_root_out_sitepub))\
+            .replace('%PATHDIR_root_out_sitepub%', str(PATHDIR_root_out_sitepub))\
             .replace('%projektsitepub_package%', self.target_project().projektsitepub_package())
 
         self.PATHFILE_wsgipy().write_text(
