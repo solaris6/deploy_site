@@ -230,8 +230,8 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
         ver_major = int(FCONTENT_VERSION_list[0])
         ver_minor = int(FCONTENT_VERSION_list[1])
 
-        PATHDIR_root_out_sitepub = self.PATHDIR_root() / \
-            ('_out/Release/%NAME%-%major%.%minor%-lnx/_projekt/projectsitepub_%NAME%'
+        PATHDIR_root_out_projekt = self.PATHDIR_root() / \
+            ('_out/Release/%NAME%-%major%.%minor%-lnx/_projekt'
              .replace('%NAME%', self.target_project().NAME())
              .replace('%major%', str(ver_major))
              .replace('%minor%', str(ver_minor))
@@ -241,13 +241,13 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
 '''import sys, os
 from pathlib import Path
 
-sys.path = ['%PATHDIR_root_out_sitepub%'] + sys.path
+sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path
 
 from %projektsitepub_package%.flask_app import app as application
 '''
 
         wsgipy_fc = wsgipy_template\
-            .replace('%PATHDIR_root_out_sitepub%', str(PATHDIR_root_out_sitepub))\
+            .replace('%PATHDIR_root_out_projekt%', str(PATHDIR_root_out_projekt))\
             .replace('%projektsitepub_package%', self.target_project().projektsitepub_package())
 
         self.PATHFILE_wsgipy().write_text(
