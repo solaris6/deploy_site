@@ -179,11 +179,10 @@ pythonanywhere_username: '%pythonanywhere_username%'
             cwd=str(PATHDIR_testpy)
         )
 
-        os.environ['PYPI_USERNAME'] = 'ynsight'
-
         PATHFILE_YNSIGHT_PYPI_PWD_txt = Path(self.sitedeployer().PATHDIR_home_pythonanywhereusername(), 'YNSIGHT_PYPI_PWD.txt')
         if PATHFILE_YNSIGHT_PYPI_PWD_txt.is_file():
-            os.environ['PYPI_PASSWORD'] = PATHFILE_YNSIGHT_PYPI_PWD_txt.read_text()
+            os.environ['TWINE_USERNAME'] = 'ynsight'
+            os.environ['TWINE_PASSWORD'] = PATHFILE_YNSIGHT_PYPI_PWD_txt.read_text()
             subprocess.run(
                 ['python3', 'upload.py'],
                 cwd=str(PATHDIR_testpy_projektrepository)
