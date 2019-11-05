@@ -37,7 +37,6 @@ class Projekt:
             logger.info(
 '''# names:
 NAME: '%NAME%'
-projektsitepub_package: '%projektsitepub_package%'
 projekt_package: '%projekt_package%'
 projekt: '%projekt%'
 
@@ -58,7 +57,6 @@ URL_github_projekt_repository: '%URL_github_projekt_repository%'
 pythonanywhere_username: '%pythonanywhere_username%'
 '''
                 .replace('%NAME%', self.NAME())
-                .replace('%projektsitepub_package%', self.projektsitepub_package())
                 .replace('%projekt_package%', self.projekt_package())
                 .replace('%projekt%', self.projekt())
                 \
@@ -106,9 +104,7 @@ pythonanywhere_username: '%pythonanywhere_username%'
 
 
     def projektsitepub_package(self) -> str:
-        return '%projekt%sitepub_%NAME%'\
-            .replace('%projekt%', self.projekt())\
-            .replace('%NAME%', self.NAME())
+        return
 
     def projekt_package(self) -> str:
         return '%projekt%_%NAME%'\
