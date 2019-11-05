@@ -249,7 +249,6 @@ from sitepub_%NAME%.Sitepubconfig import app as application'''
 
         wsgipy_fc = wsgipy_template\
             .replace('%PATHDIR_root_out_projekt%', str(PATHDIR_root_out_projekt))\
-            .replace('%projektsitepub_package%', self.target_project().projektsitepub_package())\
             .replace('%NAME%', self.target_project().NAME())
 
         self.PATHFILE_wsgipy().write_text(
