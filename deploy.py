@@ -17,7 +17,6 @@ logger.addHandler(handler)
 from sitedeployer.Projekt.Project.Ln_Project import Ln_Project
 from sitedeployer.Projekt.Project.ynsbase_Project import ynsbase_Project
 from sitedeployer.Projekt.Project.ynsbasedata_Project import ynsbasedata_Project
-from sitedeployer.Projekt.Project.cgbase_Project import cgbase_Project
 from sitedeployer.Projekt.Project.fw_Project import fw_Project
 from sitedeployer.Projekt.Project.myrta_Project import myrta_Project
 from sitedeployer.Projekt.Project.projekt_Project import projekt_Project
@@ -51,7 +50,6 @@ if __name__ == '__main__':
         'getfw': fw_Project,
         'getsola': sola_Project,
         'getln': Ln_Project,
-        'getcgbase': cgbase_Project,
 
         'ynsight': ynsight_Workshop
     }[pythonanywhere_username]()

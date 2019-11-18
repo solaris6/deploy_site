@@ -20,7 +20,6 @@ from sitedeployer.Projekt._Projekt.Projekt import Projekt
 from sitedeployer.Projekt.Project.Ln_Project import Ln_Project
 from sitedeployer.Projekt.Project.ynsbase_Project import ynsbase_Project
 from sitedeployer.Projekt.Project.ynsbasedata_Project import ynsbasedata_Project
-from sitedeployer.Projekt.Project.cgbase_Project import cgbase_Project
 from sitedeployer.Projekt.Project.fw_Project import fw_Project
 from sitedeployer.Projekt.Project.myrta_Project import myrta_Project
 from sitedeployer.Projekt.Project.projekt_Project import projekt_Project
@@ -54,7 +53,6 @@ class Sitedeployer:
             fw_Project,
             sola_Project,
             Ln_Project,
-            cgbase_Project,
 
             ynsight_Workshop
         ]
@@ -245,7 +243,7 @@ from pathlib import Path
 
 sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path
 
-from sitepub_%NAME%.Sitepubconfig import app as application'''
+from sitepub_%NAME%.Sitepubconfig import flask_app as application'''
 
         wsgipy_fc = wsgipy_template\
             .replace('%PATHDIR_root_out_projekt%', str(PATHDIR_root_out_projekt))\
