@@ -243,7 +243,7 @@ from pathlib import Path
 
 sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path
 
-from sitepub_%NAME%.Sitepubconfig import flask_app as application'''
+from sitepub_%NAME%.Sitepubapp import flask_app as application'''
 
         wsgipy_fc = wsgipy_template\
             .replace('%PATHDIR_root_out_projekt%', str(PATHDIR_root_out_projekt))\
