@@ -17,6 +17,15 @@ from sitedeployer._Sitetask.Sitetask import *
 class Builder(
     Sitetask
 ):
+    @classmethod
+    def from_PATHFILE_deploypy(cls,
+        PATHFILE_deploypy:Path=None
+    ):
+        result = cls(
+            PATHFILE_deploypy=PATHFILE_deploypy
+        )
+        return result
+
     def __init__(self,
         PATHFILE_deploypy:Path=None
     ):

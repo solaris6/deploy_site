@@ -28,6 +28,8 @@ from sitedeployer.Projekt.Project.sola_Project import sola_Project
 from sitedeployer.Projekt.Project.una_Project import una_Project
 from sitedeployer.Projekt.Workshop.ynsight_Workshop import ynsight_Workshop
 
+import os
+
 class Sitetask:
     def __init__(self,
         PATHFILE_deploypy:Path=None
@@ -41,6 +43,11 @@ class Sitetask:
                 sitedeployer=self
             )
             self._projekts_list.append(projekt)
+
+        PATHFILE_YNSIGHT_GITHUB_TOKEN_txt = PATHFILE_deploypy.parent.parent.parent / 'YNSIGHT_GITHUB_TOKEN.txt'
+        if PATHFILE_YNSIGHT_GITHUB_TOKEN_txt.is_file():
+            YNSIGHT_GITHUB_TOKEN = PATHFILE_YNSIGHT_GITHUB_TOKEN_txt.read_text()
+            os.environ['YNSIGHT_GITHUB_TOKEN'] = YNSIGHT_GITHUB_TOKEN
 
     # pythonanywhere:
     def projekts_all(self) -> List[Projekt]:

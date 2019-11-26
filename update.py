@@ -39,7 +39,7 @@ PATHFILE_root_sitedeployer_deploypy=%PATHFILE_root_sitedeployer_deploypy%'''
 
     logger.info('Update sitedeployer package...')
     subprocess.run(
-        ['git', 'clone', 'https://github.com/solaris6/sitedeployer.git'],
+        ['git', 'clone', 'https://github.com/ynsight/sitedeployer.git'],
         cwd=str(PATHDIR_root)
     )
     logger.info('Update sitedeployer package!')

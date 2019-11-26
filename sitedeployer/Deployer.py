@@ -12,11 +12,56 @@ from sitedeployer._Sitetask.Sitetask import *
 from sitedeployer.utils import log_environment
 import shutil
 import subprocess
+import os
+
+from sitedeployer.Projekt.Project.Ln_Project import Ln_Project
+from sitedeployer.Projekt.Project.ynsbase_Project import ynsbase_Project
+from sitedeployer.Projekt.Project.ynsbasedata_Project import ynsbasedata_Project
+from sitedeployer.Projekt.Project.fw_Project import fw_Project
+from sitedeployer.Projekt.Project.myrta_Project import myrta_Project
+from sitedeployer.Projekt.Project.projekt_Project import projekt_Project
+from sitedeployer.Projekt.Project.rs_Project import rs_Project
+from sitedeployer.Projekt.Project.rsdata_Project import rsdata_Project
+from sitedeployer.Projekt.Project.sc_Project import sc_Project
+from sitedeployer.Projekt.Project.skfb_Project import skfb_Project
+from sitedeployer.Projekt.Project.sola_Project import sola_Project
+from sitedeployer.Projekt.Project.una_Project import una_Project
+from sitedeployer.Projekt.Workshop.ynsight_Workshop import ynsight_Workshop
 
 
 class Deployer(
     Sitetask
 ):
+    @classmethod
+    def from_PATHFILE_deploypy(cls,
+        PATHFILE_deploypy:Path=None
+    ):
+        pythonanywhere_username = PATHFILE_deploypy.parent.parent.parent.name
+
+        target_project = {
+            'getynsbase': ynsbase_Project,
+            'getynsbasedata': ynsbasedata_Project,
+            'getprojekt': projekt_Project,
+            'getmyrta': myrta_Project,
+            'getuna': una_Project,
+            'getrs': rs_Project,
+            'getrsdata': rsdata_Project,
+            'getsc': sc_Project,
+            'skfb': skfb_Project,
+            'getfw': fw_Project,
+            'getsola': sola_Project,
+            'getln': Ln_Project,
+
+            'ynsight': ynsight_Workshop
+        }[pythonanywhere_username]()
+
+        result = cls(
+            PATHFILE_deploypy=PATHFILE_deploypy,
+            target_project=target_project
+        )
+
+        return result
+
     def __init__(self,
         PATHFILE_deploypy:Path=None,
         target_project:Projekt=None
