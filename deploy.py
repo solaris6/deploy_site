@@ -28,8 +28,8 @@ from sitedeployer.Projekt.Project.sola_Project import sola_Project
 from sitedeployer.Projekt.Project.una_Project import una_Project
 from sitedeployer.Projekt.Workshop.ynsight_Workshop import ynsight_Workshop
 
-from sitedeployer.Sitedeployer import Sitedeployer
-
+from sitedeployer.Builder import Builder
+from sitedeployer.Deployer import Deployer
 
 if __name__ == '__main__':
     logger.info('Deploy site...')
@@ -37,31 +37,58 @@ if __name__ == '__main__':
     PATHDIR_deploypy = PATHFILE_deploypy.parent
     pythonanywhere_username = PATHFILE_deploypy.parent.parent.parent.name
 
-    target_project = {
-        'getynsbase': ynsbase_Project,
-        'getynsbasedata': ynsbasedata_Project,
-        'getprojekt': projekt_Project,
-        'getmyrta': myrta_Project,
-        'getuna': una_Project,
-        'getrs': rs_Project,
-        'getrsdata': rsdata_Project,
-        'getsc': sc_Project,
-        'skfb': skfb_Project,
-        'getfw': fw_Project,
-        'getsola': sola_Project,
-        'getln': Ln_Project,
+    if pythonanywhere_username == 'ynsbuilder':
+        Builder(
+            PATHFILE_deploypy=PATHFILE_deploypy
+        ).Build()
 
-        'ynsight': ynsight_Workshop
-    }[pythonanywhere_username]()
+    else:
+        target_project = {
+            'getynsbase': ynsbase_Project,
+            'getynsbasedata': ynsbasedata_Project,
+            'getprojekt': projekt_Project,
+            'getmyrta': myrta_Project,
+            'getuna': una_Project,
+            'getrs': rs_Project,
+            'getrsdata': rsdata_Project,
+            'getsc': sc_Project,
+            'skfb': skfb_Project,
+            'getfw': fw_Project,
+            'getsola': sola_Project,
+            'getln': Ln_Project,
 
-    PATHFILE_YNSIGHT_GITHUB_TOKEN_txt = PATHDIR_deploypy.parent.parent / 'YNSIGHT_GITHUB_TOKEN.txt'
-    if PATHFILE_YNSIGHT_GITHUB_TOKEN_txt.is_file():
-        YNSIGHT_GITHUB_TOKEN = PATHFILE_YNSIGHT_GITHUB_TOKEN_txt.read_text()
-        os.environ['YNSIGHT_GITHUB_TOKEN'] = YNSIGHT_GITHUB_TOKEN
+            'ynsight': ynsight_Workshop
+        }[pythonanywhere_username]()
 
-    Sitedeployer(
-        PATHFILE_deploypy=PATHFILE_deploypy,
-        target_project=target_project
-    ).Execute()
+        PATHFILE_YNSIGHT_GITHUB_TOKEN_txt = PATHDIR_deploypy.parent.parent / 'YNSIGHT_GITHUB_TOKEN.txt'
+        if PATHFILE_YNSIGHT_GITHUB_TOKEN_txt.is_file():
+            YNSIGHT_GITHUB_TOKEN = PATHFILE_YNSIGHT_GITHUB_TOKEN_txt.read_text()
+            os.environ['YNSIGHT_GITHUB_TOKEN'] = YNSIGHT_GITHUB_TOKEN
+
+        Deployer(
+            PATHFILE_deploypy=PATHFILE_deploypy,
+            target_project=target_project
+        ).Deploy()
 
     logger.info('Deploy site!')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

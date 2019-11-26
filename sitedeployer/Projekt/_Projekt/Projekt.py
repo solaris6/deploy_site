@@ -20,7 +20,7 @@ class Projekt:
         self._sitedeployer = None
 
     def attach_to_sitedeployer(self,
-        sitedeployer:'Sitedeployer'=None
+        sitedeployer:'Sitetask'=None
     ) -> None:
         logger.info(
             'Attaching "%NAME%" project to sitedeployer...'
@@ -80,7 +80,7 @@ pythonanywhere_username: '%pythonanywhere_username%'
                     .replace('%NAME%', self.NAME())
             )
 
-    def sitedeployer(self) -> 'Sitedeployer':
+    def sitedeployer(self) -> 'Sitetask':
         return self._sitedeployer
 
     # names:
