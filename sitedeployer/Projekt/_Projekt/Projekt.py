@@ -165,7 +165,7 @@ pythonanywhere_username: '%pythonanywhere_username%'
     def upload_on_pypi(self) -> None:
         PATHDIR_testpy = self.sitedeployer().PATHDIR_root() / 'pypi'
         if PATHDIR_testpy.is_dir():
-            shutil.rmtree()
+            shutil.rmtree(str(PATHDIR_testpy))
         PATHDIR_testpy.mkdir(parents=True)
 
         PATHDIR_testpy_projektrepository = PATHDIR_testpy / self.NAME()
