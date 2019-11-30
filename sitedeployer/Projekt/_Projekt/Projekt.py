@@ -159,9 +159,6 @@ pythonanywhere_username: '%pythonanywhere_username%'
             result = self.URLHTTPS_github_projekt_repository()
         return result
 
-    def PATHDIRS_packages_to_upload_on_pypi(self) -> List[Path]:
-        return []
-
     def upload_on_pypi(self) -> None:
         PATHDIR_testpy = self.sitedeployer().PATHDIR_root() / 'pypi'
         if PATHDIR_testpy.is_dir():

@@ -20,11 +20,7 @@ class ynsight_Workshop(
         return [2019, 2, 0]
 
     def is_uninstall_as_package_supported(self) -> bool:
-        return False
+        return True
 
     def package_executables(self) -> List[str]:
-        return None
-
-
-    def PATHDIRS_packages_to_upload_on_pypi(self) -> List[Path]:
         return []
