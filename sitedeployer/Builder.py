@@ -41,6 +41,7 @@ class Builder(
         logger.info('Build and Upload projects...')
 
         for projekt in self.projekts_all():
-            projekt.upload_on_pypi()
+            if projekt.NAME() == 'ynsbase':
+                projekt.upload_on_pypi()
 
         logger.info('Builded and Uploaded projects!')
