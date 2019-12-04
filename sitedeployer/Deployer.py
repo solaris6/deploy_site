@@ -150,13 +150,13 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
 
         logger.info('Write wsgi.py file...')
 
-        PATHFILE_VERSION_LOCATION = PATHDIR_root_projektrepository / 'VERSION_LOCATION'
-
-        PATHFILE_VERSION = PATHDIR_root_projektrepository / Path(PATHFILE_VERSION_LOCATION.read_text())
+        PATHFILE_VERSION = PATHDIR_root_projektrepository / 'VERSION'
         FCONTENT_VERSION_list = PATHFILE_VERSION.read_text().splitlines()
 
-        ver_major = int(FCONTENT_VERSION_list[0])
-        ver_minor = int(FCONTENT_VERSION_list[1])
+        ver_major = int(FCONTENT_VERSION_list[2])
+        ver_minor = int(FCONTENT_VERSION_list[3])
+        ver_major = 11
+        ver_minor = 9999
 
         PATHDIR_root_out_projekt = self.PATHDIR_root() / \
             ('_out/Release/%NAME%-%major%.%minor%-lnx/_projekt'
