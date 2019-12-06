@@ -155,8 +155,8 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
 
         ver_major = int(FCONTENT_VERSION_list[2])
         ver_minor = int(FCONTENT_VERSION_list[3])
-        ver_major = 11
-        ver_minor = 9999
+        ver_major = 2019
+        ver_minor = 11
 
         PATHDIR_root_out_projekt = self.PATHDIR_root() / \
             ('_out/Release/%NAME%-%major%.%minor%-lnx/_projekt'
