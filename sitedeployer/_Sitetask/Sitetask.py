@@ -14,6 +14,7 @@ from pathlib import Path
 
 from sitedeployer.Projekt._Projekt.Projekt import Projekt
 
+from sitedeployer.Projekt.Project.agent_Project import agent_Project
 from sitedeployer.Projekt.Project.Ln_Project import Ln_Project
 from sitedeployer.Projekt.Project.ynsbase_Project import ynsbase_Project
 from sitedeployer.Projekt.Project.ynsbasedata_Project import ynsbasedata_Project
@@ -56,6 +57,7 @@ class Sitetask:
     # pythonanywhere:
     def projekts_Types_all(self) -> List[Type[Projekt]]:
         return [
+            agent_Project,
             ynsbase_Project,
             ynsbasedata_Project,
             projekt_Project,
