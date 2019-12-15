@@ -1,5 +1,6 @@
 import logging
 
+
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
 formatter = logging.Formatter("[deployer] - %(asctime)s - %(levelname)s - %(message)s")
@@ -14,6 +15,7 @@ import shutil
 import subprocess
 import os
 
+from sitedeployer.Projekt.Project import agent_Project
 from sitedeployer.Projekt.Project.Ln_Project import Ln_Project
 from sitedeployer.Projekt.Project.ynsbase_Project import ynsbase_Project
 from sitedeployer.Projekt.Project.ynsbasedata_Project import ynsbasedata_Project
@@ -39,6 +41,7 @@ class Deployer(
         pythonanywhere_username = PATHFILE_deploypy.parent.parent.parent.name
 
         target_project = {
+            'getagent': agent_Project,
             'getynsbase': ynsbase_Project,
             'getynsbasedata': ynsbasedata_Project,
             'getprojekt': projekt_Project,
