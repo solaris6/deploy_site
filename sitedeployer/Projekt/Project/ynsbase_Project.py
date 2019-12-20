@@ -33,27 +33,9 @@ class ynsbase_Project(
 
     def package_executables(self) -> List[str]:
         return [
-            'agent',
-            'agent.sh',
-            'agent.bat',
-            'agent_.py',
-            'agent.py',
-
-            'base',
-            'base.sh',
-            'base.bat',
-            'base_.py',
-            'base.py',
-
             'ynsbase',
             'ynsbase.sh',
             'ynsbase.bat',
             'ynsbase_.py',
-            'ynsbase.py',
-
-            'deck',
-            'deck.sh',
-            'deck.bat',
-            'deck_.py',
-            'deck.py'
+            'ynsbase.py'
         ]

@@ -4,14 +4,14 @@ from typing import List
 from sitedeployer.Projekt.Project._Project.Project import Project
 
 
-class ynsbasedata_Project(
+class letters_Project(
     Project
 ):
     def NAME(self) -> str:
-        return 'ynsbasedata'
-    
+        return 'letters'
+
     def pythonanywhere_username(self) -> str:
-        return 'getynsbasedata'
+        return 'getletters'
 
     def github_url_type(self) -> str:
         return 'ssh'
@@ -20,7 +20,7 @@ class ynsbasedata_Project(
         return [2019, 2, 0]
 
     def is_uninstall_as_package_supported(self) -> bool:
-        return False
+        return True
 
     def package_executables(self) -> List[str]:
         return []

@@ -17,7 +17,7 @@ from sitedeployer.Projekt._Projekt.Projekt import Projekt
 from sitedeployer.Projekt.Project.agent_Project import agent_Project
 from sitedeployer.Projekt.Project.Ln_Project import Ln_Project
 from sitedeployer.Projekt.Project.ynsbase_Project import ynsbase_Project
-from sitedeployer.Projekt.Project.ynsbasedata_Project import ynsbasedata_Project
+from sitedeployer.Projekt.Project.letters_Project import letters_Project
 from sitedeployer.Projekt.Project.fw_Project import fw_Project
 from sitedeployer.Projekt.Project.myrta_Project import myrta_Project
 from sitedeployer.Projekt.Project.projekt_Project import projekt_Project
@@ -59,7 +59,7 @@ class Sitetask:
         return [
             agent_Project,
             ynsbase_Project,
-            ynsbasedata_Project,
+            letters_Project,
             projekt_Project,
             myrta_Project,
             una_Project,
