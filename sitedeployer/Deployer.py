@@ -15,7 +15,7 @@ import shutil
 import subprocess
 import os
 
-from sitedeployer.Projekt.Project import agent_Project
+from sitedeployer.Projekt.Project.agent_Project import agent_Project
 from sitedeployer.Projekt.Project.Ln_Project import Ln_Project
 from sitedeployer.Projekt.Project.ynsbase_Project import ynsbase_Project
 from sitedeployer.Projekt.Project.letters_Project import letters_Project
