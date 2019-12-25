@@ -90,18 +90,6 @@ pythonanywhere_username: '%pythonanywhere_username%'
     def version_list(self) -> List[int]:
         raise NotImplementedError("")
 
-    def version_dot_str(self) -> str:
-        return '.'.join(self.version_list())
-
-    def DIRNAME_egg(self) -> str:
-        return '%NAME%-%project_version_dot_str%-py%python_version_dot_str%.egg'\
-            .replace('%NAME%', self.NAME())\
-            .replace('%project_version_dot_str%', self.sitedeployer().version_dot_str())\
-            .replace('%python_version_dot_str%', self.sitedeployer().python_version_dot_str())
-
-    def PATHDIR_egg(self) -> Path:
-        return self.sitedeployer().PATHDIR_venvsitepackages() / self.DIRNAME_egg()
-
 
     def projektsitepub_package(self) -> str:
         return
