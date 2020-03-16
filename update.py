@@ -13,22 +13,22 @@ logger.addHandler(handler)
 
 
 if __name__ == '__main__':
-    logger.info('Update sitedeployer package, then use them to update site...')
+    logger.info('Updating sitedeployer package (then use them to deploy_site or upload_projects_on_pypi)...')
 
     PATHFILE_updatepy = Path(sys.argv[0])
     PATHDIR_root = PATHFILE_updatepy.parent / 'root'
     PATHDIR_root_sitedeployer = PATHDIR_root / 'sitedeployer'
-    PATHFILE_root_sitedeployer_deploypy = PATHDIR_root_sitedeployer / 'deploy.py'
+    PATHFILE_root_sitedeployer_executetaskpy = PATHDIR_root_sitedeployer / 'execute_task.py'
 
     logger.info(
 '''PATHFILE_updatepy=%PATHFILE_updatepy%
 PATHDIR_root=%PATHDIR_root%
 PATHDIR_root_sitedeployer=%PATHDIR_root_sitedeployer%
-PATHFILE_root_sitedeployer_deploypy=%PATHFILE_root_sitedeployer_deploypy%'''
+PATHFILE_root_sitedeployer_executetaskpy=%PATHFILE_root_sitedeployer_executetaskpy%'''
           .replace('%PATHFILE_updatepy%', str(PATHFILE_updatepy))
           .replace('%PATHDIR_root%', str(PATHDIR_root))
           .replace('%PATHDIR_root_sitedeployer%', str(PATHDIR_root_sitedeployer))
-          .replace('%PATHFILE_root_sitedeployer_deploypy%', str(PATHFILE_root_sitedeployer_deploypy))
+          .replace('%PATHFILE_root_sitedeployer_executetaskpy%', str(PATHFILE_root_sitedeployer_executetaskpy))
     )
 
     logger.info('Create root dir...')
@@ -37,17 +37,17 @@ PATHFILE_root_sitedeployer_deploypy=%PATHFILE_root_sitedeployer_deploypy%'''
     PATHDIR_root.mkdir()
     logger.info('Create root dir!')
 
-    logger.info('Update sitedeployer package...')
+    logger.info('Updating sitedeployer package...')
     subprocess.run(
         ['git', 'clone', 'https://github.com/ynsight/sitedeployer.git'],
         cwd=str(PATHDIR_root)
     )
-    logger.info('Update sitedeployer package!')
+    logger.info('Updated sitedeployer package!')
 
-    logger.info('Use sitedeployer package...')
+    logger.info('Using sitedeployer package...')
     subprocess.run(
-        ['python3.6', PATHFILE_root_sitedeployer_deploypy]
+        ['python3.6', PATHFILE_root_sitedeployer_executetaskpy]
     )
-    logger.info('Use sitedeployer package!')
+    logger.info('Used sitedeployer package!')
 
-    logger.info('Update sitedeployer package then use them to update site!')
+    logger.info('Updated sitedeployer package (then used them to deploy_site or upload_projects_on_pypi)!')

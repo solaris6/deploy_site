@@ -32,24 +32,3 @@ if __name__ == '__main__':
         ).Deploy()
 
     logger.info('Deploy site!')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
