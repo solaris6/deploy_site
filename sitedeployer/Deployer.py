@@ -185,19 +185,3 @@ from sitepub_%NAME%.Sitepubapp import flask_app as application'''
         logger.info('WSGIPY_FILE_BEGIN' + wsgipy_fc + 'WSGIPY_FILE_END')
         logger.info('Write wsgi.py file!')
         logger.info('Process wsgi.py!')
-
-        # update.py:
-        logger.info('Write update.py file...')
-        logger.info(
-'''update.py paths:
-PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy=%PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy%
-PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusername_updatepy%'''
-            .replace('%PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy%', str(self.PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy()))
-            .replace('%PATHFILE_home_pythonanywhereusername_updatepy%', str(self.PATHFILE_home_pythonanywhereusername_updatepy()))
-        )
-
-        shutil.copyfile(
-            self.PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy(),
-            self.PATHFILE_home_pythonanywhereusername_updatepy()
-        )
-        logger.info('Write update.py file!')
