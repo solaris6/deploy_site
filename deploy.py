@@ -19,17 +19,20 @@ from sitedeployer.Deployer import Deployer
 
 if __name__ == '__main__':
     logger.info('Deploy site...')
-    PATHFILE_deploypy = Path(sys.argv[0])
-    pythonanywhere_username = PATHFILE_deploypy.parent.parent.parent.name
+    PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy = Path(sys.argv[0])
+    PATHDIR_home_pythonanywhereusername_root_sitedeployer = PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy.parent
+    PATHDIR_home_pythonanywhereusername_root = PATHDIR_home_pythonanywhereusername_root_sitedeployer.parent
+    PATHDIR_home_pythonanywhereusername = PATHDIR_home_pythonanywhereusername_root.parent
+    pythonanywhere_username = PATHDIR_home_pythonanywhereusername.name
 
     if pythonanywhere_username == 'ynsbuilder':
         Builder.from_PATHFILE_deploypy(
-            PATHFILE_deploypy=PATHFILE_deploypy
+            PATHFILE_deploypy=PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy
         ).Build()
 
     else:
         Deployer.from_PATHFILE_deploypy(
-            PATHFILE_deploypy=PATHFILE_deploypy
+            PATHFILE_deploypy=PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy
         ).Deploy()
 
     logger.info('Deploy site!')
@@ -38,8 +41,9 @@ if __name__ == '__main__':
     # update.py:
     logger.info('Write update.py file...')
 
-    PATHFILE_home_pythonanywhereusername_root_sitedeployer_updatepy = PATHFILE_deploypy.parent / 'root/sitedeployer/update.py'
-    PATHFILE_home_pythonanywhereusername_updatepy = PATHFILE_deploypy.parent / 'update.py'
+    FILENAME_updatepy = 'update.py'
+    PATHFILE_home_pythonanywhereusername_root_sitedeployer_updatepy = PATHDIR_home_pythonanywhereusername_root_sitedeployer / FILENAME_updatepy
+    PATHFILE_home_pythonanywhereusername_updatepy = PATHDIR_home_pythonanywhereusername / FILENAME_updatepy
 
 
     logger.info(
