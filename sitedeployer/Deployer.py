@@ -159,25 +159,32 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
         ver_major = int(FCONTENT_VERSION_list[1])
         ver_minor = int(FCONTENT_VERSION_list[2])
 
-        PATHDIR_root_out_projekt = self.PATHDIR_root() / \
-            ('_out/Release/%NAME%-%major%.%minor%-lnx/%NAME%/_projekt'
-             .replace('%NAME%', self.target_project().NAME())
-             .replace('%major%', str(ver_major))
-             .replace('%minor%', str(ver_minor))
+        PATHDIR_root_out_projekt_pythonpath = self.PATHDIR_root() / \
+            (
+'_out/Release/%NAME%-pub-%major%.%minor%-lnx/%NAME%/_projekt'
+                 .replace('%NAME%', self.target_project().NAME())
+                 .replace('%major%', str(ver_major))
+                 .replace('%minor%', str(ver_minor))
              )
+
+        PATHDIR_root_out_site = self.PATHDIR_root() / '_out/Release/%NAME%-pub-%major%.%minor%-lnx/site'
 
         wsgipy_template = \
 '''import sys, os
 from pathlib import Path
 
-sys.path = ['%PATHDIR_root_out_projekt%'] + sys.path
+sys.path = [
+    '%PATHDIR_root_out_projekt_pythonpath%',
+    '%PATHDIR_root_out_site%'
+] + sys.path
 
 from sitepub_%NAME%.Sitepubapp import create_app
 
 application = create_app()'''
 
         wsgipy_fc = wsgipy_template\
-            .replace('%PATHDIR_root_out_projekt%', str(PATHDIR_root_out_projekt))\
+            .replace('%PATHDIR_root_out_projekt_pythonpath%', str(PATHDIR_root_out_projekt_pythonpath))\
+            .replace('%PATHDIR_root_out_site%', str(PATHDIR_root_out_site))\
             .replace('%NAME%', self.target_project().NAME())
 
         self.PATHFILE_wsgipy().write_text(
