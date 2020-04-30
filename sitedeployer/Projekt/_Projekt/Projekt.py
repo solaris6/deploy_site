@@ -156,7 +156,11 @@ pythonanywhere_username: '%pythonanywhere_username%'
         PATHDIR_testpy_projektrepository = PATHDIR_testpy / self.NAME()
 
         subprocess.run(
-            ['git', 'clone', self.URL_github_projekt_repository()],
+            [
+                'git',
+                'clone',
+                self.URL_github_projekt_repository()
+            ],
             cwd=str(PATHDIR_testpy)
         )
 
@@ -165,7 +169,10 @@ pythonanywhere_username: '%pythonanywhere_username%'
             os.environ['TWINE_USERNAME'] = 'ynsight'
             os.environ['TWINE_PASSWORD'] = PATHFILE_YNSIGHT_PYPI_PWD_txt.read_text()
             subprocess.run(
-                ['python3', 'upload.py'],
+                [
+                    'python3',
+                    'upload.py'
+                ],
                 cwd=str(PATHDIR_testpy_projektrepository)
             )
         else:

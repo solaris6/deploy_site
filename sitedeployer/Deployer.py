@@ -134,13 +134,20 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
         PATHDIR_root_projektrepository = self.PATHDIR_root() / self.target_project().NAME()
         if not PATHDIR_root_projektrepository.is_dir():
             subprocess.run(
-                ['git', 'clone', URL_github_projekt_repository],
+                [
+                    'git',
+                    'clone',
+                    URL_github_projekt_repository
+                ],
                 cwd=str(self.PATHDIR_root())
             )
 
         PATHfile_root_projektrepository_makepy = PATHDIR_root_projektrepository / 'make.py'
         subprocess.run(
-            ['python3.6', PATHfile_root_projektrepository_makepy],
+            [
+                'python3.6',
+                PATHfile_root_projektrepository_makepy
+            ],
             cwd=PATHDIR_root_projektrepository
         )
 
