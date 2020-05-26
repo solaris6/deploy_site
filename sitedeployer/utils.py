@@ -3,22 +3,29 @@ import os
 import platform
 from typing import Dict, Any, List
 
-
-def environment_report() -> Dict[str,Any]:
-    result = {}
-    result['cwd'] = os.getcwd()
-    # result['env_vars'] = dict(os.environ)
-    result['PATH'] = os.environ['PATH'].split(os.pathsep) if 'PATH' in os.environ else []
-    result['PYTHONPATH'] = os.environ['PYTHONPATH'].split(os.pathsep) if 'PYTHONPATH' in os.environ else []
-    return result
-
 def log_environment(
     logger=None
 ) -> None:
+    environment_report_dict = {}
+
+    environment_report_dict['cwd'] = os.getcwd()
+
+    if 'PATH' in os.environ:
+        environment_report_dict['PATH'] = os.environ['PATH'].split(os.pathsep)
+    else:
+        environment_report_dict['PATH'] = []
+
+    if 'PYTHONPATH' in os.environ:
+        environment_report_dict['PYTHONPATH'] = os.environ['PYTHONPATH'].split(os.pathsep)
+    else:
+        environment_report_dict['PYTHONPATH'] = []
+
     logger.info(
-        json.dumps({
-            'environment_report': environment_report()
-            }, indent=2
+        json.dumps(
+            {
+                'environment_report': environment_report_dict
+            },
+            indent=2
         )
     )
 
