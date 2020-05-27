@@ -100,6 +100,7 @@ pythonanywhere_username: '%pythonanywhere_username%'
             .replace('%NAME%', self.NAME())
 
     def project_or_workshop(self) -> str:
+
         if self.NAME() == 'ynsight':
             result = 'workshop'
         else:
