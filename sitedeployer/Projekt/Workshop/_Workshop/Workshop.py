@@ -6,7 +6,3 @@ class Workshop(
 ):
     def __init__(self):
         Projekt.__init__(self)
-
-    # names:
-    def projekt(self) -> str:
-        return 'workshop'

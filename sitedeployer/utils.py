@@ -29,18 +29,6 @@ def log_environment(
         )
     )
 
-def lnx_mac_win() -> str:
-    """"""
-    system = platform.system()
-    result = None
-    if   system == 'Linux':
-        result = 'lnx'
-    elif system == 'Darwin':
-        result = 'mac'
-    elif system == 'Windows':
-        result = 'win'
-    return result
-
 def remove_duplicates(
     input_list:List=None
 ) -> List:

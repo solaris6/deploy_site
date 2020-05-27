@@ -38,7 +38,7 @@ class Projekt:
 '''# names:
 NAME: '%NAME%'
 projekt_package: '%projekt_package%'
-projekt: '%projekt%'
+projekt: '%project_or_workshop%'
 
 # PATHS:
 PATHDIR_root: '%PATHDIR_root%'
@@ -58,7 +58,7 @@ pythonanywhere_username: '%pythonanywhere_username%'
 '''
                 .replace('%NAME%', self.NAME())
                 .replace('%projekt_package%', self.projekt_package())
-                .replace('%projekt%', self.projekt())
+                .replace('%project_or_workshop%', self.project_or_workshop())
                 \
                 .replace('%PATHDIR_root%', str(self.PATHDIR_root()))
                 .replace('%PATHDIR_root_projektrepository%', str(self.PATHDIR_root_projektrepository()))
@@ -95,13 +95,16 @@ pythonanywhere_username: '%pythonanywhere_username%'
         return
 
     def projekt_package(self) -> str:
-        return '%projekt%_%NAME%'\
-            .replace('%projekt%', self.projekt())\
+        return '%project_or_workshop%_%NAME%'\
+            .replace('%project_or_workshop%', self.project_or_workshop())\
             .replace('%NAME%', self.NAME())
 
-    def projekt(self) -> str:
-        raise NotImplementedError("")
-
+    def project_or_workshop(self) -> str:
+        if self.NAME() == 'ynsight':
+            result = 'workshop'
+        else:
+            result = 'project'
+        return result
 
     # PATHS:
     def PATHDIR_root(self) -> Path:
