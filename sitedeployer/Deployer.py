@@ -15,20 +15,6 @@ import shutil
 import subprocess
 import os
 
-from sitedeployer.Projekt.Project.agent_Project import agent_Project
-from sitedeployer.Projekt.Project.Ln_Project import Ln_Project
-from sitedeployer.Projekt.Project.ynsbase_Project import ynsbase_Project
-from sitedeployer.Projekt.Project.letters_Project import letters_Project
-from sitedeployer.Projekt.Project.fw_Project import fw_Project
-from sitedeployer.Projekt.Project.myrta_Project import myrta_Project
-from sitedeployer.Projekt.Project.projekt_Project import projekt_Project
-from sitedeployer.Projekt.Project.rs_Project import rs_Project
-from sitedeployer.Projekt.Project.rsdata_Project import rsdata_Project
-from sitedeployer.Projekt.Project.sc_Project import sc_Project
-from sitedeployer.Projekt.Project.skfb_Project import skfb_Project
-from sitedeployer.Projekt.Project.sola_Project import sola_Project
-from sitedeployer.Projekt.Project.una_Project import una_Project
-from sitedeployer.Projekt.Workshop.ynsight_Workshop import ynsight_Workshop
 
 
 class Deployer(
@@ -41,21 +27,21 @@ class Deployer(
         pythonanywhere_username = PATHFILE_deploypy.parent.parent.parent.name
 
         target_project = {
-            'getagent': agent_Project,
-            'getynsbase': ynsbase_Project,
-            'getletters': letters_Project,
-            'getprojekt': projekt_Project,
-            'getmyrta': myrta_Project,
-            'getuna': una_Project,
-            'getrs': rs_Project,
-            'getrsdata': rsdata_Project,
-            'getsc': sc_Project,
-            'skfb': skfb_Project,
-            'getfw': fw_Project,
-            'getsola': sola_Project,
-            'getln': Ln_Project,
+            'getagent': agent_Gitproject,
+            'getynsbase': ynsbase_Gitproject,
+            'getletters': letters_Gitproject,
+            'getprojekt': projekt_Gitproject,
+            'getmyrta': myrta_Gitproject,
+            'getuna': una_Gitproject,
+            'getrs': rs_Gitproject,
+            'getrsdata': rsdata_Gitproject,
+            'getsc': sc_Gitproject,
+            'skfb': skfb_Gitproject,
+            'getfw': fw_Gitproject,
+            'getsola': sola_Gitproject,
+            'getln': Ln_Gitproject,
 
-            'ynsight': ynsight_Workshop
+            'ynsight': ynsight_Gitproject
         }[pythonanywhere_username]()
 
         result = cls(
@@ -67,7 +53,7 @@ class Deployer(
 
     def __init__(self,
         PATHFILE_deploypy:Path=None,
-        target_project:Projekt=None
+        target_project:Gitproject=None
     ):
         Sitetask.__init__(self,
             PATHFILE_deploypy=PATHFILE_deploypy
@@ -81,7 +67,7 @@ class Deployer(
     def pythonanywhere_username(self) -> str:
         return self.target_project().pythonanywhere_username()
 
-    def target_project(self) -> Projekt:
+    def target_project(self) -> Gitproject:
         return self._target_project
 
     def Deploy(self) -> None:

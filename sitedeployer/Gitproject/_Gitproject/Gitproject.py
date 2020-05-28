@@ -15,7 +15,7 @@ handler.setLevel(logging.DEBUG)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
-class Projekt:
+class Gitproject:
     def __init__(self):
         self._sitedeployer = None
 

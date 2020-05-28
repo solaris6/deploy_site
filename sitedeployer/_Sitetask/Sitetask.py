@@ -1,5 +1,21 @@
 import logging
 import subprocess
+from sitedeployer.Gitproject._Gitproject.Gitproject import Gitproject
+
+from sitedeployer.Gitproject.una_Gitproject import una_Gitproject
+from sitedeployer.Gitproject.Ln_Gitproject import Ln_Gitproject
+from sitedeployer.Gitproject.agent_Gitproject import agent_Gitproject
+from sitedeployer.Gitproject.fw_Gitproject import fw_Gitproject
+from sitedeployer.Gitproject.letters_Gitproject import letters_Gitproject
+from sitedeployer.Gitproject.myrta_Gitproject import myrta_Gitproject
+from sitedeployer.Gitproject.projekt_Gitproject import projekt_Gitproject
+from sitedeployer.Gitproject.rs_Gitproject import rs_Gitproject
+from sitedeployer.Gitproject.rsdata_Gitproject import rsdata_Gitproject
+from sitedeployer.Gitproject.sc_Gitproject import sc_Gitproject
+from sitedeployer.Gitproject.skfb_Gitproject import skfb_Gitproject
+from sitedeployer.Gitproject.sola_Gitproject import sola_Gitproject
+from sitedeployer.Gitproject.ynsbase_Gitproject import ynsbase_Gitproject
+from sitedeployer.Gitproject.ynsight_Gitproject import ynsight_Gitproject
 
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
@@ -11,23 +27,6 @@ logger.addHandler(handler)
 
 from typing import List, Type
 from pathlib import Path
-
-from sitedeployer.Projekt._Projekt.Projekt import Projekt
-
-from sitedeployer.Projekt.Project.agent_Project import agent_Project
-from sitedeployer.Projekt.Project.Ln_Project import Ln_Project
-from sitedeployer.Projekt.Project.ynsbase_Project import ynsbase_Project
-from sitedeployer.Projekt.Project.letters_Project import letters_Project
-from sitedeployer.Projekt.Project.fw_Project import fw_Project
-from sitedeployer.Projekt.Project.myrta_Project import myrta_Project
-from sitedeployer.Projekt.Project.projekt_Project import projekt_Project
-from sitedeployer.Projekt.Project.rs_Project import rs_Project
-from sitedeployer.Projekt.Project.rsdata_Project import rsdata_Project
-from sitedeployer.Projekt.Project.sc_Project import sc_Project
-from sitedeployer.Projekt.Project.skfb_Project import skfb_Project
-from sitedeployer.Projekt.Project.sola_Project import sola_Project
-from sitedeployer.Projekt.Project.una_Project import una_Project
-from sitedeployer.Projekt.Workshop.ynsight_Workshop import ynsight_Workshop
 
 import os
 
@@ -51,27 +50,27 @@ class Sitetask:
             os.environ['YNSIGHT_GITHUB_TOKEN'] = YNSIGHT_GITHUB_TOKEN
 
     # pythonanywhere:
-    def projekts_all(self) -> List[Projekt]:
+    def projekts_all(self) -> List[Gitproject]:
         return self._projekts_list
 
     # pythonanywhere:
-    def projekts_Types_all(self) -> List[Type[Projekt]]:
+    def projekts_Types_all(self) -> List[Type[Gitproject]]:
         return [
-            agent_Project,
-            ynsbase_Project,
-            letters_Project,
-            projekt_Project,
-            myrta_Project,
-            una_Project,
-            rs_Project,
-            rsdata_Project,
-            sc_Project,
-            skfb_Project,
-            fw_Project,
-            sola_Project,
-            Ln_Project,
+            agent_Gitproject,
+            ynsbase_Gitproject,
+            letters_Gitproject,
+            projekt_Gitproject,
+            myrta_Gitproject,
+            una_Gitproject,
+            rs_Gitproject,
+            rsdata_Gitproject,
+            sc_Gitproject,
+            skfb_Gitproject,
+            fw_Gitproject,
+            sola_Gitproject,
+            Ln_Gitproject,
 
-            ynsight_Workshop
+            ynsight_Gitproject
         ]
 
     def pythonanywhere_username(self) -> str:
