@@ -10,7 +10,6 @@ logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
 from sitedeployer._Sitetask.Sitetask import *
-from sitedeployer.utils import log_environment
 import shutil
 import subprocess
 import os
@@ -71,7 +70,7 @@ class Deployer(
         return self._target_project
 
     def Deploy(self) -> None:
-        log_environment(logger=logger)
+        self.log_environment()
 
         logger.info(
 '''# projekt:

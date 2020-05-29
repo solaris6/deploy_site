@@ -1,7 +1,5 @@
 import logging
 
-from sitedeployer.utils import log_environment
-
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
 formatter = logging.Formatter("[deployer] - %(asctime)s - %(levelname)s - %(message)s")
@@ -37,7 +35,8 @@ class Builder(
         return 'ynsbuilder'
 
     def Build(self) -> None:
-        log_environment(logger=logger)
+        self.log_environment()
+
         logger.info('Build and Upload projects...')
 
         for projekt in self.projekts_all():

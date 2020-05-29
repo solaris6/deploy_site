@@ -28,9 +28,36 @@ logger.addHandler(handler)
 from typing import List, Type
 from pathlib import Path
 
+import json
 import os
 
 class Sitetask:
+
+    @staticmethod
+    def log_environment() -> None:
+        environment_report_dict = {}
+
+        environment_report_dict['cwd'] = os.getcwd()
+
+        if 'PATH' in os.environ:
+            environment_report_dict['PATH'] = os.environ['PATH'].split(os.pathsep)
+        else:
+            environment_report_dict['PATH'] = []
+
+        if 'PYTHONPATH' in os.environ:
+            environment_report_dict['PYTHONPATH'] = os.environ['PYTHONPATH'].split(os.pathsep)
+        else:
+            environment_report_dict['PYTHONPATH'] = []
+
+        logger.info(
+            json.dumps(
+                {
+                    'environment_report': environment_report_dict
+                },
+                indent=2
+            )
+        )
+
     def __init__(self,
         PATHFILE_deploypy:Path=None
     ):
