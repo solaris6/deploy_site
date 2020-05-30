@@ -8,12 +8,13 @@ handler.setLevel(logging.DEBUG)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
-from sitedeployer._Sitetask.Sitetask import *
+
+from sitedeployer.Task._Task.Task import *
 
 
 
-class Builder(
-    Sitetask
+class upload_on_pypi_Task(
+    Task
 ):
     @classmethod
     def from_PATHFILE_deploypy(cls,
@@ -27,7 +28,7 @@ class Builder(
     def __init__(self,
         PATHFILE_deploypy:Path=None
     ):
-        Sitetask.__init__(self,
+        Task.__init__(self,
             PATHFILE_deploypy=PATHFILE_deploypy
         )
 
@@ -42,4 +43,4 @@ class Builder(
         for projekt in self.projekts_all():
             projekt.upload_on_pypi()
 
-        logger.info('Builded and Uploaded projects!')
+        logger.info('Built and Uploaded projects!')

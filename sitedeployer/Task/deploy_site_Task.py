@@ -1,6 +1,4 @@
 import logging
-
-
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
 formatter = logging.Formatter("[deployer] - %(asctime)s - %(levelname)s - %(message)s")
@@ -9,15 +7,11 @@ handler.setLevel(logging.DEBUG)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
-from sitedeployer._Sitetask.Sitetask import *
-import shutil
-import subprocess
-import os
+from sitedeployer.Task._Task.Task import *
 
 
-
-class Deployer(
-    Sitetask
+class deploy_site_Task(
+    Task
 ):
     @classmethod
     def from_PATHFILE_deploypy(cls,
@@ -54,7 +48,7 @@ class Deployer(
         PATHFILE_deploypy:Path=None,
         target_project:Gitproject=None
     ):
-        Sitetask.__init__(self,
+        Task.__init__(self,
             PATHFILE_deploypy=PATHFILE_deploypy
         )
         self._target_project = target_project
