@@ -63,7 +63,7 @@ class deploy_site_Task(
     def target_project(self) -> Gitproject:
         return self._target_project
 
-    def Deploy(self) -> None:
+    def Execute(self) -> None:
         self.log_environment()
 
         logger.info(

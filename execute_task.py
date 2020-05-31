@@ -17,8 +17,9 @@ logger.addHandler(handler)
 from sitedeployer.Task.deploy_site_Task import deploy_site_Task
 from sitedeployer.Task.upload_on_pypi_Task import upload_on_pypi_Task
 
+
 if __name__ == '__main__':
-    logger.info('Deploy site...')
+    logger.info('Executing task...')
     PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy = Path(sys.argv[0])
     PATHDIR_home_pythonanywhereusername_root_sitedeployer = PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy.parent
     PATHDIR_home_pythonanywhereusername_root = PATHDIR_home_pythonanywhereusername_root_sitedeployer.parent
@@ -28,18 +29,18 @@ if __name__ == '__main__':
     if pythonanywhere_username == 'ynsbuilder':
         deploy_site_Task.from_PATHFILE_deploypy(
             PATHFILE_deploypy=PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy
-        ).Build()
+        ).Execute()
 
     else:
         upload_on_pypi_Task.from_PATHFILE_deploypy(
             PATHFILE_deploypy=PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy
-        ).Deploy()
+        ).Execute()
 
-    logger.info('Deploy site!')
+    logger.info('Executed task!')
 
 
     # update.py:
-    logger.info('Write update.py file...')
+    logger.info('Writing update.py file...')
 
     FILENAME_updatepy = 'update.py'
     PATHFILE_home_pythonanywhereusername_root_sitedeployer_updatepy = PATHDIR_home_pythonanywhereusername_root_sitedeployer / FILENAME_updatepy
@@ -58,4 +59,4 @@ PATHFILE_home_pythonanywhereusername_updatepy=%PATHFILE_home_pythonanywhereusern
         PATHFILE_home_pythonanywhereusername_root_sitedeployer_updatepy,
         PATHFILE_home_pythonanywhereusername_updatepy
     )
-    logger.info('Write update.py file!')
+    logger.info('Writed update.py file!')

@@ -179,3 +179,10 @@ class Task:
 
     def PATHFILE_home_pythonanywhereusername_updatepy(self) -> Path:
         return self.PATHDIR_home_pythonanywhereusername() / 'update.py'
+
+
+    def Execute(self) -> bool:
+        pass
+
+    def _Execute(self) -> bool:
+        pass

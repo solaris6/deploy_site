@@ -35,7 +35,8 @@ class upload_on_pypi_Task(
     def pythonanywhere_username(self) -> str:
         return 'ynsbuilder'
 
-    def Build(self) -> None:
+
+    def Execute(self) -> None:
         self.log_environment()
 
         logger.info('Build and Upload projects...')
