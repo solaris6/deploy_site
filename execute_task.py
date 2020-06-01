@@ -29,12 +29,12 @@ if __name__ == '__main__':
     if pythonanywhere_username == 'ynsbuilder':
         deploy_site_Task.from_PATHFILE_deploypy(
             PATHFILE_deploypy=PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy
-        ).Execute()
+        )._Execute()
 
     else:
         upload_on_pypi_Task.from_PATHFILE_deploypy(
             PATHFILE_deploypy=PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy
-        ).Execute()
+        )._Execute()
 
     logger.info('Executed task!')
 

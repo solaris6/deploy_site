@@ -37,8 +37,6 @@ class upload_on_pypi_Task(
 
 
     def Execute(self) -> None:
-        self.log_environment()
-
         logger.info('Build and Upload projects...')
 
         for projekt in self.projekts_all():

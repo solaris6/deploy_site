@@ -64,8 +64,6 @@ class deploy_site_Task(
         return self._target_project
 
     def Execute(self) -> None:
-        self.log_environment()
-
         logger.info(
 '''# projekt:
 target_project: '%target_project%'

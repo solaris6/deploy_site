@@ -58,30 +58,8 @@ class Task:
             )
         )
 
-    def __init__(self,
-        PATHFILE_deploypy:Path=None
-    ):
-        self._PATHFILE_deploypy = PATHFILE_deploypy
-
-        self._projekts_list = []
-        for projekt_Type in self.projekts_Types_all():
-            projekt = projekt_Type()
-            projekt.attach_to_sitedeployer(
-                sitedeployer=self
-            )
-            self._projekts_list.append(projekt)
-
-        PATHFILE_YNSIGHT_GITHUB_TOKEN_txt = PATHFILE_deploypy.parent.parent.parent / 'YNSIGHT_GITHUB_TOKEN.txt'
-        if PATHFILE_YNSIGHT_GITHUB_TOKEN_txt.is_file():
-            YNSIGHT_GITHUB_TOKEN = PATHFILE_YNSIGHT_GITHUB_TOKEN_txt.read_text()
-            os.environ['YNSIGHT_GITHUB_TOKEN'] = YNSIGHT_GITHUB_TOKEN
-
-    # pythonanywhere:
-    def projekts_all(self) -> List[Gitproject]:
-        return self._projekts_list
-
-    # pythonanywhere:
-    def projekts_Types_all(self) -> List[Type[Gitproject]]:
+    @staticmethod
+    def projekts_Types_all() -> List[Type[Gitproject]]:
         return [
             agent_Gitproject,
             ynsbase_Gitproject,
@@ -100,16 +78,43 @@ class Task:
             ynsight_Gitproject
         ]
 
+
+    def __init__(self,
+        PATHFILE_deploypy:Path=None
+    ):
+        self._PATHFILE_deploypy = PATHFILE_deploypy
+
+        self._projekts_list = []
+        for projekt_Type in self.projekts_Types_all():
+            projekt = projekt_Type()
+            projekt.attach_to_sitedeployer(
+                sitedeployer=self
+            )
+            self._projekts_list.append(projekt)
+
+        PATHFILE_YNSIGHT_GITHUB_TOKEN_txt = PATHFILE_deploypy.parent.parent.parent / 'YNSIGHT_GITHUB_TOKEN.txt'
+        if PATHFILE_YNSIGHT_GITHUB_TOKEN_txt.is_file():
+            YNSIGHT_GITHUB_TOKEN = PATHFILE_YNSIGHT_GITHUB_TOKEN_txt.read_text()
+            os.environ['YNSIGHT_GITHUB_TOKEN'] = YNSIGHT_GITHUB_TOKEN
+
+
+    # pythonanywhere:
+    def projekts_all(self) -> List[Gitproject]:
+        return self._projekts_list
+
     def pythonanywhere_username(self) -> str:
         raise NotImplementedError
 
     def URL_pythonanywhere_site(self) -> str:
         return self.pythonanywhere_username() + '.pythonanywhere.com'
 
+
     # github:
     def github_username(self) -> str:
         return 'ynsight'
 
+
+    # python:
     def python_version_list(self) -> List[int]:
         return [3, 6]
 
@@ -152,6 +157,7 @@ class Task:
                 .replace('%DIRNAME_venv%', self.DIRNAME_venv())
         )
 
+
     # PATHS:
     def PATHDIR_home_pythonanywhereusername(self) -> Path:
         return self.PATHDIR_root().parent
@@ -185,4 +191,6 @@ class Task:
         pass
 
     def _Execute(self) -> bool:
-        pass
+        self.log_environment()
+
+        self.Execute()
