@@ -37,9 +37,5 @@ class upload_on_pypi_Task(
 
 
     def Execute(self) -> None:
-        logger.info('Build and Upload projects...')
-
         for projekt in self.projekts_all():
             projekt.upload_on_pypi()
-
-        logger.info('Built and Uploaded projects!')

@@ -19,7 +19,6 @@ from sitedeployer.Task.upload_on_pypi_Task import upload_on_pypi_Task
 
 
 if __name__ == '__main__':
-    logger.info('Executing task...')
     PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy = Path(sys.argv[0])
     PATHDIR_home_pythonanywhereusername_root_sitedeployer = PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy.parent
     PATHDIR_home_pythonanywhereusername_root = PATHDIR_home_pythonanywhereusername_root_sitedeployer.parent
@@ -35,8 +34,6 @@ if __name__ == '__main__':
         upload_on_pypi_Task.from_PATHFILE_deploypy(
             PATHFILE_deploypy=PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy
         )._Execute()
-
-    logger.info('Executed task!')
 
 
     # update.py:

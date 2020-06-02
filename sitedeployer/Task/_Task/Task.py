@@ -98,6 +98,10 @@ class Task:
             os.environ['YNSIGHT_GITHUB_TOKEN'] = YNSIGHT_GITHUB_TOKEN
 
 
+    def NAME(self) -> str:
+        return self.__class__.__name__[:-5]
+
+
     # pythonanywhere:
     def projekts_all(self) -> List[Gitproject]:
         return self._projekts_list
@@ -191,6 +195,9 @@ class Task:
         pass
 
     def _Execute(self) -> bool:
+        logger.info('Executing "%NAME%" task...'.replace('%NAME%', self.NAME()))
         self.log_environment()
 
         self.Execute()
+
+        logger.info('Executed "%NAME%" task!'.replace('%NAME%', self.NAME()))
