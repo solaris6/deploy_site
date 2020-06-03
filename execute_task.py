@@ -26,14 +26,13 @@ if __name__ == '__main__':
     pythonanywhere_username = PATHDIR_home_pythonanywhereusername.name
 
     if pythonanywhere_username == 'ynsbuilder':
-        deploy_site_Task.from_PATHFILE_deploypy(
-            PATHFILE_deploypy=PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy
-        )._Execute()
-
+        task_Type = upload_on_pypi_Task
     else:
-        upload_on_pypi_Task.from_PATHFILE_deploypy(
-            PATHFILE_deploypy=PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy
-        )._Execute()
+        task_Type = deploy_site_Task
+
+    task_Type.from_PATHFILE_deploypy(
+        PATHFILE_deploypy=PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy
+    )._Execute()
 
 
     # update.py:

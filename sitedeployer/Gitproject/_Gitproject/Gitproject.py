@@ -154,8 +154,13 @@ pythonanywhere_username: '%pythonanywhere_username%'
     def upload_on_pypi(self) -> None:
         PATHDIR_testpy = self.sitedeployer().PATHDIR_root() / 'pypi'
         if PATHDIR_testpy.is_dir():
-            shutil.rmtree(str(PATHDIR_testpy))
-        PATHDIR_testpy.mkdir(parents=True)
+            shutil.rmtree(
+                PATHDIR_testpy,
+                ignore_errors=True
+            )
+        PATHDIR_testpy.mkdir(
+            parents=True
+        )
 
         PATHDIR_testpy_projektrepository = PATHDIR_testpy / self.NAME()
 
@@ -201,7 +206,10 @@ pythonanywhere_username: '%pythonanywhere_username%'
                     if PATHDIR_item.is_dir():
                         if item == self.NAME() or item.startswith(self.NAME() + '-'):
                             logger.info('Previous installation exists, deleting("' + str(PATHDIR_item) + '")...')
-                            shutil.rmtree(PATHDIR_item)
+                            shutil.rmtree(
+                                PATHDIR_item,
+                                ignore_errors=True
+                            )
                             prev_installation_exists = True
                         else:
                             logger.info('Item is NOT previous installation, skipping("' + str(PATHDIR_item) + '")...')

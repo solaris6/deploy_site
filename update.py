@@ -35,8 +35,13 @@ PATHFILE_root_sitedeployer_executetaskpy=%PATHFILE_root_sitedeployer_executetask
 
     logger.info('Creating root dir...')
     if PATHDIR_root.is_dir():
-        shutil.rmtree(PATHDIR_root)
-    PATHDIR_root.mkdir()
+        shutil.rmtree(
+            PATHDIR_root,
+            ignore_errors=True
+        )
+    PATHDIR_root.mkdir(
+        parents=True
+    )
     logger.info('Created root dir!')
 
 
