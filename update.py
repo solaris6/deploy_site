@@ -12,14 +12,12 @@ logger.addHandler(handler)
 
 
 if __name__ == '__main__':
-    logger.info('Updating sitedeployer package (then use them to deploy_site or upload_on_pypi Tasks)...')
 
-
+    logger.info('Resolving paths...')
     PATHFILE_updatepy = Path(sys.argv[0])
     PATHDIR_root = PATHFILE_updatepy.parent / 'root'
     PATHDIR_root_sitedeployer = PATHDIR_root / 'sitedeployer'
     PATHFILE_root_sitedeployer_executetaskpy = PATHDIR_root_sitedeployer / 'execute_task.py'
-
 
     logger.info(
 '''PATHFILE_updatepy=%PATHFILE_updatepy%
@@ -31,6 +29,7 @@ PATHFILE_root_sitedeployer_executetaskpy=%PATHFILE_root_sitedeployer_executetask
           .replace('%PATHDIR_root_sitedeployer%', str(PATHDIR_root_sitedeployer))
           .replace('%PATHFILE_root_sitedeployer_executetaskpy%', str(PATHFILE_root_sitedeployer_executetaskpy))
     )
+    logger.info('Resolved paths!')
 
 
     logger.info('Creating root dir...')
@@ -53,11 +52,9 @@ PATHFILE_root_sitedeployer_executetaskpy=%PATHFILE_root_sitedeployer_executetask
     logger.info('Updated sitedeployer package!')
 
 
-    logger.info('Using sitedeployer package...')
+
+    logger.info('Running sitedeployer package...')
     subprocess.run(
         ['python3.6', PATHFILE_root_sitedeployer_executetaskpy]
     )
-    logger.info('Used sitedeployer package!')
-
-
-    logger.info('Updated sitedeployer package (then used them to deploy_site or upload_projects_on_pypi)!')
+    logger.info('Runned sitedeployer package!')

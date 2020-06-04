@@ -1,11 +1,10 @@
-import shutil
-import sys
 from pathlib import Path
-
+import sys
 sys.path.append(str(Path(sys.argv[0]).parent))
 
-import logging
+import shutil
 
+import logging
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
 formatter = logging.Formatter("[deployer] - %(asctime)s - %(levelname)s - %(message)s")
@@ -16,7 +15,6 @@ logger.addHandler(handler)
 
 from sitedeployer.Task.deploy_site_Task import deploy_site_Task
 from sitedeployer.Task.upload_on_pypi_Task import upload_on_pypi_Task
-
 
 if __name__ == '__main__':
     PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy = Path(sys.argv[0])
