@@ -13,7 +13,7 @@ logger.addHandler(handler)
 
 if __name__ == '__main__':
 
-    logger.info('Resolving paths....')
+    logger.info('Resolving paths...')
     PATHFILE_updatepy = Path(sys.argv[0])
     PATHDIR_root = PATHFILE_updatepy.parent / 'root'
     PATHDIR_root_sitedeployer = PATHDIR_root / 'sitedeployer'
@@ -50,7 +50,6 @@ PATHFILE_root_sitedeployer_executetaskpy=%PATHFILE_root_sitedeployer_executetask
         cwd=str(PATHDIR_root)
     )
     logger.info('Updated sitedeployer package!')
-
 
 
     logger.info('Running sitedeployer package...')
