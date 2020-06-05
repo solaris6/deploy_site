@@ -80,9 +80,9 @@ class Task:
 
 
     def __init__(self,
-        PATHFILE_deploypy:Path=None
+        PATHFILE_executetaskpy:Path=None
     ):
-        self._PATHFILE_deploypy = PATHFILE_deploypy
+        self._PATHFILE_executetaskpy = PATHFILE_executetaskpy
 
         self._projekts_list = []
         for projekt_Type in self.projekts_Types_all():
@@ -92,7 +92,7 @@ class Task:
             )
             self._projekts_list.append(projekt)
 
-        PATHFILE_YNSIGHT_GITHUB_TOKEN_txt = PATHFILE_deploypy.parent.parent.parent / 'YNSIGHT_GITHUB_TOKEN.txt'
+        PATHFILE_YNSIGHT_GITHUB_TOKEN_txt = PATHFILE_executetaskpy.parent.parent.parent / 'YNSIGHT_GITHUB_TOKEN.txt'
         if PATHFILE_YNSIGHT_GITHUB_TOKEN_txt.is_file():
             YNSIGHT_GITHUB_TOKEN = PATHFILE_YNSIGHT_GITHUB_TOKEN_txt.read_text()
             os.environ['YNSIGHT_GITHUB_TOKEN'] = YNSIGHT_GITHUB_TOKEN
@@ -167,22 +167,18 @@ class Task:
         return self.PATHDIR_root().parent
 
     def PATHDIR_root(self) -> Path:
-        return self._PATHFILE_deploypy.parent.parent
+        return self._PATHFILE_executetaskpy.parent.parent
 
     def PATHDIR_root_sitedeployer(self) -> Path:
         return self.PATHDIR_root_sitedeployer_sitedeployerpackage().parent
 
     def PATHDIR_root_sitedeployer_sitedeployerpackage(self) -> Path:
-        return self.PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy().parent
+        return self.PATHFILE_root_sitedeployer_sitedeployerpackage_executetaskpy().parent
 
-    def PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy(self) -> Path:
-        return self._PATHFILE_deploypy
 
-    def PATHFILE_wsgipy(self) -> Path:
-        return Path(
-                '/var/www/%pythonanywhere_username%_pythonanywhere_com_wsgi.py'
-                    .replace('%pythonanywhere_username%', self.pythonanywhere_username())
-            )
+    def PATHFILE_root_sitedeployer_sitedeployerpackage_executetaskpy(self) -> Path:
+        return self._PATHFILE_executetaskpy
+
 
     def PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy(self) -> Path:
         return self.PATHDIR_root_sitedeployer_sitedeployerpackage() / 'update.py'

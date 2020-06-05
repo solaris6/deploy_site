@@ -17,19 +17,19 @@ class upload_on_pypi_Task(
     Task
 ):
     @classmethod
-    def from_PATHFILE_deploypy(cls,
-        PATHFILE_deploypy:Path=None
+    def from_PATHFILE_executetaskpy(cls,
+        PATHFILE_executetaskpy:Path=None
     ):
         result = cls(
-            PATHFILE_deploypy=PATHFILE_deploypy
+            PATHFILE_executetaskpy=PATHFILE_executetaskpy
         )
         return result
 
     def __init__(self,
-        PATHFILE_deploypy:Path=None
+        PATHFILE_executetaskpy:Path=None
     ):
         Task.__init__(self,
-            PATHFILE_deploypy=PATHFILE_deploypy
+            PATHFILE_executetaskpy=PATHFILE_executetaskpy
         )
 
     def pythonanywhere_username(self) -> str:

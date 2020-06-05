@@ -28,8 +28,8 @@ if __name__ == '__main__':
     else:
         task_Type = deploy_site_Task
 
-    task_Type.from_PATHFILE_deploypy(
-        PATHFILE_deploypy=PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy
+    task_Type.from_PATHFILE_executetaskpy(
+        PATHFILE_executetaskpy=PATHFILE_home_pythonanywhereusername_root_sitedeployer_executetaskpy
     )._Execute()
 
 

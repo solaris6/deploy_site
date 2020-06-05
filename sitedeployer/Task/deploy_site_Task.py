@@ -14,10 +14,10 @@ class deploy_site_Task(
     Task
 ):
     @classmethod
-    def from_PATHFILE_deploypy(cls,
-        PATHFILE_deploypy:Path=None
+    def from_PATHFILE_executetaskpy(cls,
+        PATHFILE_executetaskpy:Path=None
     ):
-        pythonanywhere_username = PATHFILE_deploypy.parent.parent.parent.name
+        pythonanywhere_username = PATHFILE_executetaskpy.parent.parent.parent.name
 
         target_project = {
             'getagent': agent_Gitproject,
@@ -38,18 +38,18 @@ class deploy_site_Task(
         }[pythonanywhere_username]()
 
         result = cls(
-            PATHFILE_deploypy=PATHFILE_deploypy,
+            PATHFILE_executetaskpy=PATHFILE_executetaskpy,
             target_project=target_project
         )
 
         return result
 
     def __init__(self,
-        PATHFILE_deploypy:Path=None,
+        PATHFILE_executetaskpy:Path=None,
         target_project:Gitproject=None
     ):
         Task.__init__(self,
-            PATHFILE_deploypy=PATHFILE_deploypy
+            PATHFILE_executetaskpy=PATHFILE_executetaskpy
         )
         self._target_project = target_project
 
@@ -62,6 +62,12 @@ class deploy_site_Task(
 
     def target_project(self) -> Gitproject:
         return self._target_project
+
+    def PATHFILE_wsgipy(self) -> Path:
+        return Path(
+                '/var/www/%pythonanywhere_username%_pythonanywhere_com_wsgi.py'
+                    .replace('%pythonanywhere_username%', self.pythonanywhere_username())
+            )
 
     def Execute(self) -> None:
         logger.info(
@@ -80,7 +86,7 @@ PATHDIR_home_pythonanywhereusername: '%PATHDIR_home_pythonanywhereusername%'
 PATHDIR_root: '%PATHDIR_root%'
 PATHDIR_root_sitedeployer: '%PATHDIR_root_sitedeployer%'
 PATHDIR_root_sitedeployer_sitedeployerpackage: '%PATHDIR_root_sitedeployer_sitedeployerpackage%'
-PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy: '%PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy%'
+PATHFILE_root_sitedeployer_sitedeployerpackage_executetaskpy: '%PATHFILE_root_sitedeployer_sitedeployerpackage_executetaskpy%'
 PATHFILE_wsgipy: '%PATHFILE_wsgipy%'
 PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy: '%PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy%'
 PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereusername_updatepy%'
@@ -96,7 +102,7 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
             .replace('%PATHDIR_root%', str(self.PATHDIR_root()))
             .replace('%PATHDIR_root_sitedeployer%', str(self.PATHDIR_root_sitedeployer()))
             .replace('%PATHDIR_root_sitedeployer_sitedeployerpackage%', str(self.PATHDIR_root_sitedeployer_sitedeployerpackage()))
-            .replace('%PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy%', str(self.PATHFILE_root_sitedeployer_sitedeployerpackage_deploypy()))
+            .replace('%PATHFILE_root_sitedeployer_sitedeployerpackage_executetaskpy%', str(self.PATHFILE_root_sitedeployer_sitedeployerpackage_executetaskpy()))
             .replace('%PATHFILE_wsgipy%', str(self.PATHFILE_wsgipy()))
             .replace('%PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy%', str(self.PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy()))
             .replace('%PATHFILE_home_pythonanywhereusername_updatepy%', str(self.PATHFILE_home_pythonanywhereusername_updatepy()))
