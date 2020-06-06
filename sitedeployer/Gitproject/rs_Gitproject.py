@@ -9,6 +9,9 @@ class rs_Gitproject(
     def pythonanywhere_username(self) -> str:
         return 'getrs'
 
+    def project_or_workshop(self) -> str:
+        return 'project'
+
     def github_url_type(self) -> str:
         return 'ssh'
 

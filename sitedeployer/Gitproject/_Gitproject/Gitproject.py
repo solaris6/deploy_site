@@ -43,7 +43,6 @@ projekt: '%project_or_workshop%'
 # PATHS:
 PATHDIR_root: '%PATHDIR_root%'
 PATHDIR_root_projektrepository: '%PATHDIR_root_projektrepository%'
-PATHDIR_root_out_projekt: '%PATHDIR_root_out_projekt%'
 
 # github:
 github_username: '%github_username%'
@@ -62,7 +61,6 @@ pythonanywhere_username: '%pythonanywhere_username%'
                 \
                 .replace('%PATHDIR_root%', str(self.PATHDIR_root()))
                 .replace('%PATHDIR_root_projektrepository%', str(self.PATHDIR_root_projektrepository()))
-                .replace('%PATHDIR_root_out_projekt%', str(self.PATHDIR_root_out_projekt()))
                 \
                 .replace('%github_username%', self.github_username())
                 .replace('%github_url_type%', self.github_url_type())
@@ -113,10 +111,6 @@ pythonanywhere_username: '%pythonanywhere_username%'
 
     def PATHDIR_root_projektrepository(self) -> Path:
         return self.PATHDIR_root() / self.NAME()
-
-    def PATHDIR_root_out_projekt(self) -> Path:
-        return self.PATHDIR_root() / '_out/Release/%NAME%/_2019_2_0/_projekt'\
-            .replace('%NAME%', self.NAME())
 
 
     # github:

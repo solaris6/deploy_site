@@ -149,7 +149,8 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
         ver_major = int(FCONTENT_VERSION_list[1])
         ver_minor = int(FCONTENT_VERSION_list[2])
 
-        PATHDIR_root_out_projekt_pythonpath = self.PATHDIR_root() / \
+        PATHDIR_root_out_projekt_pythonpath =\
+            self.PATHDIR_root() / \
             (
 '_out/Release/%NAME%-pub-%major%.%minor%-lnx/%NAME%/_projekt'
                  .replace('%NAME%', self.target_project().NAME())
