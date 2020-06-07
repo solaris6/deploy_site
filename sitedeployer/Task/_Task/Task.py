@@ -17,6 +17,8 @@ from sitedeployer.Gitproject.sola_Gitproject import sola_Gitproject
 from sitedeployer.Gitproject.ynsbase_Gitproject import ynsbase_Gitproject
 from sitedeployer.Gitproject.ynsight_Gitproject import ynsight_Gitproject
 
+from sitedeployer.Gitprojects import Gitprojekts
+
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
 formatter = logging.Formatter("[deployer] - %(asctime)s - %(levelname)s - %(message)s")
