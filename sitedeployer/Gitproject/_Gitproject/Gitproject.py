@@ -17,22 +17,22 @@ logger.addHandler(handler)
 
 class Gitproject:
     def __init__(self):
-        self._sitedeployer = None
+        self._task = None
 
-    def attach_to_sitedeployer(self,
-        sitedeployer:'Sitetask'=None
+    def attach_to_task(self,
+        task:'Task'=None
     ) -> None:
         logger.info(
-            'Attaching "%NAME%" project to sitedeployer...'
+            'Attaching "%NAME%" project to task...'
                 .replace('%NAME%', self.NAME())
         )
-        if not self._sitedeployer is None:
+        if not self._task is None:
             logger.info(
-                'Project "%NAME%" already attached to sitedeployer, skipping...'
+                'Project "%NAME%" already attached to task, skipping...'
                     .replace('%NAME%', self.NAME())
             )
         else:
-            self._sitedeployer = sitedeployer
+            self._task = task
             logger.info('Init Projekt...')
             logger.info(
 '''# names:
@@ -74,12 +74,12 @@ pythonanywhere_username: '%pythonanywhere_username%'
 
             logger.info('Init Projekt!')
             logger.info(
-                'Attached "%NAME%" project to sitedeployer!'
+                'Attached "%NAME%" project to task!'
                     .replace('%NAME%', self.NAME())
             )
 
-    def sitedeployer(self) -> 'Sitetask':
-        return self._sitedeployer
+    def task(self) -> 'Task':
+        return self._task
 
     # names:
     def NAME(self) -> str:
@@ -107,7 +107,7 @@ pythonanywhere_username: '%pythonanywhere_username%'
 
     # PATHS:
     def PATHDIR_root(self) -> Path:
-        return self.sitedeployer().PATHDIR_root()
+        return self.task().PATHDIR_root()
 
     def PATHDIR_root_projektrepository(self) -> Path:
         return self.PATHDIR_root() / self.NAME()
@@ -115,7 +115,7 @@ pythonanywhere_username: '%pythonanywhere_username%'
 
     # github:
     def github_username(self) -> str:
-        return self.sitedeployer().github_username()
+        return self.task().github_username()
 
     def github_url_type(self) -> str:
         raise NotImplementedError("")
@@ -146,7 +146,7 @@ pythonanywhere_username: '%pythonanywhere_username%'
         return result
 
     def upload_on_pypi(self) -> None:
-        PATHDIR_testpy = self.sitedeployer().PATHDIR_root() / 'pypi'
+        PATHDIR_testpy = self.task().PATHDIR_root() / 'pypi'
         if PATHDIR_testpy.is_dir():
             shutil.rmtree(
                 PATHDIR_testpy,
@@ -167,7 +167,7 @@ pythonanywhere_username: '%pythonanywhere_username%'
             cwd=str(PATHDIR_testpy)
         )
 
-        PATHFILE_YNSIGHT_PYPI_PWD_txt = Path(self.sitedeployer().PATHDIR_home_pythonanywhereusername(), 'YNSIGHT_PYPI_PWD.txt')
+        PATHFILE_YNSIGHT_PYPI_PWD_txt = Path(self.task().PATHDIR_home_pythonanywhereusername(), 'YNSIGHT_PYPI_PWD.txt')
         if PATHFILE_YNSIGHT_PYPI_PWD_txt.is_file():
             os.environ['TWINE_USERNAME'] = 'ynsight'
             os.environ['TWINE_PASSWORD'] = PATHFILE_YNSIGHT_PYPI_PWD_txt.read_text()
@@ -189,7 +189,7 @@ pythonanywhere_username: '%pythonanywhere_username%'
     def uninstall_as_package(self) -> None:
         logger.info('Unnstall as package "%projekt%"...'.replace('%projekt%', self.NAME()))
         if self.is_uninstall_as_package_supported():
-            PATHDIR_venvsitepackages = self.sitedeployer().PATHDIR_venvsitepackages()
+            PATHDIR_venvsitepackages = self.task().PATHDIR_venvsitepackages()
 
             logger.info('Remove "%projekt%" package...'.replace('%projekt%', self.NAME()))
             prev_installation_exists = False
@@ -212,7 +212,7 @@ pythonanywhere_username: '%pythonanywhere_username%'
 
             logger.info('Remove "%projekt%" executables...'.replace('%projekt%', self.NAME()))
             for package_executable in self.package_executables():
-                PATHFILE_package_executable = self.sitedeployer().PATHDIR_venvbin() / package_executable
+                PATHFILE_package_executable = self.task().PATHDIR_venvbin() / package_executable
 
                 if PATHFILE_package_executable.is_file():
                     logger.info('Executable exists, deleting("' + str(PATHFILE_package_executable) + '")...')
@@ -232,3 +232,13 @@ pythonanywhere_username: '%pythonanywhere_username%'
 
     def package_executables(self) -> List[str]:
         raise NotImplementedError("")
+
+
+
+
+
+
+
+
+
+

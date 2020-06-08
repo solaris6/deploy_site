@@ -89,8 +89,8 @@ class Task:
         self._projekts_list = []
         for projekt_Type in self.projekts_Types_all():
             projekt = projekt_Type()
-            projekt.attach_to_sitedeployer(
-                sitedeployer=self
+            projekt.attach_to_task(
+                task=self
             )
             self._projekts_list.append(projekt)
 

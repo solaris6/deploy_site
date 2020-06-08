@@ -32,18 +32,18 @@ class Gitprojekts:
     def projekts_Types_all() -> List[Type[Gitproject]]:
         return [
             agent_Gitproject,
-            ynsbase_Gitproject,
+            fw_Gitproject,
             letters_Gitproject,
-            projekt_Gitproject,
+            Ln_Gitproject,
             myrta_Gitproject,
-            una_Gitproject,
+            projekt_Gitproject,
             rs_Gitproject,
             rsdata_Gitproject,
             sc_Gitproject,
             skfb_Gitproject,
-            fw_Gitproject,
             sola_Gitproject,
-            Ln_Gitproject,
+            una_Gitproject,
+            ynsbase_Gitproject,
 
             ynsight_Gitproject
         ]
@@ -53,8 +53,8 @@ class Gitprojekts:
         self._projekts_list = []
         for projekt_Type in self.projekts_Types_all():
             projekt = projekt_Type()
-            projekt.attach_to_sitedeployer(
-                sitedeployer=self
+            projekt.attach_to_task(
+                task=self
             )
             self._projekts_list.append(projekt)
 
