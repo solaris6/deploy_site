@@ -1,14 +1,5 @@
 from sitedeployer.Gitproject._Gitproject.Gitproject import *
 
-import logging
-logger = logging.getLogger(__name__)
-handler = logging.StreamHandler()
-formatter = logging.Formatter("[sitedeployer] - %(asctime)s - %(levelname)s - %(message)s")
-handler.setFormatter(formatter)
-handler.setLevel(logging.DEBUG)
-logger.setLevel(logging.DEBUG)
-logger.addHandler(handler)
-
 
 class ynsbase_Gitproject(
     Gitproject

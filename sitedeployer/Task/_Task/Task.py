@@ -21,7 +21,7 @@ from sitedeployer.Gitprojects import Gitprojekts
 
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
-formatter = logging.Formatter("[deployer] - %(asctime)s - %(levelname)s - %(message)s")
+formatter = logging.Formatter("[task] - %(asctime)s - %(levelname)s - %(message)s")
 handler.setFormatter(formatter)
 handler.setLevel(logging.DEBUG)
 logger.setLevel(logging.DEBUG)
@@ -171,19 +171,19 @@ class Task:
     def PATHDIR_root(self) -> Path:
         return self._PATHFILE_executetaskpy.parent.parent
 
-    def PATHDIR_root_sitedeployer(self) -> Path:
-        return self.PATHDIR_root_sitedeployer_sitedeployerpackage().parent
+    def PATHDIR_root_sitetask(self) -> Path:
+        return self.PATHDIR_root_sitetask_sitetaskpackage().parent
 
-    def PATHDIR_root_sitedeployer_sitedeployerpackage(self) -> Path:
-        return self.PATHFILE_root_sitedeployer_sitedeployerpackage_executetaskpy().parent
+    def PATHDIR_root_sitetask_sitetaskpackage(self) -> Path:
+        return self.PATHFILE_root_sitetask_sitetaskpackage_executetaskpy().parent
 
 
-    def PATHFILE_root_sitedeployer_sitedeployerpackage_executetaskpy(self) -> Path:
+    def PATHFILE_root_sitetask_sitetaskpackage_executetaskpy(self) -> Path:
         return self._PATHFILE_executetaskpy
 
 
-    def PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy(self) -> Path:
-        return self.PATHDIR_root_sitedeployer_sitedeployerpackage() / 'update.py'
+    def PATHFILE_root_sitetask_sitetaskpackage_updatepy(self) -> Path:
+        return self.PATHDIR_root_sitetask_sitetaskpackage() / 'update.py'
 
     def PATHFILE_home_pythonanywhereusername_updatepy(self) -> Path:
         return self.PATHDIR_home_pythonanywhereusername() / 'update.py'

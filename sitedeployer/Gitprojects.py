@@ -16,14 +16,6 @@ from sitedeployer.Gitproject.sola_Gitproject import sola_Gitproject
 from sitedeployer.Gitproject.ynsbase_Gitproject import ynsbase_Gitproject
 from sitedeployer.Gitproject.ynsight_Gitproject import ynsight_Gitproject
 
-logger = logging.getLogger(__name__)
-handler = logging.StreamHandler()
-formatter = logging.Formatter("[deployer] - %(asctime)s - %(levelname)s - %(message)s")
-handler.setFormatter(formatter)
-handler.setLevel(logging.DEBUG)
-logger.setLevel(logging.DEBUG)
-logger.addHandler(handler)
-
 from typing import List, Type
 
 class Gitprojekts:

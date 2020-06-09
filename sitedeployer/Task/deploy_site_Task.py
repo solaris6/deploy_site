@@ -1,7 +1,7 @@
 import logging
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
-formatter = logging.Formatter("[deployer] - %(asctime)s - %(levelname)s - %(message)s")
+formatter = logging.Formatter("[task] - %(asctime)s - %(levelname)s - %(message)s")
 handler.setFormatter(formatter)
 handler.setLevel(logging.DEBUG)
 logger.setLevel(logging.DEBUG)
@@ -53,8 +53,8 @@ class deploy_site_Task(
         )
         self._target_project = target_project
 
-        self._target_project.attach_to_sitedeployer(
-            sitedeployer=self
+        self._target_project.attach_to_task(
+            task=self
         )
 
     def pythonanywhere_username(self) -> str:
@@ -84,11 +84,11 @@ github_username: '%github_username%'
 # paths:
 PATHDIR_home_pythonanywhereusername: '%PATHDIR_home_pythonanywhereusername%'
 PATHDIR_root: '%PATHDIR_root%'
-PATHDIR_root_sitedeployer: '%PATHDIR_root_sitedeployer%'
-PATHDIR_root_sitedeployer_sitedeployerpackage: '%PATHDIR_root_sitedeployer_sitedeployerpackage%'
-PATHFILE_root_sitedeployer_sitedeployerpackage_executetaskpy: '%PATHFILE_root_sitedeployer_sitedeployerpackage_executetaskpy%'
+PATHDIR_root_sitetask: '%PATHDIR_root_sitetask%'
+PATHDIR_root_sitetask_sitetaskpackage: '%PATHDIR_root_sitetask_sitetaskpackage%'
+PATHFILE_root_sitetask_sitetaskpackage_executetaskpy: '%PATHFILE_root_sitetask_sitetaskpackage_executetaskpy%'
 PATHFILE_wsgipy: '%PATHFILE_wsgipy%'
-PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy: '%PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy%'
+PATHFILE_root_sitetask_sitetaskpackage_updatepy: '%PATHFILE_root_sitetask_sitetaskpackage_updatepy%'
 PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereusername_updatepy%'
 '''
             .replace('%target_project%', str(self.target_project()))
@@ -100,11 +100,11 @@ PATHFILE_home_pythonanywhereusername_updatepy: '%PATHFILE_home_pythonanywhereuse
             \
             .replace('%PATHDIR_home_pythonanywhereusername%', str(self.PATHDIR_home_pythonanywhereusername()))
             .replace('%PATHDIR_root%', str(self.PATHDIR_root()))
-            .replace('%PATHDIR_root_sitedeployer%', str(self.PATHDIR_root_sitedeployer()))
-            .replace('%PATHDIR_root_sitedeployer_sitedeployerpackage%', str(self.PATHDIR_root_sitedeployer_sitedeployerpackage()))
-            .replace('%PATHFILE_root_sitedeployer_sitedeployerpackage_executetaskpy%', str(self.PATHFILE_root_sitedeployer_sitedeployerpackage_executetaskpy()))
+            .replace('%PATHDIR_root_sitetask%', str(self.PATHDIR_root_sitetask()))
+            .replace('%PATHDIR_root_sitetask_sitetaskpackage%', str(self.PATHDIR_root_sitetask_sitetaskpackage()))
+            .replace('%PATHFILE_root_sitetask_sitetaskpackage_executetaskpy%', str(self.PATHFILE_root_sitetask_sitetaskpackage_executetaskpy()))
             .replace('%PATHFILE_wsgipy%', str(self.PATHFILE_wsgipy()))
-            .replace('%PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy%', str(self.PATHFILE_root_sitedeployer_sitedeployerpackage_updatepy()))
+            .replace('%PATHFILE_root_sitetask_sitetaskpackage_updatepy%', str(self.PATHFILE_root_sitetask_sitetaskpackage_updatepy()))
             .replace('%PATHFILE_home_pythonanywhereusername_updatepy%', str(self.PATHFILE_home_pythonanywhereusername_updatepy()))
         )
 

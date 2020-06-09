@@ -16,18 +16,18 @@ if __name__ == '__main__':
     logger.info('Resolving paths...')
     PATHFILE_updatepy = Path(sys.argv[0])
     PATHDIR_root = PATHFILE_updatepy.parent / 'root'
-    PATHDIR_root_sitedeployer = PATHDIR_root / 'sitedeployer'
-    PATHFILE_root_sitedeployer_executetaskpy = PATHDIR_root_sitedeployer / 'execute_task.py'
+    PATHDIR_root_sitetask = PATHDIR_root / 'sitetask'
+    PATHFILE_root_sitetask_executetaskpy = PATHDIR_root_sitetask / 'execute_task.py'
 
     logger.info(
 '''PATHFILE_updatepy=%PATHFILE_updatepy%
 PATHDIR_root=%PATHDIR_root%
-PATHDIR_root_sitedeployer=%PATHDIR_root_sitedeployer%
-PATHFILE_root_sitedeployer_executetaskpy=%PATHFILE_root_sitedeployer_executetaskpy%'''
+PATHDIR_root_sitetask=%PATHDIR_root_sitetask%
+PATHFILE_root_sitetask_executetaskpy=%PATHFILE_root_sitetask_executetaskpy%'''
           .replace('%PATHFILE_updatepy%', str(PATHFILE_updatepy))
           .replace('%PATHDIR_root%', str(PATHDIR_root))
-          .replace('%PATHDIR_root_sitedeployer%', str(PATHDIR_root_sitedeployer))
-          .replace('%PATHFILE_root_sitedeployer_executetaskpy%', str(PATHFILE_root_sitedeployer_executetaskpy))
+          .replace('%PATHDIR_root_sitetask%', str(PATHDIR_root_sitetask))
+          .replace('%PATHFILE_root_sitetask_executetaskpy%', str(PATHFILE_root_sitetask_executetaskpy))
     )
     logger.info('Resolved paths!')
 
@@ -44,16 +44,16 @@ PATHFILE_root_sitedeployer_executetaskpy=%PATHFILE_root_sitedeployer_executetask
     logger.info('Created root dir!')
 
 
-    logger.info('Updating sitedeployer package...')
+    logger.info('Updating sitetask package...')
     subprocess.run(
         ['git', 'clone', 'https://github.com/ynsight/sitedeployer.git'],
         cwd=str(PATHDIR_root)
     )
-    logger.info('Updated sitedeployer package!')
+    logger.info('Updated sitetask package!')
 
 
-    logger.info('Running sitedeployer package...')
+    logger.info('Running sitetask package...')
     subprocess.run(
-        ['python3.6', PATHFILE_root_sitedeployer_executetaskpy]
+        ['python3.6', PATHFILE_root_sitetask_executetaskpy]
     )
-    logger.info('Runned sitedeployer package!')
+    logger.info('Runned sitetask package!')

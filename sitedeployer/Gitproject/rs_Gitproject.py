@@ -19,4 +19,10 @@ class rs_Gitproject(
         return True
 
     def package_executables(self) -> List[str]:
-        return []
+        return [
+            'rt',
+            'rt.sh',
+            'rt.bat',
+            'rt_.py',
+            'rt.py'
+        ]
