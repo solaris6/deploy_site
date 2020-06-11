@@ -7,11 +7,11 @@ handler.setLevel(logging.DEBUG)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
-from sitedeployer.Task._Task.Task import *
+from sitedeployer.Sitetask._Sitetask.Sitetask import *
 
 
-class deploy_site_Task(
-    Task
+class deploy_site_Sitetask(
+    Sitetask
 ):
     @classmethod
     def from_PATHFILE_executetaskpy(cls,
@@ -48,7 +48,7 @@ class deploy_site_Task(
         PATHFILE_executetaskpy:Path=None,
         target_project:Gitproject=None
     ):
-        Task.__init__(self,
+        Sitetask.__init__(self,
             PATHFILE_executetaskpy=PATHFILE_executetaskpy
         )
         self._target_project = target_project

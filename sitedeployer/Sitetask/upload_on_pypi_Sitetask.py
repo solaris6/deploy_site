@@ -9,12 +9,12 @@ logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
 
-from sitedeployer.Task._Task.Task import *
+from sitedeployer.Sitetask._Sitetask.Sitetask import *
 
 
 
-class upload_on_pypi_Task(
-    Task
+class upload_on_pypi_Sitetask(
+    Sitetask
 ):
     @classmethod
     def from_PATHFILE_executetaskpy(cls,
@@ -28,7 +28,7 @@ class upload_on_pypi_Task(
     def __init__(self,
         PATHFILE_executetaskpy:Path=None
     ):
-        Task.__init__(self,
+        Sitetask.__init__(self,
             PATHFILE_executetaskpy=PATHFILE_executetaskpy
         )
 

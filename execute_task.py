@@ -13,8 +13,8 @@ handler.setLevel(logging.DEBUG)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
-from sitedeployer.Task.deploy_site_Task import deploy_site_Task
-from sitedeployer.Task.upload_on_pypi_Task import upload_on_pypi_Task
+from sitedeployer.Sitetask.deploy_site_Sitetask import deploy_site_Sitetask
+from sitedeployer.Sitetask.upload_on_pypi_Sitetask import upload_on_pypi_Sitetask
 
 if __name__ == '__main__':
     PATHFILE_home_pythonanywhereusername_root_sitetask_executetaskpy = Path(sys.argv[0])
@@ -24,9 +24,9 @@ if __name__ == '__main__':
     pythonanywhere_username = PATHDIR_home_pythonanywhereusername.name
 
     if pythonanywhere_username == 'ynsbuilder':
-        task_Type = upload_on_pypi_Task
+        task_Type = upload_on_pypi_Sitetask
     else:
-        task_Type = deploy_site_Task
+        task_Type = deploy_site_Sitetask
 
     task_Type.from_PATHFILE_executetaskpy(
         PATHFILE_executetaskpy=PATHFILE_home_pythonanywhereusername_root_sitetask_executetaskpy

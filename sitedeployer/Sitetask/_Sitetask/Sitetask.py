@@ -31,7 +31,7 @@ from pathlib import Path
 import json
 import os
 
-class Task:
+class Sitetask:
 
     @staticmethod
     def log_environment() -> None:

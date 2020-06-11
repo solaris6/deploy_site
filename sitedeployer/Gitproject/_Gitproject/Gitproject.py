@@ -20,7 +20,7 @@ class Gitproject:
         self._task = None
 
     def attach_to_task(self,
-        task:'Task'=None
+        task:'Sitetask'=None
     ) -> None:
         logger.info(
             'Attaching "%NAME%" project to task...'
@@ -78,7 +78,7 @@ pythonanywhere_username: '%pythonanywhere_username%'
                     .replace('%NAME%', self.NAME())
             )
 
-    def task(self) -> 'Task':
+    def task(self) -> 'Sitetask':
         return self._task
 
     # names:
@@ -232,13 +232,3 @@ pythonanywhere_username: '%pythonanywhere_username%'
 
     def package_executables(self) -> List[str]:
         raise NotImplementedError("")
-
-
-
-
-
-
-
-
-
-
