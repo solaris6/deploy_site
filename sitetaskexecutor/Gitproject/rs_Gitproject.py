@@ -1,14 +1,13 @@
-from sitedeployer.Gitproject._Gitproject.Gitproject import *
+from sitetaskexecutor.Gitproject._Gitproject.Gitproject import *
 
-
-class ynsbase_Gitproject(
+class rs_Gitproject(
     Gitproject
 ):
     def NAME(self) -> str:
-        return 'ynsbase'
+        return 'rs'
     
     def pythonanywhere_username(self) -> str:
-        return 'getynsbase'
+        return 'getrs'
 
     def project_or_workshop(self) -> str:
         return 'project'
@@ -21,9 +20,9 @@ class ynsbase_Gitproject(
 
     def package_executables(self) -> List[str]:
         return [
-            'ynsbase',
-            'ynsbase.sh',
-            'ynsbase.bat',
-            'ynsbase_.py',
-            'ynsbase.py'
+            'rt',
+            'rt.sh',
+            'rt.bat',
+            'rt_.py',
+            'rt.py'
         ]

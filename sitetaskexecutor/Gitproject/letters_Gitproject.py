@@ -1,4 +1,4 @@
-from sitedeployer.Gitproject._Gitproject.Gitproject import *
+from sitetaskexecutor.Gitproject._Gitproject.Gitproject import *
 
 class letters_Gitproject(
     Gitproject

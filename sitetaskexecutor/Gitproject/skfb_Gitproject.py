@@ -1,13 +1,13 @@
-from sitedeployer.Gitproject._Gitproject.Gitproject import *
+from sitetaskexecutor.Gitproject._Gitproject.Gitproject import *
 
-class ynsight_Gitproject(
+class skfb_Gitproject(
     Gitproject
 ):
     def NAME(self) -> str:
-        return 'ynsight'
+        return 'skfb'
 
     def pythonanywhere_username(self) -> str:
-        return 'ynsight'
+        return 'skfb'
 
     def project_or_workshop(self) -> str:
         return 'project'

@@ -1,13 +1,14 @@
-from sitedeployer.Gitproject._Gitproject.Gitproject import *
+from sitetaskexecutor.Gitproject._Gitproject.Gitproject import *
 
-class skfb_Gitproject(
+
+class agent_Gitproject(
     Gitproject
 ):
     def NAME(self) -> str:
-        return 'skfb'
-
+        return 'agent'
+    
     def pythonanywhere_username(self) -> str:
-        return 'skfb'
+        return 'getagent'
 
     def project_or_workshop(self) -> str:
         return 'project'
@@ -19,4 +20,10 @@ class skfb_Gitproject(
         return True
 
     def package_executables(self) -> List[str]:
-        return []
+        return [
+            'agent',
+            'agent.sh',
+            'agent.bat',
+            'agent_.py',
+            'agent.py'
+        ]

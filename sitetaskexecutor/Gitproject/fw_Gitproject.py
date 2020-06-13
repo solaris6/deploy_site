@@ -1,13 +1,14 @@
-from sitedeployer.Gitproject._Gitproject.Gitproject import *
+from sitetaskexecutor.Gitproject._Gitproject.Gitproject import *
 
-class rs_Gitproject(
+
+class fw_Gitproject(
     Gitproject
 ):
     def NAME(self) -> str:
-        return 'rs'
+        return 'fw'
     
     def pythonanywhere_username(self) -> str:
-        return 'getrs'
+        return 'getfw'
 
     def project_or_workshop(self) -> str:
         return 'project'
@@ -20,9 +21,9 @@ class rs_Gitproject(
 
     def package_executables(self) -> List[str]:
         return [
-            'rt',
-            'rt.sh',
-            'rt.bat',
-            'rt_.py',
-            'rt.py'
+            'fw',
+            'fw.sh',
+            'fw.bat',
+            'fw_.py',
+            'fw.py'
         ]

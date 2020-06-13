@@ -1,13 +1,13 @@
-from sitedeployer.Gitproject._Gitproject.Gitproject import *
+from sitetaskexecutor.Gitproject._Gitproject.Gitproject import *
 
-class rsdata_Gitproject(
+class myrta_Gitproject(
     Gitproject
 ):
     def NAME(self) -> str:
-        return 'rsdata'
+        return 'myrta'
     
     def pythonanywhere_username(self) -> str:
-        return 'getrsdata'
+        return 'getmyrta'
 
     def project_or_workshop(self) -> str:
         return 'project'
@@ -16,7 +16,13 @@ class rsdata_Gitproject(
         return 'ssh'
 
     def is_uninstall_as_package_supported(self) -> bool:
-        return False
+        return True
 
     def package_executables(self) -> List[str]:
-        return []
+        return [
+            'myrta',
+            'myrta.sh',
+            'myrta.bat',
+            'myrta_.py',
+            'myrta.py'
+        ]

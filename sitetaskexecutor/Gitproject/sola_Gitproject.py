@@ -1,13 +1,13 @@
-from sitedeployer.Gitproject._Gitproject.Gitproject import *
+from sitetaskexecutor.Gitproject._Gitproject.Gitproject import *
 
-class myrta_Gitproject(
+class sola_Gitproject(
     Gitproject
 ):
     def NAME(self) -> str:
-        return 'myrta'
-    
+        return 'sola'
+
     def pythonanywhere_username(self) -> str:
-        return 'getmyrta'
+        return 'getsola'
 
     def project_or_workshop(self) -> str:
         return 'project'
@@ -16,13 +16,7 @@ class myrta_Gitproject(
         return 'ssh'
 
     def is_uninstall_as_package_supported(self) -> bool:
-        return True
+        return False
 
     def package_executables(self) -> List[str]:
-        return [
-            'myrta',
-            'myrta.sh',
-            'myrta.bat',
-            'myrta_.py',
-            'myrta.py'
-        ]
+        return []

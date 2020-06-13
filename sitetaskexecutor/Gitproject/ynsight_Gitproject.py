@@ -1,14 +1,13 @@
-from sitedeployer.Gitproject._Gitproject.Gitproject import *
+from sitetaskexecutor.Gitproject._Gitproject.Gitproject import *
 
-
-class agent_Gitproject(
+class ynsight_Gitproject(
     Gitproject
 ):
     def NAME(self) -> str:
-        return 'agent'
-    
+        return 'ynsight'
+
     def pythonanywhere_username(self) -> str:
-        return 'getagent'
+        return 'ynsight'
 
     def project_or_workshop(self) -> str:
         return 'project'
@@ -20,10 +19,4 @@ class agent_Gitproject(
         return True
 
     def package_executables(self) -> List[str]:
-        return [
-            'agent',
-            'agent.sh',
-            'agent.bat',
-            'agent_.py',
-            'agent.py'
-        ]
+        return []

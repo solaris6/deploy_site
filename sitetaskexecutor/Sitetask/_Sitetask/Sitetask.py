@@ -1,22 +1,4 @@
 import logging
-import subprocess
-from sitedeployer.Gitproject._Gitproject.Gitproject import Gitproject
-
-from sitedeployer.Gitproject.una_Gitproject import una_Gitproject
-from sitedeployer.Gitproject.Ln_Gitproject import Ln_Gitproject
-from sitedeployer.Gitproject.agent_Gitproject import agent_Gitproject
-from sitedeployer.Gitproject.fw_Gitproject import fw_Gitproject
-from sitedeployer.Gitproject.letters_Gitproject import letters_Gitproject
-from sitedeployer.Gitproject.myrta_Gitproject import myrta_Gitproject
-from sitedeployer.Gitproject.projekt_Gitproject import projekt_Gitproject
-from sitedeployer.Gitproject.rs_Gitproject import rs_Gitproject
-from sitedeployer.Gitproject.rsdata_Gitproject import rsdata_Gitproject
-from sitedeployer.Gitproject.sc_Gitproject import sc_Gitproject
-from sitedeployer.Gitproject.skfb_Gitproject import skfb_Gitproject
-from sitedeployer.Gitproject.sola_Gitproject import sola_Gitproject
-from sitedeployer.Gitproject.ynsbase_Gitproject import ynsbase_Gitproject
-from sitedeployer.Gitproject.ynsight_Gitproject import ynsight_Gitproject
-
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler()
 formatter = logging.Formatter("[task] - %(asctime)s - %(levelname)s - %(message)s")
@@ -30,6 +12,23 @@ from pathlib import Path
 
 import json
 import os
+import subprocess
+from sitetaskexecutor.Gitproject._Gitproject.Gitproject import Gitproject
+
+from sitetaskexecutor.Gitproject.una_Gitproject import una_Gitproject
+from sitetaskexecutor.Gitproject.Ln_Gitproject import Ln_Gitproject
+from sitetaskexecutor.Gitproject.agent_Gitproject import agent_Gitproject
+from sitetaskexecutor.Gitproject.fw_Gitproject import fw_Gitproject
+from sitetaskexecutor.Gitproject.letters_Gitproject import letters_Gitproject
+from sitetaskexecutor.Gitproject.myrta_Gitproject import myrta_Gitproject
+from sitetaskexecutor.Gitproject.projekt_Gitproject import projekt_Gitproject
+from sitetaskexecutor.Gitproject.rs_Gitproject import rs_Gitproject
+from sitetaskexecutor.Gitproject.rsdata_Gitproject import rsdata_Gitproject
+from sitetaskexecutor.Gitproject.sc_Gitproject import sc_Gitproject
+from sitetaskexecutor.Gitproject.skfb_Gitproject import skfb_Gitproject
+from sitetaskexecutor.Gitproject.sola_Gitproject import sola_Gitproject
+from sitetaskexecutor.Gitproject.ynsbase_Gitproject import ynsbase_Gitproject
+from sitetaskexecutor.Gitproject.ynsight_Gitproject import ynsight_Gitproject
 
 class Sitetask:
 

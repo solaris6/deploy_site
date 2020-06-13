@@ -1,13 +1,14 @@
-from sitedeployer.Gitproject._Gitproject.Gitproject import *
+from sitetaskexecutor.Gitproject._Gitproject.Gitproject import *
 
-class una_Gitproject(
+
+class ynsbase_Gitproject(
     Gitproject
 ):
     def NAME(self) -> str:
-        return 'una'
-
+        return 'ynsbase'
+    
     def pythonanywhere_username(self) -> str:
-        return 'getuna'
+        return 'getynsbase'
 
     def project_or_workshop(self) -> str:
         return 'project'
@@ -20,9 +21,9 @@ class una_Gitproject(
 
     def package_executables(self) -> List[str]:
         return [
-            'una',
-            'una.sh',
-            'una.bat',
-            'una_.py',
-            'una.py'
+            'ynsbase',
+            'ynsbase.sh',
+            'ynsbase.bat',
+            'ynsbase_.py',
+            'ynsbase.py'
         ]

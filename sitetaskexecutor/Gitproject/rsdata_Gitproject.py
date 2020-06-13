@@ -1,14 +1,13 @@
-from sitedeployer.Gitproject._Gitproject.Gitproject import *
+from sitetaskexecutor.Gitproject._Gitproject.Gitproject import *
 
-
-class fw_Gitproject(
+class rsdata_Gitproject(
     Gitproject
 ):
     def NAME(self) -> str:
-        return 'fw'
+        return 'rsdata'
     
     def pythonanywhere_username(self) -> str:
-        return 'getfw'
+        return 'getrsdata'
 
     def project_or_workshop(self) -> str:
         return 'project'
@@ -17,13 +16,7 @@ class fw_Gitproject(
         return 'ssh'
 
     def is_uninstall_as_package_supported(self) -> bool:
-        return True
+        return False
 
     def package_executables(self) -> List[str]:
-        return [
-            'fw',
-            'fw.sh',
-            'fw.bat',
-            'fw_.py',
-            'fw.py'
-        ]
+        return []

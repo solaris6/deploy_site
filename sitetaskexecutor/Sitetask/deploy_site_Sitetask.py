@@ -7,7 +7,7 @@ handler.setLevel(logging.DEBUG)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
-from sitedeployer.Sitetask._Sitetask.Sitetask import *
+from sitetaskexecutor.Sitetask._Sitetask.Sitetask import *
 
 
 class deploy_site_Sitetask(

@@ -1,13 +1,13 @@
-from sitedeployer.Gitproject._Gitproject.Gitproject import *
+from sitetaskexecutor.Gitproject._Gitproject.Gitproject import *
 
-class sola_Gitproject(
+class sc_Gitproject(
     Gitproject
 ):
     def NAME(self) -> str:
-        return 'sola'
-
+        return 'sc'
+    
     def pythonanywhere_username(self) -> str:
-        return 'getsola'
+        return 'getsc'
 
     def project_or_workshop(self) -> str:
         return 'project'

@@ -1,13 +1,13 @@
-from sitedeployer.Gitproject._Gitproject.Gitproject import *
+from sitetaskexecutor.Gitproject._Gitproject.Gitproject import *
 
-class sc_Gitproject(
+class Ln_Gitproject(
     Gitproject
 ):
     def NAME(self) -> str:
-        return 'sc'
+        return 'Ln'
     
     def pythonanywhere_username(self) -> str:
-        return 'getsc'
+        return 'getln'
 
     def project_or_workshop(self) -> str:
         return 'project'
